@@ -141,4 +141,22 @@
   <ItemGroup>
     <BundleResource Include="Resources\resume.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Credits.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\CFA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\FSCJ.jfif" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\JEA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\UF.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\whistle.png" />
+  </ItemGroup>
 </Project>

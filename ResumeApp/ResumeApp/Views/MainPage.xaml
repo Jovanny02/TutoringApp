@@ -12,24 +12,27 @@
     <MasterDetailPage.Master>
         <ContentPage Padding="5" BackgroundColor="LightBlue"  Title="MasterPage" IconImageSource="menu.png">
             <ContentPage.Content>
-                <StackLayout>
-                    <ListView x:Name="listView" x:FieldModifier="public" ItemTapped="MenuItemSelected">
+                <StackLayout Margin="0,20,0,20">
+                    <ListView x:Name="listView" x:FieldModifier="public" ItemSelected="MenuItemSelected" RowHeight="50">
                         <ListView.ItemsSource>
                             <x:Array Type="{x:Type Models:NavigationTile}">
                                 <Models:NavigationTile pageName="Home" iconSrc="home.png" targetType="{x:Type local:Home}" />
                                 <Models:NavigationTile pageName="Jovanny's Resume" iconSrc="resume.png" targetType="{x:Type local:Resume}" />
+                                <Models:NavigationTile pageName="Credits" iconSrc="Credits.png" targetType="{x:Type local:Credits}" />
                             </x:Array>
                         </ListView.ItemsSource>
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
-                                    <Grid Padding="5,10">
+                                    <Grid Padding="5">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="40"/>
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
                                         <Image Source="{Binding iconSrc}" />
-                                        <Label Grid.Column="1" Text="{Binding pageName}" />
+                                        <Label Grid.Column="1" Text="{Binding pageName}" 
+                                               VerticalOptions="CenterAndExpand" HorizontalOptions="Start"
+                                               TextColor="Black" FontAttributes="Bold"/>
                                     </Grid>
                                 </ViewCell>
                             </DataTemplate>

@@ -6,10 +6,42 @@
              mc:Ignorable="d"
              x:Class="ResumeApp.Views.Resume">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="This is the Resume Page"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView Orientation="Vertical" BackgroundColor="LightGray" VerticalScrollBarVisibility="Always">
+            <StackLayout Padding="0, 15,0,0">
+                <TableView Intent="Form" HeightRequest="150" BackgroundColor="White" HasUnevenRows="True" >
+                    <TableRoot>
+                        <TableSection TextColor="Black" >
+                            <ViewCell>
+                                <StackLayout Padding="5,0,5,5">
+                                    <Label Text="About Me" LineBreakMode="WordWrap" TextColor="Black" FontAttributes="Bold"/>
+                                    <Label LineBreakMode="WordWrap" TextColor="Black" Text="I am currently a Junior at the University of Florida majoring in Computer Engineering. I have experience developing software in the .NET environment and developing database software. I am looking to expand my hardware and software knowledge while providing value to an organization using my current skills and ability to adapt and learn quickly."/>
+                                </StackLayout>
+                            </ViewCell>
+                        </TableSection>
+                    </TableRoot>
+                </TableView>
+                
+                <ListView BackgroundColor="White" ItemsSource="{Binding Jobs}" ItemSelected="JobSelected" RowHeight="50" x:FieldModifier="public">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Padding="5,0,5,5">
+                                    <Grid Padding="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="40"/>
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="{Binding iconSrc}" />
+                                        <Label Grid.Column="1" Text="{Binding companyName}" 
+                                               VerticalOptions="CenterAndExpand" HorizontalOptions="Start"
+                                               TextColor="Black" FontAttributes="Bold"/>
+                                    </Grid>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

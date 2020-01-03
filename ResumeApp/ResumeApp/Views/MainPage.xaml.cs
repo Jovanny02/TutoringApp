@@ -19,9 +19,9 @@ namespace ResumeApp
             InitializeComponent();
         }
 
-        private void MenuItemSelected(object sender, ItemTappedEventArgs e)
+        private void MenuItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            NavigationTile tile = ((NavigationTile)e.Item);
+            NavigationTile tile = ((NavigationTile)e.SelectedItem);
             if (tile != null)
             {
                 Detail = new NavigationPage((Page)Activator.CreateInstance(tile.targetType));

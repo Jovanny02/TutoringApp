@@ -6,7 +6,7 @@
              mc:Ignorable="d"
              x:Class="ResumeApp.Views.Home">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout BackgroundColor="LightGray">
             <Label Text="Welcome to my App!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
