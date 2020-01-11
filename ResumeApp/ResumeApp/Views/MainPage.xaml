@@ -5,22 +5,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:ResumeApp.Views"
              mc:Ignorable="d"
-            xmlns:Models="clr-namespace:ResumeApp.Models"
             MasterBehavior="Popover"
              x:Class="ResumeApp.MainPage"
              >
     <MasterDetailPage.Master>
-        <ContentPage Padding="5" BackgroundColor="LightBlue"  Title="MasterPage" IconImageSource="menu.png">
+        <ContentPage Padding="5" BackgroundColor="LightBlue"  Title="MasterPage" IconImageSource="menu.png" >
             <ContentPage.Content>
                 <StackLayout Margin="0,20,0,20">
-                    <ListView x:Name="listView" x:FieldModifier="public" ItemSelected="MenuItemSelected" RowHeight="50">
-                        <ListView.ItemsSource>
-                            <x:Array Type="{x:Type Models:NavigationTile}">
-                                <Models:NavigationTile pageName="Home" iconSrc="home.png" targetType="{x:Type local:Home}" />
-                                <Models:NavigationTile pageName="Jovanny's Resume" iconSrc="resume.png" targetType="{x:Type local:Resume}" />
-                                <Models:NavigationTile pageName="Credits" iconSrc="Credits.png" targetType="{x:Type local:Credits}" />
-                            </x:Array>
-                        </ListView.ItemsSource>
+                    <ListView x:Name="listView" RowHeight="50" ItemsSource="{Binding MenuTiles}" ItemSelected="MenuItemSelected">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>

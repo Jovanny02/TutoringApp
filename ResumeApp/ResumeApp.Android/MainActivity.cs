@@ -9,7 +9,7 @@ using Android.OS;
 
 namespace ResumeApp.Droid
 {
-    [Activity(Label = "ResumeApp", Icon = "@drawable/menu", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "ResumeApp", Icon = "@drawable/alligator", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)

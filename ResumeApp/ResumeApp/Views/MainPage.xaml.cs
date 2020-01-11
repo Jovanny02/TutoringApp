@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using ResumeApp.Models;
+using ResumeApp.ViewModels;
 
 namespace ResumeApp
 {
@@ -17,6 +18,7 @@ namespace ResumeApp
         public MainPage()
         {
             InitializeComponent();
+            BindingContext = new MainPageVM();
         }
 
         private void MenuItemSelected(object sender, SelectedItemChangedEventArgs e)

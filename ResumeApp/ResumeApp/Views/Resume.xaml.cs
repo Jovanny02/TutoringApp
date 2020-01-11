@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using ResumeApp.ViewModels;
 using ResumeApp.Models;
 
 namespace ResumeApp.Views
@@ -12,46 +13,35 @@ namespace ResumeApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Resume : ContentPage
     {
-        public List<WorkTile> Jobs { get; set; }
         public Resume()
         {
             InitializeComponent();
-
-            Jobs = new List<WorkTile>();
-
-            Jobs.Add(new WorkTile
-            {
-                companyName = "JEA",
-                fromDate = "May 2019",
-                toDate = "Aug 2019",
-                iconSrc = "JEA.png",
-                jobTitle = "Software Development Intern"
-            });
-
-            Jobs.Add(new WorkTile
-            {
-                companyName = "Chick-Fil-A",
-                fromDate = "Jun 2016",
-                toDate = "Jul 2017",
-                iconSrc = "CFA.png",
-                jobTitle = "Team Member"
-            });
-
-            Jobs.Add(new WorkTile
-            {
-                companyName = "Independent Contractor",
-                fromDate = "Oct 2012",
-                toDate = "Present",
-                iconSrc = "whistle.png",
-                jobTitle = "Grade 8 Soccer Referee"
-            });
-
-            BindingContext = this;
+            BindingContext = new ResumeVM();
         }
 
-        private void JobSelected(object sender, SelectedItemChangedEventArgs e)
+        async private void JobSelected(object sender, SelectedItemChangedEventArgs e)
         {
+            WorkTile tile = ((WorkTile)e.SelectedItem);
+            if(tile != null)
+            {
+                await Navigation.PushAsync(new ResumeDetails(tile));
+            }
+            JobList.SelectedItem = null;
+        }
 
+        async private void EducationSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            EducationTile tile = ((EducationTile)e.SelectedItem);
+            if (tile != null)
+            {
+                await Navigation.PushAsync(new EducationDetails(tile));
+            }
+            EducationList.SelectedItem = null;
+        }
+
+        private void SkillList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            SkillList.SelectedItem = null;
         }
     }
 }

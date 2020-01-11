@@ -4,26 +4,27 @@ using System.Text;
 
 namespace ResumeApp.Models
 {
-    public class WorkTile
+    public class EducationTile
     {
-        public string jobTitle { get; set; }
+        public string Major { get; set; }
 
         public string fromDate { get; set; }
 
         public string toDate { get; set; }
 
-        public string companyName { get; set; }
+        public string University { get; set; }
 
         public string location { get; set; }
 
         public string iconSrc { get; set; }
 
-        public string jobDescription { get; set; }
-        public string fullDate 
-        { 
-            get {
+        public string degreeDescription { get; set; }
+        public string fullDate
+        {
+            get
+            {
                 return string.Format("{0} - {1}", fromDate, toDate);
-            } 
+            }
         }
     }
 }
