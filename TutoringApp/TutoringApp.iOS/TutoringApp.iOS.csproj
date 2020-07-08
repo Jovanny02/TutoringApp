@@ -162,4 +162,7 @@
       <Name>TutoringApp</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\info.png" />
+  </ItemGroup>
 </Project>

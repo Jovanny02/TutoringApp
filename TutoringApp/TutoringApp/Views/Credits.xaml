@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+<A:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:A="clr-namespace:TutoringApp.Views;assembly=TutoringApp.Views"
              mc:Ignorable="d"
              x:Class="TutoringApp.Views.Credits">
   <ContentPage.Content>
-      <StackLayout BackgroundColor="LightGray">
+      <StackLayout BackgroundColor="{StaticResource DefaultWhite}">
           <Label Text="Credits Page" />
       </StackLayout>
   </ContentPage.Content>
-</ContentPage>
+</A:BaseContentPage>

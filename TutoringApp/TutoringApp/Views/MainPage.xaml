@@ -8,8 +8,8 @@
             MasterBehavior="Popover"
              x:Class="TutoringApp.MainPage"
              >
-    <MasterDetailPage.Master>
-        <ContentPage Padding="5" BackgroundColor="LightBlue"  Title="MasterPage" IconImageSource="menu.png" >
+    <MasterDetailPage.Master >
+        <ContentPage Padding="5" BackgroundColor="{StaticResource DefaultWhite}"  Title="MasterPage" IconImageSource="menu.png" >
             <ContentPage.Content>
                 <StackLayout Margin="0,20,0,20">
                     <ListView x:Name="listView" RowHeight="50" ItemsSource="{Binding MenuTiles}" ItemSelected="MenuItemSelected">
@@ -24,7 +24,7 @@
                                         <Image Source="{Binding iconSrc}" />
                                         <Label Grid.Column="1" Text="{Binding pageName}" 
                                                VerticalOptions="CenterAndExpand" HorizontalOptions="Start"
-                                               TextColor="Black" FontAttributes="Bold"/>
+                                               TextColor="{StaticResource DefaultBlue}" FontAttributes="Bold"/>
                                     </Grid>
                                 </ViewCell>
                             </DataTemplate>

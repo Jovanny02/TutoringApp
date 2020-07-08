@@ -4,8 +4,26 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="TutoringApp.App">
+             x:Class="TutoringApp.App"
+             >
     <Application.Resources>
+
+        <ResourceDictionary>
+            
+
+            <!-- Used to change color of navigation bar -->
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="#bc581a"/>
+                <Setter Property="BarTextColor" Value="#000000"/>
+            </Style>
+            
+            <!-- Default Color Styles to use for easier app wide color changes -->
+            <Color x:Key="DefaultBlue">#00529b</Color>
+            <Color x:Key="DefaultOrange">#bc581a</Color>
+            <Color x:Key="DefaultWhite">#faf8f1></Color>
+            <Color x:Key="DefaultBlack">#000000></Color>
+
+        </ResourceDictionary>
 
     </Application.Resources>
 </Application>

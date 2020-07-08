@@ -10,7 +10,7 @@ using Xamarin.Forms.Xaml;
 namespace TutoringApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Credits : ContentPage
+    public partial class Credits : BaseContentPage
     {
         public Credits()
         {
