@@ -4,11 +4,13 @@ using System.Text;
 using TutoringApp.Models;
 using TutoringApp.Views;
 using Xamarin.Forms;
+using Xamarin.Essentials;
 
 namespace TutoringApp.ViewModels
 {
     class MainPageVM : BaseVM
     {
+
         public MainPageVM()
         {
             //initialize and add list of all pageTile items 
@@ -20,7 +22,25 @@ namespace TutoringApp.ViewModels
             menuTiles.Add(homeTile);
             menuTiles.Add(resumeTile);
             menuTiles.Add(creditsTile);
+
+            //Used to make picture always be 15% of the screen width
+            pictureSize = (DeviceDisplay.MainDisplayInfo.Width * 0.15) ;
+            radius = pictureSize / 2;
+            Console.WriteLine("Radius: " + radius + "  Size: " + pictureSize);
         }
+
+        private Double pictureSize;
+        public Double PictureSize
+        {
+            get { return pictureSize; }
+        }
+
+        private Double radius;
+        public Double Radius
+        {
+            get { return radius; }
+        }
+
 
         private List<NavigationTile> menuTiles;
         //Set in VM for binding in view

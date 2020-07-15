@@ -9,20 +9,19 @@
     <Application.Resources>
 
         <ResourceDictionary>
-            
+            <!-- Default Color Styles to use for easier app wide color changes -->
+            <Color x:Key="DefaultBlue" >#00529b</Color>
+            <Color x:Key="DefaultOrange">#bc581a</Color>
+            <Color x:Key="DefaultWhite">#faf8f1</Color>
+            <Color x:Key="DefaultBlack">#000000</Color>
+            <Color x:Key="BorderColor">#E1E1E1</Color>  
 
             <!-- Used to change color of navigation bar -->
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="#bc581a"/>
-                <Setter Property="BarTextColor" Value="#000000"/>
-            </Style>
-            
-            <!-- Default Color Styles to use for easier app wide color changes -->
-            <Color x:Key="DefaultBlue">#00529b</Color>
-            <Color x:Key="DefaultOrange">#bc581a</Color>
-            <Color x:Key="DefaultWhite">#faf8f1></Color>
-            <Color x:Key="DefaultBlack">#000000></Color>
-            <Color x:Key="BorderColor">#E1E1E1</Color>
+                <Setter Property="BarTextColor" Value="{StaticResource DefaultBlack}"/>
+            </Style>s
+
 
             <Style x:Key="InternalViewStyle" TargetType="Frame">
                 <Setter Property="BackgroundColor" Value="{StaticResource DefaultWhite}"/>

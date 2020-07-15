@@ -1,22 +1,32 @@
 ﻿using System;
 using System.Windows.Input;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Xamarin.Forms;
 
 namespace TutoringApp.ViewModels
 {
     class HomeVM : BaseVM
     {
+        public ICommand PerformSearchCommand { protected set; get; }
 
-        public ICommand PerformSearch => new Command<string>((string query) =>
+        private string searchQuery { get; set; }
+        public string SearchQuery 
+        { 
+            get { return searchQuery; }
+            set { searchQuery = value; onPropertyChanged(); } //needed for binded Items to see changes appear on view
+        }
+         
+        public HomeVM()
         {
-            //TODO create search call
-            SearchQuery = query;
-            Console.WriteLine(query);
-        });
+            PerformSearchCommand = new Command<string> ((string query) =>
+            {
+                //TODO create search call
+                SearchQuery = query;
+            });
 
-        public string SearchQuery { get; private set; } = "";
 
+        }
 
     }
 }

@@ -8,44 +8,53 @@
              x:Class="TutoringApp.Views.Home">
     <ContentPage.Content>
         <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand">
-            
-            <StackLayout>
-                <Frame Style="{StaticResource BorderStyle}">
-                    <Frame Style="{StaticResource InternalViewStyle}">
-                        <SearchBar Placeholder="Search For a Topic or Tutor" 
-                        x:Name="searchBar"
-                        SearchCommand="{Binding PerformSearch}"
-                        SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
-                        HorizontalTextAlignment="center"
-                        VerticalOptions="Start" 
-                        HorizontalOptions="Fill"
-                        PlaceholderColor="{DynamicResource DefaultBlack}"
-                        />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="5*"/>
+                    <RowDefinition Height="4*"/>
+                </Grid.RowDefinitions>
+
+
+                <StackLayout Grid.Row="0">
+                    <Frame Style="{StaticResource BorderStyle}">
+                        <Frame Style="{StaticResource InternalViewStyle}">
+                            <SearchBar Placeholder="Search For a Topic or Tutor" 
+                            x:Name="searchBar"
+                            SearchCommand="{Binding PerformSearchCommand}"
+                            SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
+                            HorizontalTextAlignment="center"
+                            VerticalOptions="Start" 
+                            HorizontalOptions="Fill"
+                            PlaceholderColor="{DynamicResource DefaultBlack}"
+                            />
+                        </Frame>
                     </Frame>
-                </Frame>
-         </StackLayout>
+                </StackLayout>
 
-            <Image Source="alligator.png" Margin="40,0,40,0"/>
+                <Image Source="alligator.png" Margin="40,0,40,0" Grid.Row="1"/>
 
 
-            <StackLayout VerticalOptions="EndAndExpand">
-            <Label Text="Sign Up or Login" 
+                <StackLayout VerticalOptions="EndAndExpand" Grid.Row="2">
+                <Label Text="Sign Up or Login" 
                 HorizontalOptions="CenterAndExpand"
                 TextColor="{StaticResource DefaultBlack}"
                 FontSize="30"
                 FontAttributes="Bold"/>
-            
-            
-            <!-- ADD click handlers-->
-            <Button Text="Sign up as a tutor or student" Style="{StaticResource HomeButtonStyle}" Margin="25,20,25,20"  />
 
-            <Button Text="Login" Style="{StaticResource HomeButtonStyle}" Margin="25,0,25,50" />
+
+                <!-- ADD click handlers-->
+                <Button Text="Sign Up as a Student or tutor" Style="{StaticResource HomeButtonStyle}" Margin="25,20,25,20"  />
+
+                <Button Text="Login" Style="{StaticResource HomeButtonStyle}" Margin="25,0,25,50" />
 
             </StackLayout>
 
-
+            </Grid>
         </StackLayout>
-
     </ContentPage.Content>
 
 </d:BaseContentPage>
