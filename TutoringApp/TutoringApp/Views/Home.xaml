@@ -47,11 +47,19 @@
 
 
                 <!-- ADD click handlers-->
-                <Button Text="Sign Up as a Student or tutor" Style="{StaticResource HomeButtonStyle}" Margin="25,20,25,20"  />
-
-                <Button Text="Login" Style="{StaticResource HomeButtonStyle}" Margin="25,0,25,50" />
-
-            </StackLayout>
+                <Button 
+                    Text="Sign Up as a Student or tutor" 
+                    Style="{StaticResource HomeButtonStyle2}" 
+                    Margin="25,20,25,20"  
+                    Command="{Binding SignUpCommand}"/>
+                                
+                <Button 
+                    Text="Login"
+                    Style="{StaticResource HomeButtonStyle2}" 
+                    Margin="25,0,25,50" 
+                    Command="{Binding LoginCommand}"/>
+                
+                </StackLayout>
 
             </Grid>
         </StackLayout>

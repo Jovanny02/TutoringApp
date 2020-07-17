@@ -3,23 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TutoringApp.ViewModels;
 using Xamarin.Forms;
+using TutoringApp.ViewModels;
 using Xamarin.Forms.Xaml;
 
 namespace TutoringApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Home : BaseContentPage
+    public partial class Profile : BaseContentPage
     {
-        public Home()
+        public Profile()
         {
-            //set naviation to viewmodel
-            HomeVM VM = new HomeVM();
-            VM.Navigation = Navigation;
-            BindingContext = VM;
             InitializeComponent();
+            BindingContext = new ProfileVM();
         }
-
     }
 }

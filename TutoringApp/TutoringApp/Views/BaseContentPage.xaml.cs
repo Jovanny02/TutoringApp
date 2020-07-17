@@ -22,7 +22,7 @@ namespace TutoringApp.Views
         {
             //TODO CHANGE TO INFO PAGE WHEN IT IS MADE
             //Potentially change to Mainpage.detail page change versus a navigation stack page change
-            await Navigation.PushAsync(new Credits());
+            await Navigation.PushAsync(new Help());
         }
 
   

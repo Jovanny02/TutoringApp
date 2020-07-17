@@ -14,7 +14,8 @@
             <Color x:Key="DefaultOrange">#bc581a</Color>
             <Color x:Key="DefaultWhite">#faf8f1</Color>
             <Color x:Key="DefaultBlack">#000000</Color>
-            <Color x:Key="BorderColor">#E1E1E1</Color>  
+            <Color x:Key="BorderColor">#E1E1E1</Color>
+            <Color x:Key="LightOrange">#E7600C</Color>
 
             <!-- Used to change color of navigation bar -->
             <Style TargetType="NavigationPage">
@@ -32,15 +33,23 @@
             </Style>
             <Style x:Key="BorderStyle" TargetType="Frame">
                 <Setter Property="BackgroundColor" Value="{StaticResource BorderColor}"/>
-                <Setter Property="Padding" Value="3.5,2,2,3.5"></Setter>
+                <Setter Property="Padding" Value="3.5,1.5,1.5,3.5"></Setter>
                 <Setter Property="Margin" Value="10,10,10,10"/>
                 <Setter Property="CornerRadius" Value="5"/>
             </Style>
 
             <Style x:Key="HomeButtonStyle" TargetType="Button">
-                <Setter Property="FontSize" Value="15"/>
+                <Setter Property="FontSize" Value="Medium"/>
                 <Setter Property="HeightRequest" Value="70"/>
                 <Setter Property="TextColor" Value="{StaticResource DefaultBlack}"/>
+            </Style>
+
+            <Style x:Key="HomeButtonStyle2" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource LightOrange}"/>
+                <Setter Property="FontSize" Value="Medium"/>
+                <Setter Property="HeightRequest" Value="70"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="TextColor" Value="{StaticResource DefaultWhite}"/>
             </Style>
 
         </ResourceDictionary>

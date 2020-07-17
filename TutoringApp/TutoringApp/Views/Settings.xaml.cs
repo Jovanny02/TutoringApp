@@ -10,16 +10,12 @@ using Xamarin.Forms.Xaml;
 namespace TutoringApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Home : BaseContentPage
+    public partial class Settings : BaseContentPage
     {
-        public Home()
+        public Settings()
         {
-            //set naviation to viewmodel
-            HomeVM VM = new HomeVM();
-            VM.Navigation = Navigation;
-            BindingContext = VM;
             InitializeComponent();
+            BindingContext = new SettingsVM();
         }
-
     }
 }

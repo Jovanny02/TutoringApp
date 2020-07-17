@@ -13,20 +13,22 @@ namespace TutoringApp.ViewModels
 
         public MainPageVM()
         {
-            //initialize and add list of all pageTile items 
-            NavigationTile homeTile = new NavigationTile { pageName = "Home", iconSrc = "home.png", targetType = typeof(Home) };
-            NavigationTile resumeTile = new NavigationTile { pageName = "Jovanny's Resume", iconSrc = "resume.png", targetType = typeof(Resume) };
-            NavigationTile creditsTile = new NavigationTile { pageName = "Credits", iconSrc = "Credits.png", targetType = typeof(Credits) };
-            menuTiles = new List<NavigationTile>();
 
-            menuTiles.Add(homeTile);
-            menuTiles.Add(resumeTile);
-            menuTiles.Add(creditsTile);
+            menuTiles = new List<NavigationTile>();
+            menuTiles.Add(new NavigationTile { pageName = "Profile", iconSrc = "user.png", targetType = typeof(Profile) });
+            menuTiles.Add(new NavigationTile { pageName = "Schedule", iconSrc = "calendar.png", targetType = typeof(Calendar) });
+            menuTiles.Add(new NavigationTile { pageName = "Home", iconSrc = "home.png", targetType = typeof(Home) });
+            menuTiles.Add(new NavigationTile { pageName = "Settings", iconSrc = "settings.png", targetType = typeof(Settings) });
+            menuTiles.Add(new NavigationTile { pageName = "Help", iconSrc = "question.png", targetType = typeof(Help) });
+            menuTiles.Add(new NavigationTile { pageName = "Jovanny's Resume", iconSrc = "resume.png", targetType = typeof(Resume) });
 
             //Used to make picture always be 15% of the screen width
             pictureSize = (DeviceDisplay.MainDisplayInfo.Width * 0.15) ;
             radius = pictureSize / 2;
             Console.WriteLine("Radius: " + radius + "  Size: " + pictureSize);
+
+            menuSize = DeviceDisplay.MainDisplayInfo.Width * 0.8;
+            Console.WriteLine(menuSize);
         }
 
         private Double pictureSize;
@@ -41,6 +43,13 @@ namespace TutoringApp.ViewModels
             get { return radius; }
         }
 
+        private Double menuSize;
+        public int MenuSize
+        {
+            get { return (int)menuSize; }
+        }
+
+
 
         private List<NavigationTile> menuTiles;
         //Set in VM for binding in view
@@ -48,6 +57,11 @@ namespace TutoringApp.ViewModels
         {
             get { return menuTiles; }    
         }
+
+        public string pictureSrc { get; private set; } = "user.png";
+
+        private string UserMessage = "user";
+        public string userMessage { get { return "Hello " + UserMessage + "!"; }} 
 
     }
 }
