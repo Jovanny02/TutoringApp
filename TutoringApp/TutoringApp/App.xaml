@@ -21,7 +21,7 @@
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="#bc581a"/>
                 <Setter Property="BarTextColor" Value="{StaticResource DefaultBlack}"/>
-            </Style>s
+            </Style>
 
 
             <Style x:Key="InternalViewStyle" TargetType="Frame">
