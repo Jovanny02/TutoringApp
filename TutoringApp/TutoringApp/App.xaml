@@ -52,6 +52,13 @@
                 <Setter Property="TextColor" Value="{StaticResource DefaultWhite}"/>
             </Style>
 
+            <Style x:Key="searchBarStyle" TargetType="SearchBar">
+                <Setter Property="Placeholder" Value="Search For a Topic or Tutor"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
+                <Setter Property="PlaceholderColor" Value="{DynamicResource DefaultBlack}"/>
+            </Style>
         </ResourceDictionary>
 
     </Application.Resources>

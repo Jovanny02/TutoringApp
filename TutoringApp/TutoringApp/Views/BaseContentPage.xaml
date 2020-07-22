@@ -4,6 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Class="TutoringApp.Views.BaseContentPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Name="InfoIcon" Order="Primary" Icon="info.png" Priority="0" Activated="InfoIcon_Navigate"/>
+        <ToolbarItem Name="InfoIcon" Order="Primary" Icon="info.png" Priority="1" Activated="InfoIcon_Navigate"/>
     </ContentPage.ToolbarItems>
 </ContentPage>

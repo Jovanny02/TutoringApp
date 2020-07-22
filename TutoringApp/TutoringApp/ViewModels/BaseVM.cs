@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using Xamarin.Forms;
 
 namespace TutoringApp.ViewModels
 {
@@ -14,5 +15,7 @@ namespace TutoringApp.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        //Included here so all VM have a navigation property that can be applied
+        public INavigation Navigation { get; set; }
     }
 }

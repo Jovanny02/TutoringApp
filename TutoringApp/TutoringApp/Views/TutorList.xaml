@@ -6,10 +6,73 @@
              mc:Ignorable="d"
              x:Class="TutoringApp.Views.TutorList">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+
+            <StackLayout BackgroundColor="{StaticResource DefaultWhite}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                <StackLayout BackgroundColor="{StaticResource DefaultWhite}" Grid.Row="0">
+                    <Frame Style="{StaticResource BorderStyle}" >
+                        <Frame Style="{StaticResource InternalViewStyle}">
+                            <SearchBar 
+                                x:Name="searchBar"
+                                Text="{Binding SearchQuery}"
+                                SearchCommand="{Binding PerformSearchCommand}"
+                                SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
+                                Style="{StaticResource searchBarStyle}"
+                                />
+                        </Frame>
+                    </Frame>
+
+                </StackLayout>
+                <StackLayout BackgroundColor="{StaticResource DefaultWhite}" Grid.Row="1">
+                    <ListView BackgroundColor="{StaticResource DefaultWhite}"
+                                ItemsSource="{Binding TutorList}"                      
+                                RowHeight="95"  
+                                Grid.Row="1"   
+                                ItemAppearing="LoadTutors"
+                                  >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <StackLayout Padding="5,0,5,5">
+
+                                            <Grid Padding="5">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="8*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="1.5*"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height=".1*"/>
+                                            </Grid.RowDefinitions>
+                                                <Image Source="{Binding pictureSrc}" Grid.RowSpan="3"/>
+                                                <Label Grid.Column="1" Text="{Binding tutorName}" Grid.Row="0" 
+                                                           VerticalOptions="CenterAndExpand" HorizontalOptions="Start"
+                                                           TextColor="Black" FontAttributes="Bold" FontSize="Subtitle"/>
+                                                <Label Grid.Column="1" Text="{Binding shortDescription}" HorizontalOptions="Start" TextColor="Black" Grid.Row="1" />
+                                            <Label Grid.Column="1" Text="{Binding displayPosition}" HorizontalOptions="Start" TextColor="Black" Grid.Row="2" />
+                                            <BoxView HorizontalOptions="FillAndExpand" Color="{StaticResource DefaultBlack}" Grid.Row="3" Grid.ColumnSpan="2"/>
+                                        </Grid>
+  
+                                    </StackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                </StackLayout>
+
+
+            </Grid>
+            </StackLayout>
+
     </ContentPage.Content>
 </ContentPage>

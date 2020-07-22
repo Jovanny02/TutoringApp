@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<d:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="clr-namespace:TutoringApp.Views;assembly=TutoringApp.Views"      
+             xmlns:c="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="c"
+             x:Class="TutoringApp.Views.SignUp">
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".5*" />
+                    <ColumnDefinition Width="9*" />
+                    <ColumnDefinition Width=".5*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.3*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Grid.Row="1" Grid.Column="1">
+                    <Label Text="Sign Up" TextColor="{StaticResource DefaultBlack}" 
+                           FontSize="30" FontAttributes="Bold"   />
+                </StackLayout>
+
+                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="2" Grid.Column="1">
+                    <Label Text="Email" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Frame Padding="0" BorderColor="{StaticResource DefaultBlack}">
+                        <Entry Placeholder="Enter Your Email" Text="{Binding user_email}"/>
+                    </Frame>
+                </StackLayout>
+
+
+                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="3" Grid.Column="1">
+                    <Label Text="Username" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Frame Padding="0" BorderColor="{StaticResource DefaultBlack}">
+                        <Entry Placeholder="Enter Your Username" Text="{Binding password}"/>
+                    </Frame>
+                </StackLayout>
+
+                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="4" Grid.Column="1">
+                    <Label Text="Password" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Frame Padding="0" BorderColor="{StaticResource DefaultBlack}">
+                        <Entry Placeholder="Enter Your Password" IsPassword="True" Text="{Binding password}"/>
+                    </Frame>
+                </StackLayout>
+
+                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="5" Grid.Column="1">
+                    <Label Text="Confirm Password" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Frame Padding="0" BorderColor="{StaticResource DefaultBlack}">
+                        <Entry Placeholder="Confirm Your Password" IsPassword="True" Text="{Binding password}"/>
+                    </Frame>
+                </StackLayout>
+
+                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="6" Grid.Column="1">
+                    <Button Text="Sign Up" Style="{StaticResource HomeButtonStyle2}"
+                            Margin="25,50,25,0" Command="{Binding SignUpCommand}" />
+                </StackLayout>
+
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</d:BaseContentPage>

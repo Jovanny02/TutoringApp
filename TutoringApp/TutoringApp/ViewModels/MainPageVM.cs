@@ -27,8 +27,7 @@ namespace TutoringApp.ViewModels
             radius = pictureSize / 2;
             Console.WriteLine("Radius: " + radius + "  Size: " + pictureSize);
 
-            menuSize = DeviceDisplay.MainDisplayInfo.Width * 0.8;
-            Console.WriteLine(menuSize);
+
         }
 
         private Double pictureSize;
@@ -42,14 +41,6 @@ namespace TutoringApp.ViewModels
         {
             get { return radius; }
         }
-
-        private Double menuSize;
-        public int MenuSize
-        {
-            get { return (int)menuSize; }
-        }
-
-
 
         private List<NavigationTile> menuTiles;
         //Set in VM for binding in view

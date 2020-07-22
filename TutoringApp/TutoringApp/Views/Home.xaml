@@ -16,20 +16,18 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="5*"/>
                     <RowDefinition Height="4*"/>
+                    <RowDefinition Height=".5*"/>
                 </Grid.RowDefinitions>
 
 
                 <StackLayout Grid.Row="0">
                     <Frame Style="{StaticResource BorderStyle}">
                         <Frame Style="{StaticResource InternalViewStyle}">
-                            <SearchBar Placeholder="Search For a Topic or Tutor" 
+                            <SearchBar 
                             x:Name="searchBar"
                             SearchCommand="{Binding PerformSearchCommand}"
                             SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
-                            HorizontalTextAlignment="center"
-                            VerticalOptions="Start" 
-                            HorizontalOptions="Fill"
-                            PlaceholderColor="{DynamicResource DefaultBlack}"
+                            Style="{StaticResource searchBarStyle}"
                             />
                         </Frame>
                     </Frame>
@@ -56,7 +54,7 @@
                 <Button 
                     Text="Login"
                     Style="{StaticResource HomeButtonStyle2}" 
-                    Margin="25,0,25,50" 
+                    Margin="25,0,25,0" 
                     Command="{Binding LoginCommand}"/>
                 
                 </StackLayout>

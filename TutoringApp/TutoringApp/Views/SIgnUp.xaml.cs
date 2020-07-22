@@ -10,13 +10,14 @@ using Xamarin.Forms.Xaml;
 namespace TutoringApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Help : BaseContentPage
+    public partial class SignUp : BaseContentPage
     {
-        public Help()
+        SignUpVM signUpVM = new SignUpVM();
+        public SignUp()
         {
+            BindingContext = signUpVM;
+            signUpVM.Navigation = Navigation;
             InitializeComponent();
-            BindingContext = new HelpVM();
-            
         }
     }
 }

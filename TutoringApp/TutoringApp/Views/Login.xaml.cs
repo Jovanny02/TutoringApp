@@ -3,20 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TutoringApp.ViewModels;
 using Xamarin.Forms;
+using TutoringApp.ViewModels;
 using Xamarin.Forms.Xaml;
 
 namespace TutoringApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Help : BaseContentPage
+    public partial class Login : BaseContentPage
     {
-        public Help()
+        LoginVM loginVM;
+        public Login()
         {
+            loginVM = new LoginVM();
+            loginVM.Navigation = Navigation;
+            BindingContext = loginVM;
             InitializeComponent();
-            BindingContext = new HelpVM();
-            
         }
     }
 }
