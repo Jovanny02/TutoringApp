@@ -31,7 +31,7 @@
                 <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="2" Grid.Column="1">
                     <Label Text="Email" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
-                    <Frame Padding="0" BorderColor="{StaticResource DefaultBlack}">
+                    <Frame Style="{StaticResource EntryFrame}">
                         <Entry Placeholder="Enter Your Email" Text="{Binding user_email}"/>
                     </Frame>
                 </StackLayout>
@@ -40,7 +40,7 @@
                 <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="3" Grid.Column="1">
                     <Label Text="Username" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
-                    <Frame Padding="0" BorderColor="{StaticResource DefaultBlack}">
+                    <Frame Style="{StaticResource EntryFrame}">
                         <Entry Placeholder="Enter Your Username" Text="{Binding password}"/>
                     </Frame>
                 </StackLayout>
@@ -48,7 +48,7 @@
                 <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="4" Grid.Column="1">
                     <Label Text="Password" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
-                    <Frame Padding="0" BorderColor="{StaticResource DefaultBlack}">
+                    <Frame Style="{StaticResource EntryFrame}">
                         <Entry Placeholder="Enter Your Password" IsPassword="True" Text="{Binding password}"/>
                     </Frame>
                 </StackLayout>
@@ -56,7 +56,7 @@
                 <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="5" Grid.Column="1">
                     <Label Text="Confirm Password" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
-                    <Frame Padding="0" BorderColor="{StaticResource DefaultBlack}">
+                    <Frame Style="{StaticResource EntryFrame}">
                         <Entry Placeholder="Confirm Your Password" IsPassword="True" Text="{Binding password}"/>
                     </Frame>
                 </StackLayout>

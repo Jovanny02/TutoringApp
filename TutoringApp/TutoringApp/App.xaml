@@ -24,13 +24,20 @@
             </Style>
 
 
+
+            <Style x:Key="EntryFrame" TargetType="Frame">
+                <Setter Property="BorderColor" Value="{StaticResource DefaultBlack}"/>
+                <Setter Property="Padding" Value="0"/>
+            </Style>
+
+
             <Style x:Key="InternalViewStyle" TargetType="Frame">
                 <Setter Property="BackgroundColor" Value="{StaticResource DefaultWhite}"/>
                 <Setter Property="VerticalOptions" Value="Start"/>
                 <Setter Property="Padding" Value="10,10,10,10"/>
                 <Setter Property="CornerRadius" Value="5"/>
-
             </Style>
+            
             <Style x:Key="BorderStyle" TargetType="Frame">
                 <Setter Property="BackgroundColor" Value="{StaticResource BorderColor}"/>
                 <Setter Property="Padding" Value="3.5,1.5,1.5,3.5"></Setter>

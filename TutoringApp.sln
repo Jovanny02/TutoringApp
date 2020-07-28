@@ -15,7 +15,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DBWebAPI", "DBWebAPI", "{6A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{79F750A1-7543-44DE-AB16-16846D22AB82}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SkiaShared", "TutoringApp\SkiaShared\SkiaShared.shproj", "{A7126604-A63E-4DF9-9E85-2B87C835B72A}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		TutoringApp\SkiaShared\SkiaShared.projitems*{1ac54ec8-9360-4f8a-8c30-b04983bdfa29}*SharedItemsImports = 5
+		TutoringApp\SkiaShared\SkiaShared.projitems*{a7126604-a63e-4df9-9e85-2b87c835b72a}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|iPhone = Debug|iPhone
@@ -100,6 +106,7 @@ Global
 		{F306BEB4-11DE-4537-BBF5-D7CC62C89476} = {EA481AC1-6A8A-4DDF-B90B-1B96C98CCA2E}
 		{1AC54EC8-9360-4F8A-8C30-B04983BDFA29} = {EA481AC1-6A8A-4DDF-B90B-1B96C98CCA2E}
 		{79F750A1-7543-44DE-AB16-16846D22AB82} = {6A23266A-4C01-4567-BEAA-C221D89A78C1}
+		{A7126604-A63E-4DF9-9E85-2B87C835B72A} = {EA481AC1-6A8A-4DDF-B90B-1B96C98CCA2E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C9FA1A69-5541-4C16-BA20-02DCC20E8DDA}
