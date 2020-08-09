@@ -7,6 +7,12 @@
              x:Class="TutoringApp.Views.Help">
     <ContentPage.Content>
 
+        <ScrollView Orientation="Vertical"  VerticalScrollBarVisibility="Always">
+        
+            
+            
+      
+
         <StackLayout>
 
 
@@ -40,8 +46,30 @@
                 </Label.FormattedText>
             </Label>
 
+                <ListView ItemsSource="{Binding QAview}"  IsGroupingEnabled="True" GroupDisplayBinding="{Binding Title}" GroupShortNameBinding="{Binding ShortTitle}">
 
-        </StackLayout>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell Text="{Binding Questions}" Detail="{Binding Answers}" TextColor="Black"/>
+
+                        </DataTemplate>
+
+                    </ListView.ItemTemplate>
+                </ListView>
+
+
+            </StackLayout>
+
+            
+                
+
+           
+
+
+
+
+
+        </ScrollView>
 
     </ContentPage.Content>
 </d1:BaseContentPage>
