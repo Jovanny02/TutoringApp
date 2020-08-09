@@ -1,22 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TutoringApp.ViewModels;
-using TutoringApp.Models;
+﻿using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace TutoringApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class EducationDetails : ContentPage
+    public partial class EducationDetails : BaseContentPage
     {
-        public EducationDetails(EducationTile educationTile)
+        public EducationDetails()
         {
             InitializeComponent();
-            BindingContext = new EducationDetailsVM(educationTile);
+           
+        }
+
+        public ICommand SaveCommand;
+
+        private void Button_Clicked(object sender, System.EventArgs e)
+        {
+            SaveCommand.Execute(sender);
         }
     }
 }

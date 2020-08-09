@@ -18,7 +18,7 @@ namespace TutoringApp.Views
             HomeVM VM = new HomeVM();
             VM.Navigation = Navigation;
             BindingContext = VM;
-            InitializeComponent();
+            InitializeComponent();       
         }
 
     }

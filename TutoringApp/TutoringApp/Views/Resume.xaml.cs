@@ -29,12 +29,12 @@ namespace TutoringApp.Views
             JobList.SelectedItem = null;
         }
 
-        async private void EducationSelected(object sender, SelectedItemChangedEventArgs e)
+         private void EducationSelected(object sender, SelectedItemChangedEventArgs e)
         {
             EducationTile tile = ((EducationTile)e.SelectedItem);
             if (tile != null)
             {
-                await Navigation.PushAsync(new EducationDetails(tile));
+               // await Navigation.PushAsync(new EducationDetails(tile));
             }
             EducationList.SelectedItem = null;
         }

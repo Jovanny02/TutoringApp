@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <d:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="clr-namespace:TutoringApp.Views;assembly=TutoringApp.Views"      
+             xmlns:d="clr-namespace:TutoringApp.Views;assembly=TutoringApp"
+             xmlns:CustRend="clr-namespace:TutoringApp.Views.CustomRenders;assembly=TutoringApp"
              xmlns:c="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="c"
@@ -32,7 +33,7 @@
                     <Label Text="Email" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
-                        <Entry Placeholder="Enter Your Email" Text="{Binding user_email}"/>
+                        <CustRend:CustomEntry Placeholder="Enter Your Email"  Text="{Binding user_email}"/>
                     </Frame>
                 </StackLayout>
 
@@ -41,7 +42,7 @@
                     <Label Text="Username" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
-                        <Entry Placeholder="Enter Your Username" Text="{Binding password}"/>
+                        <CustRend:CustomEntry Placeholder="Enter Your Username" Text="{Binding password}"/>
                     </Frame>
                 </StackLayout>
 
@@ -49,7 +50,7 @@
                     <Label Text="Password" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
-                        <Entry Placeholder="Enter Your Password" IsPassword="True" Text="{Binding password}"/>
+                        <CustRend:CustomEntry Placeholder="Enter Your Password" IsPassword="True" Text="{Binding password}"/>
                     </Frame>
                 </StackLayout>
 
@@ -57,7 +58,7 @@
                     <Label Text="Confirm Password" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
-                        <Entry Placeholder="Confirm Your Password" IsPassword="True" Text="{Binding password}"/>
+                        <CustRend:CustomEntry Placeholder="Confirm Your Password" IsPassword="True" Text="{Binding password}"/>
                     </Frame>
                 </StackLayout>
 

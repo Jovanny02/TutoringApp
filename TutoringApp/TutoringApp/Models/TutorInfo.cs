@@ -16,6 +16,7 @@ namespace TutoringApp.Models
 
         public List<string> tutorTopics { get; set; } = new List<string>{ "" };
 
+        public double averageRating { get; set; } = 0;
         public int displayPosition { get; set; }
 
     }

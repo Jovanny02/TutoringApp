@@ -44,7 +44,7 @@
                 FontAttributes="Bold"/>
 
 
-                <!-- ADD click handlers-->
+                    <!-- ADD click handlers-->
                 <Button 
                     Text="Sign Up as a Student or tutor" 
                     Style="{StaticResource HomeButtonStyle2}" 

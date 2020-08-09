@@ -48,6 +48,7 @@ namespace TutoringApp.ViewModels
             for (int i = 0; i < 10; i++, numTutorsDisplayed++)
             {
                 TutorInfo info = new TutorInfo();
+                info.averageRating = 4.3298;
                 info.tutorName = "Limp Shrimp";
                 info.tutorTopics = topicsList;
                 info.shortDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit";
