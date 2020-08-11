@@ -7,12 +7,10 @@
              x:Class="TutoringApp.Views.Help">
     <ContentPage.Content>
 
-        <ScrollView Orientation="Vertical"  VerticalScrollBarVisibility="Always">
+      
         
             
-            
-      
-
+          
         <StackLayout>
 
 
@@ -24,6 +22,8 @@
                        FontAttributes="Bold"
                        FontSize="20"/>
             </StackLayout>
+
+                <StackLayout> 
 
             <Label HorizontalOptions="Center">
                 <Label.FormattedText>
@@ -46,16 +46,33 @@
                 </Label.FormattedText>
             </Label>
 
-                <ListView ItemsSource="{Binding QAview}"  IsGroupingEnabled="True" GroupDisplayBinding="{Binding Title}" GroupShortNameBinding="{Binding ShortTitle}">
+            </StackLayout>
+
+                <StackLayout Padding="30">
+
+                <Label Text="FAQ" TextColor="Black" FontSize="30" FontAttributes="Bold"/>
+
+
+                <ListView  HasUnevenRows="True" ItemsSource="{Binding QAview}">
 
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <TextCell Text="{Binding Questions}" Detail="{Binding Answers}" TextColor="Black"/>
+                            <ViewCell>
+                                <StackLayout >
+                                    <Label Text="{Binding Questions}" FontAttributes="Bold" FontSize="16"/>
+                                    <Label Text="{Binding Answers}" TextColor="blue"/>
+                                    
+                                </StackLayout>
+                                
+                                
+                                
+                            </ViewCell>
 
                         </DataTemplate>
 
                     </ListView.ItemTemplate>
                 </ListView>
+            </StackLayout>
 
 
             </StackLayout>
@@ -69,7 +86,7 @@
 
 
 
-        </ScrollView>
+       
 
     </ContentPage.Content>
 </d1:BaseContentPage>

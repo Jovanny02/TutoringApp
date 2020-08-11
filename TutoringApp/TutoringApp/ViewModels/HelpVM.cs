@@ -12,26 +12,22 @@ using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 
 namespace TutoringApp.ViewModels
 {
-    class HelpVM 
+    public class HelpVM 
 
     {
-       public List<QAGroups> QAview = new List<QAGroups>
+       public ObservableCollection<QA> QAview { get; set; }
+
+        public HelpVM() 
+        { 
+            QAview= new ObservableCollection<QA>
                     {
-                        new QAGroups("FAQ Student", "FAQS")
-                            {
-                                 new QA { Questions = "Do i need to be a student to be a student at UF to use the app", Answers = "Yes these course are only available at UF and this app only support the university" }
-                            },
-
-
-                        new QAGroups("FAQ tutors ", "FAQT")
-                        {
-                            new QA { Questions = "Will i get refund if i cancel a session", Answers = "No, if u cancel a charge in your own violation you will not get payed" }
-                        }
-
+                        new QA { Questions = "Do i need to be a student at UF to use this app ?", Answers = "Yes since all the help provided relate to the courses at UF" },
+                        new QA { Questions = "Will i get a refund if i cancel a class ? ", Answers = "No you will be charge with the amount you and the tutor agreeed" },
+                        new QA {Questions= "Are these meeting available online ?", Answers= "For the moment we only provide in person meeting"}
 
                     };
-        
 
+        }
             
 
             private Boolean IsValidUri(String uri)
