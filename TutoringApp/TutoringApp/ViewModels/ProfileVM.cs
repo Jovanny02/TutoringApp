@@ -1,5 +1,4 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
@@ -16,7 +15,7 @@ namespace TutoringApp.ViewModels
     {
         public ProfileVM()
         {
-
+           
 
             AverageRating = 4.7;
             //creates circular picture
@@ -26,13 +25,21 @@ namespace TutoringApp.ViewModels
 
             //NOTE ASSUMPTION IS THAT LAST ELEMENT WILL HAVE HIGHEST KEY VALUE. ASSUMPTION IS NEEDED FOR SAVE COMMAND TO WORK PROPERLY
             //set sample education sections
-            EducationSections.Add(new EducationSection{ Major = "Computer Engineering", fromYear = "2017", toYear = "2021", University = "University of Florida", key=0 });
-            EducationSections.Add(new EducationSection { Major = "Transfer Degree", fromYear = "2015", toYear = "2017", University = "Florida State College At Jacksonville", key=1 });
-
+            EducationSections.Add(new EducationSection{ Major = "Computer Engineering", fromYear = 2017, toYear = 2021, University = "University of Florida", key=0 });
+            EducationSections.Add(new EducationSection { Major = "Transfer Degree", fromYear = 2015, toYear = 2017, University = "Florida State College At Jacksonville", key=1 });
             EducationListHeight = EducationSections.Count() * 80;
+
+            //add sample schedule sections
+            ScheduleSections.Add(new ScheduleTile { day = DayOfWeek.Monday });
+            ScheduleSections.Add(new ScheduleTile { day = DayOfWeek.Tuesday });
+            ScheduleSections.Add(new ScheduleTile { day = DayOfWeek.Wednesday });
+            ScheduleSections.Add(new ScheduleTile { day = DayOfWeek.Thursday });
+            ScheduleSections.Add(new ScheduleTile { day = DayOfWeek.Friday });
+            ScheduleSections.Add(new ScheduleTile { day = DayOfWeek.Saturday });
+            ScheduleSections.Add(new ScheduleTile { day = DayOfWeek.Sunday });
         }
 
-        #region properties
+        #region commands
         public ICommand editBioCommand => new Command(() =>
         {
             IsBioReadOnly = !IsBioReadOnly;
@@ -43,9 +50,11 @@ namespace TutoringApp.ViewModels
 
         public ICommand saveEducationCommand => new Command(() =>
         {
+
             //checks if key still holds initial value, meaning new item was added
-            if(newEducationSection.key == int.MaxValue)
+            if (newEducationSection.key == int.MaxValue)
             {
+
                 //NOTE ASSUMPTION IS THAT LAST ELEMENT WILL HAVE HIGHEST KEY VALUE. ASSUMPTION IS NEEDED FOR SAVE COMMAND TO WORK PROPERLY
                 newEducationSection.key = EducationSections.Last().key + 1;
                 EducationSections.Add(newEducationSection);
@@ -56,7 +65,7 @@ namespace TutoringApp.ViewModels
                 for (int i = 0; i < EducationSections.Count; i++)
                 {
                     //finds education section with matching key and overwrites it
-                    if(EducationSections[i].key == newEducationSection.key)
+                    if (EducationSections[i].key == newEducationSection.key)
                     {
                         EducationSections[i] = newEducationSection;
                         break;
@@ -70,6 +79,8 @@ namespace TutoringApp.ViewModels
         });
         public ICommand addEducationCommand => new Command(() =>
         {
+            newEducationSection = new EducationSection();
+
             EducationDetails details = new EducationDetails();
             details.BindingContext = newEducationSection;
             details.SaveCommand = saveEducationCommand;
@@ -78,13 +89,20 @@ namespace TutoringApp.ViewModels
 
         public ICommand EditEducationCommand => new Command((object selectedSection) =>
         {
-            EducationDetails details = new EducationDetails();
-            details.SaveCommand = saveEducationCommand;
             // Used for comparison in saveEducationCommand
             newEducationSection = (EducationSection)selectedSection;
+
+            EducationDetails details = new EducationDetails();
+            details.SaveCommand = saveEducationCommand;
             details.BindingContext = newEducationSection;
             Navigation.PushAsync(details);
         });
+        #endregion
+
+
+
+        #region properties
+
 
         private Double pictureSize;
         public Double PictureSize
@@ -106,6 +124,8 @@ namespace TutoringApp.ViewModels
         private EducationSection newEducationSection { get; set; } = new EducationSection();
 
         public ObservableCollection<EducationSection> EducationSections { get; } = new ObservableCollection<EducationSection>();
+
+        public ObservableCollection<ScheduleTile> ScheduleSections { get; } = new ObservableCollection<ScheduleTile>();
 
         public string ratingLabel { get { return string.Format("{0:0.0}", Math.Truncate(AverageRating * 10) / 10); } }
         public string pictureSrc { get; private set; } = "user.png";

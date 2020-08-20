@@ -8,9 +8,9 @@ namespace TutoringApp.Models
     {
         public string Major { get; set; }
 
-        public string fromYear { get; set; }
+        public int fromYear { get; set; } = DateTime.Now.Year;
 
-        public string toYear { get; set; }
+        public int toYear { get; set; } = DateTime.Now.Year;
 
         public string University { get; set; }
         public string fullDate

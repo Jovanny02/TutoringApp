@@ -21,11 +21,11 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height=".2*"/>
                     <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
                 <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Grid.Row="1" Grid.Column="1">
-                    <Label Text="Education Info" TextColor="{StaticResource DefaultBlack}" 
+                    <Label Text="Education Information" TextColor="{StaticResource DefaultBlack}" 
                            FontSize="30" FontAttributes="Bold"   />
                 </StackLayout>
 
@@ -33,7 +33,7 @@
                     <Label Text="University" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="Enter Your University"  Text="{Binding University}"/>
+                        <CustRend:CustomEntry Placeholder="Enter Your University"  Text="{Binding University}" x:Name="universityEntry"/>
                     </Frame>
                 </StackLayout>
 
@@ -41,25 +41,47 @@
                     <Label Text="Major" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="Enter Your Major"  Text="{Binding Major}"/>
+                        <CustRend:CustomEntry Placeholder="Enter Your Major"  Text="{Binding Major}" x:Name="majorEntry"/>
                     </Frame>
                 </StackLayout>
 
+                <!-- Year picking -->
+                <StackLayout VerticalOptions="Start"  Grid.Row="4" Grid.Column="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width=".2*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.3*"/>
+                            <RowDefinition Height=".4*"/>
+                            <RowDefinition Height=".6*"/>
+                        </Grid.RowDefinitions>
 
-                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="4" Grid.Column="1">
-                    <Label Text="From Year" TextColor="{StaticResource DefaultBlue}" 
-                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
-                    <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="Enter the year you started" Text="{Binding fromYear}"/>
-                    </Frame>
+
+                        <Label Text="From Year" TextColor="{StaticResource DefaultBlue}" 
+                               FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+
+                        <Frame Grid.Row="1" Grid.RowSpan="2" BorderColor="{StaticResource DefaultBlack}" VerticalOptions="Start" Padding="0">
+                            <Picker x:Name="fromYearPicker" SelectedItem="{Binding fromYear}" />
+                        </Frame>
+
+                        <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Grid.Column="1" Grid.Row="1" Color="{StaticResource DefaultBlack}"/>
+
+                        <Label Text="To Year" TextColor="{StaticResource DefaultBlue}"  Grid.Column="2"
+                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+
+                        <Frame Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" BorderColor="{StaticResource DefaultBlack}" VerticalOptions="Start" Padding="0">
+                            <Picker x:Name="toYearPicker" SelectedItem="{Binding toYear}"  />
+                        </Frame>
+
+                    </Grid>
                 </StackLayout>
 
                 <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="5" Grid.Column="1">
-                    <Label Text="To Year" TextColor="{StaticResource DefaultBlue}" 
-                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
-                    <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="Enter the year you finished" Text="{Binding toYear}"/>
-                    </Frame>
+                    <Label Text="" TextColor="{StaticResource ErrorRed}" FontSize="Large" x:Name="errorLabel"
+                           HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
                 </StackLayout>
 
                 <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="6" Grid.Column="1">

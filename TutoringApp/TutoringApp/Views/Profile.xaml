@@ -75,12 +75,13 @@
                             <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" 
                                      Grid.ColumnSpan="3" Grid.Row="1"/>
                         </Grid>
+                        
                         <Editor Text="{Binding Biography}" IsReadOnly="{Binding IsBioReadOnly}" Placeholder="Enter a Short Biography Here" AutoSize="TextChanges"/>
                         <Button Text="Save" Style="{StaticResource SaveButtonStyle}" HorizontalOptions="Center" IsVisible="{Binding IsBioEditing}" Command="{Binding editBioCommand}"/>
                     </StackLayout>
 
                     <!--User Education sections -->
-                    <StackLayout Margin="0,10,0,0" x:Name="EducationStack">
+                    <StackLayout Margin="0,10,0,0" >
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>
@@ -99,7 +100,7 @@
                             <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}"  Grid.ColumnSpan="2" Grid.Row="1"/>
                         </Grid>
 
-                        <ListView ItemsSource="{Binding EducationSections}" ItemTapped="EducationList_ItemTapped" SelectionMode="None"  RowHeight="80" HeightRequest="{Binding EducationListHeight}" VerticalOptions="StartAndExpand" >
+                        <ListView ItemsSource="{Binding EducationSections}" ItemTapped="EducationList_ItemTapped"  SelectionMode="None"  RowHeight="80" HeightRequest="{Binding EducationListHeight}" VerticalOptions="StartAndExpand" >
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
@@ -129,8 +130,67 @@
 
 
                     </StackLayout>
+                    
+                    <!-- Schedule Section-->
+                    <StackLayout  Margin="0,10,0,0">
+                        <Label Text="Schedule" HorizontalOptions="Start"  VerticalOptions="Start" 
+                                TextColor="{StaticResource DefaultBlack}" FontSize="30" HeightRequest="45"/>
+                        <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
+
+                        <ListView SelectionMode="None" ItemsSource="{Binding ScheduleSections}" RowHeight="100" HeightRequest="735" VerticalOptions="StartAndExpand" >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <StackLayout Margin="0,0,0,5">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width=".6*" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width=".2*" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height=".3*"/>
+                                                    <RowDefinition Height=".3*"/>
+                                                    <RowDefinition Height=".3*"/>
+                                                    <RowDefinition Height=".3*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <Label Text="{Binding dayString}" TextColor="{StaticResource DefaultBlack}"  Grid.Row="1"
+                                                    FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"/>
+
+                                                <Label Text="Start Time" TextColor="{StaticResource DefaultBlue}"  Grid.Column="1"
+                                                    FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+
+                                                <Frame Grid.Row="1" Grid.RowSpan="2" BorderColor="{StaticResource DefaultBlack}" VerticalOptions="Start" Padding="0" Grid.Column="1">
+                                                    <TimePicker Time="{Binding startTime}" IsEnabled="{Binding isEnabled}"/>
+                                                </Frame>
+
+                                                <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Grid.Column="2" Grid.Row="1" Color="{StaticResource DefaultBlack}"/>
+
+                                                <Label Text="End Time" TextColor="{StaticResource DefaultBlue}"  Grid.Column="3"
+                                                    FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+
+                                                <Frame Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" BorderColor="{StaticResource DefaultBlack}" VerticalOptions="Start" Padding="0">
+                                                    <TimePicker Time="{Binding endTime}" IsEnabled="{Binding isEnabled}"/>
+                                                </Frame>
+
+                                                <CheckBox HorizontalOptions="End" Color="{StaticResource DefaultBlack}" Grid.Row="3" 
+                                                          VerticalOptions="FillAndExpand" IsChecked="{Binding isUnavailable}"/>
+                                                <Label Text="Unavailable?" TextColor="{StaticResource DefaultBlack}" Grid.Row="3" Grid.Column="1"
+                                                        HorizontalOptions="Start" VerticalOptions="Start" />
+                                                
+                                            </Grid>
+                                            
+
+                                        </StackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
 
 
+                    </StackLayout>
 
 
                 </StackLayout>

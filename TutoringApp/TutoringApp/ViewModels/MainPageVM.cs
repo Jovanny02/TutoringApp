@@ -14,9 +14,7 @@ namespace TutoringApp.ViewModels
         public MainPageVM()
         {
 
-            menuTiles = new List<NavigationTile>();
             menuTiles.Add(new NavigationTile { pageName = "Profile", iconSrc = "user.png", targetType = typeof(Profile) });
-            menuTiles.Add(new NavigationTile { pageName = "Schedule", iconSrc = "calendar.png", targetType = typeof(Calendar) });
             menuTiles.Add(new NavigationTile { pageName = "Home", iconSrc = "home.png", targetType = typeof(Home) });
             menuTiles.Add(new NavigationTile { pageName = "Settings", iconSrc = "settings.png", targetType = typeof(Settings) });
             menuTiles.Add(new NavigationTile { pageName = "Help", iconSrc = "question.png", targetType = typeof(Help) });
@@ -42,7 +40,7 @@ namespace TutoringApp.ViewModels
             get { return radius; }
         }
 
-        private List<NavigationTile> menuTiles;
+        private List<NavigationTile> menuTiles = new List<NavigationTile>();
         //Set in VM for binding in view
         public List<NavigationTile> MenuTiles
         {

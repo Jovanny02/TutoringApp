@@ -16,7 +16,8 @@
             <Color x:Key="DefaultBlack">#000000</Color>
             <Color x:Key="BorderColor">#E1E1E1</Color>
             <Color x:Key="LightOrange">#E7600C</Color>
-
+            <Color x:Key="ErrorRed">Red</Color>
+            
             <!-- Used to change color of navigation bar -->
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="#bc581a"/>
