@@ -16,6 +16,7 @@
             <Color x:Key="DefaultBlack">#000000</Color>
             <Color x:Key="BorderColor">#E1E1E1</Color>
             <Color x:Key="LightOrange">#E7600C</Color>
+            <Color x:Key="ErrorRed">Red</Color>
 
             <!-- Used to change color of navigation bar -->
             <Style TargetType="NavigationPage">
@@ -24,13 +25,20 @@
             </Style>
 
 
+
+            <Style x:Key="EntryFrame" TargetType="Frame">
+                <Setter Property="BorderColor" Value="{StaticResource DefaultBlack}"/>
+                <Setter Property="Padding" Value="0"/>
+            </Style>
+
+
             <Style x:Key="InternalViewStyle" TargetType="Frame">
                 <Setter Property="BackgroundColor" Value="{StaticResource DefaultWhite}"/>
                 <Setter Property="VerticalOptions" Value="Start"/>
                 <Setter Property="Padding" Value="10,10,10,10"/>
                 <Setter Property="CornerRadius" Value="5"/>
-
             </Style>
+
             <Style x:Key="BorderStyle" TargetType="Frame">
                 <Setter Property="BackgroundColor" Value="{StaticResource BorderColor}"/>
                 <Setter Property="Padding" Value="3.5,1.5,1.5,3.5"></Setter>
@@ -44,6 +52,14 @@
                 <Setter Property="TextColor" Value="{StaticResource DefaultBlack}"/>
             </Style>
 
+            <Style x:Key="SaveButtonStyle" TargetType="Button">
+                <Setter Property="FontSize" Value="Medium"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="WidthRequest" Value="100"/>
+                <Setter Property="TextColor" Value="{StaticResource DefaultWhite}"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource LightOrange}"/>
+            </Style>
+
             <Style x:Key="HomeButtonStyle2" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="{StaticResource LightOrange}"/>
                 <Setter Property="FontSize" Value="Medium"/>
@@ -52,6 +68,13 @@
                 <Setter Property="TextColor" Value="{StaticResource DefaultWhite}"/>
             </Style>
 
+            <Style x:Key="searchBarStyle" TargetType="SearchBar">
+                <Setter Property="Placeholder" Value="Search For a Topic or Tutor"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
+                <Setter Property="PlaceholderColor" Value="{DynamicResource DefaultBlack}"/>
+            </Style>
         </ResourceDictionary>
 
     </Application.Resources>
