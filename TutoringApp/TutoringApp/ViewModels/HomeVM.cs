@@ -13,27 +13,33 @@ namespace TutoringApp.ViewModels
 
         public HomeVM()
         {
-            PerformSearchCommand = new Command<string> ((string query) =>
+            PerformSearchCommand = new Command<string>((string query) =>
             {
                 //TODO create search call
                 SearchQuery = query;
+                //navigate to search page
+                //Navigation.PushAsync(new TutorList(query));
+
+
             });
 
             //Commands to handle button click for login and signup
             //TODO: change to match correct page
             SignUpCommand = new Command(() => {
-                Navigation.PushAsync(new Credits());
+               // Navigation.PushAsync(new SignUp());
+
+
+
             });
 
             LoginCommand = new Command(() => {
-                Navigation.PushAsync(new Resume());
+                Navigation.PushAsync(new Login());
             });
 
         }
 
 
 
-        public INavigation Navigation { get; set; }
         public ICommand PerformSearchCommand { protected set; get; }
         public ICommand SignUpCommand { protected set; get; }
 
