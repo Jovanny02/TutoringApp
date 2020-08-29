@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using System.Collections.Generic;
 using System.Text;
+using TutoringApp.Views;
 
 namespace TutoringApp.ViewModels
 {
@@ -21,12 +22,14 @@ namespace TutoringApp.ViewModels
             {
                 //TODO create forgot user_email page
                 Console.WriteLine("Triggered forgot user name command");
+               
             });
 
             ForgotPassCommand = new Command(() =>
             {
+                 Navigation.PushAsync(new PaswordRenew());
                 //TODO create forgot password page
-                Console.WriteLine("Triggered forgot password command");
+                //Console.WriteLine("Triggered forgot password command");
             });
         }
 

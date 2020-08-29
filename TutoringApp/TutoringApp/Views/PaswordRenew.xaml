@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:CustRend="clr-namespace:TutoringApp.Views.CustomRenders"
+             mc:Ignorable="d"
+             x:Class="TutoringApp.Views.PaswordRenew">
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".5*" />
+                    <ColumnDefinition Width="9*" />
+                    <ColumnDefinition Width=".5*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.3*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Grid.Row="1" Grid.Column="1">
+                    <Label Text="Forgot Password" TextColor="{StaticResource DefaultBlack}" 
+                           FontSize="30" FontAttributes="Bold"   />
+                </StackLayout>
+
+                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="2" Grid.Column="1">
+                    <Label Text="Enter New Password" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Frame Style="{StaticResource EntryFrame}">
+                        <CustRend:CustomEntry Placeholder="New Password" Text="{Binding newpassword}"/>
+                    </Frame>
+                
+                </StackLayout>
+
+
+                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="3" Grid.Column="1">
+                    <Label Text=" Enter Your Email" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Frame Style="{StaticResource EntryFrame}">
+                        <CustRend:CustomEntry Placeholder="Enter Your Email"  Text="{Binding user_email}"/>
+                    </Frame>
+                   
+                </StackLayout>
+
+                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="4" Grid.Column="1">
+                    <Button Text="Update" Style="{StaticResource HomeButtonStyle2}"
+                            Margin="25,50,25,50"/>
+                </StackLayout>
+
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
