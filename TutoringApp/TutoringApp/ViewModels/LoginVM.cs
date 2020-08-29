@@ -20,9 +20,11 @@ namespace TutoringApp.ViewModels
 
             ForgotUserCommand = new Command(() =>
             {
+                Navigation.PushAsync(new UsernameRenew());
+
                 //TODO create forgot user_email page
-                Console.WriteLine("Triggered forgot user name command");
-               
+                //Console.WriteLine("Triggered forgot user name command");
+
             });
 
             ForgotPassCommand = new Command(() =>

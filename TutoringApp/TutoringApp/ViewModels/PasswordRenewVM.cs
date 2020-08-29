@@ -12,7 +12,7 @@ namespace TutoringApp.ViewModels
         {
             UpdatePassCommand = new Command(() =>
             {
-                //TODO create forgot user_email page
+                //TODO go home with update password
                 Console.WriteLine("Triggered updated password");
 
 
