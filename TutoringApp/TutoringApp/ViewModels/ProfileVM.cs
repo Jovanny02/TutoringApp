@@ -8,6 +8,7 @@ using TutoringApp.Models;
 using TutoringApp.Views;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Xamarin.Forms.Internals;
 
 namespace TutoringApp.ViewModels
 {
@@ -37,15 +38,44 @@ namespace TutoringApp.ViewModels
             ScheduleSections.Add(new ScheduleTile { day = DayOfWeek.Friday });
             ScheduleSections.Add(new ScheduleTile { day = DayOfWeek.Saturday });
             ScheduleSections.Add(new ScheduleTile { day = DayOfWeek.Sunday });
+
+            //NOTE: need to change to programatically tell the number of different sections and skills in each one
+            SkillListHeight = 280;
+
+            initSkills();
         }
+
+        private void initSkills()
+        {
+
+            SkillSection ProgLanguages = new SkillSection()
+            {   
+                new Skill() {sectionTitle= "Programming Languages", skillName = "C#"},
+                new Skill() {sectionTitle= "Programming Languages", skillName = "Java"},
+                new Skill() {sectionTitle= "Programming Languages", skillName = "C++" }
+             };
+            ProgLanguages.sectionTitle = "Programming Languages";
+
+            SkillSection languages = new SkillSection()
+            {
+                new Skill() {sectionTitle= "Languages", skillName = "English"},
+                new Skill() {sectionTitle= "Languages", skillName = "Spanish"}
+            };
+            languages.sectionTitle = "Languages";
+
+            Skills = new ObservableCollection<SkillSection>()
+            {
+                ProgLanguages ,
+                languages
+            };
+        }
+
 
         #region commands
         public ICommand editBioCommand => new Command(() =>
         {
             IsBioReadOnly = !IsBioReadOnly;
             IsBioEditing = !IsBioEditing;
-            Console.WriteLine("isBioReadOnly: " + IsBioReadOnly);
-            Console.WriteLine("isBioEditing: " + IsBioEditing);
         });
 
         public ICommand saveEducationCommand => new Command(() =>
@@ -97,6 +127,107 @@ namespace TutoringApp.ViewModels
             details.BindingContext = newEducationSection;
             Navigation.PushAsync(details);
         });
+
+        public ICommand EditSkillCommand => new Command((object selectedSkill) =>
+        {
+            newSkill = (Skill)selectedSkill;
+            oldSkill = (Skill)selectedSkill;
+            SkillDetails skillDetails = new SkillDetails(false);
+            skillDetails.BindingContext = newSkill;
+            skillDetails.deleteCommand = deleteSkillCommand;
+            skillDetails.saveCommand = saveSkillCommand;
+
+            Navigation.PushAsync(skillDetails);
+
+            isEditingSkill = true;
+        });
+
+
+        public ICommand saveSkillCommand => new Command(() =>
+        {
+            if (isEditingSkill)
+            {
+                for (int i = 0; i < Skills.Count; i++)
+                {
+                    if (Skills[i].sectionTitle == oldSkill.sectionTitle)
+                    {
+                        //finds element matching old element and overwrites it with new element
+                        for(int kk=0; kk < Skills[i].skills.Count; kk++)
+                        {
+                            if (Skills[i].skills[kk] == oldSkill)
+                            {
+                                Skills[i].skills[kk] = newSkill;
+                                break;
+                            }                                
+                        }
+                        //clear new object 
+                        newSkill = null;
+                        oldSkill = null;
+                        Navigation.PopAsync();
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                //if sectionTitle already exists, add skill under this
+                for (int i = 0; i < Skills.Count; i++)
+                {
+                    if (Skills[i].sectionTitle == newSkill.sectionTitle)
+                    {
+                        Skills[i].Add(newSkill);
+                        newSkill = null;
+                        Navigation.PopAsync();
+
+                        SkillListHeight += 40;
+                        return;
+                    }
+                }
+                //if no section title exists, add it and add new skill to it
+                Skills.Add(new SkillSection() { sectionTitle = newSkill.sectionTitle });
+                Skills[Skills.Count - 1].Add(newSkill);
+                newSkill = null;
+                SkillListHeight += 80;
+                Navigation.PopAsync();
+            }
+        });
+
+        public ICommand addSkillCommand => new Command(() =>
+        {
+            SkillDetails skillDetails = new SkillDetails(true);
+            newSkill = new Skill();
+            skillDetails.BindingContext = newSkill;
+            skillDetails.saveCommand = saveSkillCommand;
+            skillDetails.initSelectedIndex();
+            Navigation.PushAsync(skillDetails);
+
+            isEditingSkill = false;
+        });
+
+        public ICommand deleteSkillCommand => new Command(() =>
+        {
+            for(int i = 0; i < Skills.Count; i++)
+            {
+                if (Skills[i].sectionTitle == newSkill.sectionTitle)
+                {
+                    Skills[i].deleteSkill(newSkill);
+                    SkillListHeight -= 40;
+
+                    if (Skills[i].skills.Count == 0)
+                    {
+                        //if section is empty, the section is removed and list size is shrunken
+                        Skills.RemoveAt(i);
+                        SkillListHeight -= 40;
+                    }
+
+                }
+                    
+            }          
+
+            //clear newSkill
+            newSkill = null;
+            Navigation.PopAsync();
+        });
         #endregion
 
 
@@ -121,11 +252,19 @@ namespace TutoringApp.ViewModels
         private int educationListHeight { get; set; }
         public int EducationListHeight { get { return educationListHeight; } set { educationListHeight = value; onPropertyChanged(); } }
 
+        private int skillListHeight { get; set; }
+        public int SkillListHeight { get { return skillListHeight; } set { skillListHeight = value; onPropertyChanged(); } }
+
+        //skill objects used for adding and editing
+        private Skill newSkill { get; set; } = new Skill();
+        private Skill oldSkill { get; set; } = new Skill();
         private EducationSection newEducationSection { get; set; } = new EducationSection();
 
         public ObservableCollection<EducationSection> EducationSections { get; } = new ObservableCollection<EducationSection>();
 
         public ObservableCollection<ScheduleTile> ScheduleSections { get; } = new ObservableCollection<ScheduleTile>();
+
+        public ObservableCollection<SkillSection> Skills { get; set; } = new ObservableCollection<SkillSection>();
 
         public string ratingLabel { get { return string.Format("{0:0.0}", Math.Truncate(AverageRating * 10) / 10); } }
         public string pictureSrc { get; private set; } = "user.png";
@@ -133,6 +272,7 @@ namespace TutoringApp.ViewModels
             "Turpis cursus in hac habitasse platea dictumst quisque sagittis. Sed arcu non odio euismod. Amet tellus cras adipiscing enim eu turpis egestas pretium. Morbi tincidunt augue interdum velit euismod in. Id donec" +
             " ultrices tincidunt arcu non sodales neque. Risus feugiat in ante metus dictum. Vel fringilla est ullamcorper eget nulla facilisi etiam. Adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla. Lorem ipsum";
 
+        private bool isEditingSkill { get; set; } = false;
         private bool isBioReadOnly { get; set; } = true;
         public bool IsBioReadOnly { get { return isBioReadOnly; } set { isBioReadOnly = value; onPropertyChanged(); } }
         private bool isBioEditing { get; set; } = false;

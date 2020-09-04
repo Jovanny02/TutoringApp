@@ -74,7 +74,7 @@ namespace TutoringApp.ViewModels
             //progLang.Add(new skill { skillName = "Java" });
             //progLang.Add(new skill { skillName = "C" });
             //progLang.Add(new skill { skillName = "Oracle SQL" });
-
+/*
             SkillSection ProgLanguages = new SkillSection()
             {
                 new Skill() {skillName = "C++"},
@@ -99,7 +99,7 @@ namespace TutoringApp.ViewModels
             {
                 ProgLanguages,
                 languages
-            };
+            };*/
         }
         private List<WorkTile> jobs = new List<WorkTile>();
         private List<EducationTile> education = new List<EducationTile>();

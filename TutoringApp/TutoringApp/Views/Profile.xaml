@@ -41,8 +41,11 @@
                         <skiarate:RatingView ColorOn="{StaticResource DefaultBlue}" Count="5" Grid.Column="1" Grid.Row="2" OutlineOnColor="{StaticResource DefaultBlack}"
                                 OutlineOffColor="{StaticResource DefaultBlack}" Value="{Binding AverageRating}" isReadOnly="true" />
 
-                        <Label Text="$15/hr" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="{StaticResource DefaultBlack}"
-                                FontSize="Title" Grid.Column="2" Grid.RowSpan="2"/>
+                    <!--    <Label Text="$15/hr" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="{StaticResource DefaultBlack}"
+                                FontSize="Title" Grid.Column="2" Grid.RowSpan="2"/>  -->
+                        <Entry Text="$15/hr" HorizontalOptions="End" VerticalOptions="CenterAndExpand"  Grid.Column="2" Grid.RowSpan="2"
+                                        FontSize="Title" TextColor="{StaticResource DefaultBlack}"/>
+
 
                         <Label Text="{Binding ratingLabel}" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}"
                                 FontSize="Title" Grid.Column="2" Grid.Row="2"/>
@@ -137,7 +140,7 @@
                                 TextColor="{StaticResource DefaultBlack}" FontSize="30" HeightRequest="45"/>
                         <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
 
-                        <ListView SelectionMode="None" ItemsSource="{Binding ScheduleSections}" RowHeight="100" HeightRequest="735" VerticalOptions="StartAndExpand" >
+                        <ListView SelectionMode="None" ItemsSource="{Binding ScheduleSections}" RowHeight="100" HeightRequest="705" VerticalOptions="StartAndExpand" >
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
@@ -163,7 +166,7 @@
                                                     FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
 
                                                 <Frame Grid.Row="1" Grid.RowSpan="2" BorderColor="{StaticResource DefaultBlack}" VerticalOptions="Start" Padding="0" Grid.Column="1">
-                                                    <TimePicker Time="{Binding startTime}" IsEnabled="{Binding isEnabled}"/>
+                                                    <TimePicker Time="{Binding startTime}" IsEnabled="{Binding IsEnabled}"/>
                                                 </Frame>
 
                                                 <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Grid.Column="2" Grid.Row="1" Color="{StaticResource DefaultBlack}"/>
@@ -172,11 +175,11 @@
                                                     FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
 
                                                 <Frame Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" BorderColor="{StaticResource DefaultBlack}" VerticalOptions="Start" Padding="0">
-                                                    <TimePicker Time="{Binding endTime}" IsEnabled="{Binding isEnabled}"/>
+                                                    <TimePicker Time="{Binding endTime}" IsEnabled="{Binding IsEnabled}"/>
                                                 </Frame>
 
                                                 <CheckBox HorizontalOptions="End" Color="{StaticResource DefaultBlack}" Grid.Row="3" 
-                                                          VerticalOptions="FillAndExpand" IsChecked="{Binding isUnavailable}"/>
+                                                          VerticalOptions="FillAndExpand" IsChecked="{Binding IsUnavailable}"/>
                                                 <Label Text="Unavailable?" TextColor="{StaticResource DefaultBlack}" Grid.Row="3" Grid.Column="1"
                                                         HorizontalOptions="Start" VerticalOptions="Start" />
                                                 
@@ -191,6 +194,45 @@
 
 
                     </StackLayout>
+                        
+                    <!-- skills Section-->
+                    <StackLayout  Margin="0,10,0,0">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Skills" HorizontalOptions="Start"  VerticalOptions="Start" 
+                                    TextColor="{StaticResource DefaultBlack}" FontSize="30" HeightRequest="45"/>
+                            <ImageButton Source="plus.png" HorizontalOptions="EndAndExpand" HeightRequest="45" Command="{Binding addSkillCommand}"
+                                    VerticalOptions="CenterAndExpand" BackgroundColor="{StaticResource DefaultWhite}"/>
+                        </StackLayout>
+                        <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
+                        
+                        
+                        <!-- list for skills -->
+                        <ListView ItemsSource="{Binding Skills}" RowHeight="40" HeightRequest="{Binding SkillListHeight}" VerticalOptions="Start"  x:Name="skillsList"
+                                  IsGroupingEnabled="True" ItemTapped="ListView_ItemTapped" SeparatorVisibility="None">
+                            <ListView.GroupHeaderTemplate>
+                                <DataTemplate>
+                                    <ViewCell >
+                                        <StackLayout BackgroundColor="{StaticResource BorderColor}" Padding="5">
+                                            <Label Text="{Binding sectionTitle}"  TextColor="Black" HorizontalOptions="Start" FontSize="Medium" FontAttributes="Bold"/>
+                                        </StackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.GroupHeaderTemplate>
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <StackLayout Padding="5">
+                                            <Label Text="{Binding skillName}" TextColor="{StaticResource DefaultBlack}" HorizontalOptions="Start" FontSize="Medium"/>
+                                        </StackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+
+                        </ListView>
+
+                    </StackLayout>
+
 
 
                 </StackLayout>

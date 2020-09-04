@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<d:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:d="clr-namespace:TutoringApp.Views;assembly=TutoringApp"
+             xmlns:c="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:CustRend="clr-namespace:TutoringApp.Views.CustomRenders;assembly=TutoringApp"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="c"
+             x:Class="TutoringApp.Views.SkillDetails" >
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".5*" />
+                    <ColumnDefinition Width="9*" />
+                    <ColumnDefinition Width=".5*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Margin="0,25,0,0" Grid.Column="1">
+                    <Label Text="Edit Skill" TextColor="{StaticResource DefaultBlack}" x:Name="titleLabel"
+                           FontSize="30" FontAttributes="Bold"   />
+                </StackLayout>
+
+                <StackLayout Grid.Row="1" Grid.Column="1">
+                    <Label Text="Skill Area" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Frame BorderColor="{StaticResource DefaultBlack}" VerticalOptions="Start" Padding="0">
+                        <Picker x:Name="skillSectionPicker" IsEnabled="False" SelectedItem="{Binding sectionTitle}" />
+                    </Frame>
+                </StackLayout>
+
+                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="2" Grid.Column="1">
+                    <Label Text="Skill Name" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Frame Style="{StaticResource EntryFrame}">
+                        <CustRend:CustomEntry Placeholder="Enter Your Skill"  Text="{Binding skillName}" x:Name="skillEntry"/>
+                    </Frame>
+                </StackLayout>
+
+                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="3" Grid.Column="1">
+                    <Label Text="" TextColor="{StaticResource ErrorRed}" FontSize="Large" x:Name="errorLabel"
+                           HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                </StackLayout>
+
+                <StackLayout VerticalOptions="Start"  Grid.Row="4" Grid.Column="1">
+                    <Button Text="Save" Style="{StaticResource HomeButtonStyle2}"
+                            Margin="25,50,25,0" Clicked="save_Clicked"/>
+                </StackLayout>
+
+                <Button Grid.Row="5" Grid.Column="1" Margin="50,0,50,0" Text="Delete" VerticalOptions="Start" HorizontalOptions="FillAndExpand" 
+                        Style="{StaticResource DeleteButtonStyle}" Clicked="delete_Clicked" x:Name="deleteButton"/>
+
+            </Grid>
+            
+        </StackLayout>
+
+    </ContentPage.Content>
+</d:BaseContentPage>

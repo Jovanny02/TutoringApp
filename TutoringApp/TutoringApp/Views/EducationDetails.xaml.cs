@@ -33,7 +33,7 @@ namespace TutoringApp.Views
         public ICommand SaveCommand;
 
         //save button pressed
-        private void Button_Clicked(object sender, System.EventArgs e)
+        private void Button_Clicked(object sender, EventArgs e)
         {
             //checks for incorrect inputs
             if(universityEntry.Text == "" || universityEntry.Text == null)
