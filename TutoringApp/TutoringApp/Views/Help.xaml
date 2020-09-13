@@ -1,16 +1,92 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<d:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<d1:BaseContentPage  xmlns:d1="clr-namespace:TutoringApp.Views" xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="clr-namespace:TutoringApp.Views;assembly=TutoringApp.Views"
-             xmlns:c="http://xamarin.com/schemas/2014/forms/design"
+                     xmlns:c="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="c"
              x:Class="TutoringApp.Views.Help">
     <ContentPage.Content>
+
+      
+        
+            
+          
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+
+
+            <Image Source = "https://www.jing.fm/clipimg/full/17-178002_we-want-you.png" />
+          
+            <StackLayout Padding="10" >
+                
+                <Label TextColor="#444" Text="We are here for you. if you are having any problem please contact our customer support 352 739 9682"
+                       FontAttributes="Bold"
+                       FontSize="20"/>
+            </StackLayout>
+
+                <StackLayout> 
+
+            <Label HorizontalOptions="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Tutorial video: " 
+                              FontAttributes="Bold"
+                              FontSize="20"/>
+                        <Span Text="Click Me!"
+                  TextColor="Blue"
+                  TextDecorations="Underline"
+                              FontAttributes="Bold"
+                              FontSize="20">
+                            <Span.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ClickCommand}"
+                                          CommandParameter="https://www.youtube.com/watch?v=5uPoDNEn3I0" />
+                            </Span.GestureRecognizers>
+                        </Span>
+                        
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            </StackLayout>
+
+                <StackLayout Padding="30">
+
+                <Label Text="FAQ" TextColor="Black" FontSize="30" FontAttributes="Bold"/>
+
+
+                <ListView  HasUnevenRows="True" ItemsSource="{Binding QAview}">
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout >
+                                    <Label Text="{Binding Questions}" FontAttributes="Bold" FontSize="16"/>
+                                    <Label Text="{Binding Answers}" TextColor="blue"/>
+                                    
+                                </StackLayout>
+                                
+                                
+                                
+                            </ViewCell>
+
+                        </DataTemplate>
+
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+
+
+            </StackLayout>
+
+            
+                
+
+           
+
+
+
+
+
+       
+
     </ContentPage.Content>
-</d:BaseContentPage>
+</d1:BaseContentPage>

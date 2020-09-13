@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<d:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<d1:BaseContentPage  xmlns:d1="clr-namespace:TutoringApp.Views" xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="clr-namespace:TutoringApp.Views;assembly=TutoringApp"
              xmlns:CustRend="clr-namespace:TutoringApp.Views.CustomRenders;assembly=TutoringApp"
@@ -258,4 +258,4 @@
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
-</d:BaseContentPage>
+</d1:BaseContentPage>
