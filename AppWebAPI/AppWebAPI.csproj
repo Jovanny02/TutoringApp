@@ -235,6 +235,7 @@
     <Content Include="Models\LoginModel.edmx.diagram">
       <DependentUpon>LoginModel.edmx</DependentUpon>
     </Content>
+    <Content Include="connectionStrings.config" />
     <None Include="Properties\PublishProfiles\AppWebAPI20200912230223 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
