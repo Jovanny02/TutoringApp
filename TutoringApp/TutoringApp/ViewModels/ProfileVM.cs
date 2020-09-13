@@ -41,7 +41,6 @@ namespace TutoringApp.ViewModels
 
             //NOTE: need to change to programatically tell the number of different sections and skills in each one
             SkillListHeight = 280;
-
             initSkills();
         }
 
@@ -86,7 +85,11 @@ namespace TutoringApp.ViewModels
             {
 
                 //NOTE ASSUMPTION IS THAT LAST ELEMENT WILL HAVE HIGHEST KEY VALUE. ASSUMPTION IS NEEDED FOR SAVE COMMAND TO WORK PROPERLY
-                newEducationSection.key = EducationSections.Last().key + 1;
+                if (EducationSections.Any())
+                    newEducationSection.key = EducationSections.Last().key + 1;
+                else
+                    newEducationSection.key = 0;
+
                 EducationSections.Add(newEducationSection);
                 EducationListHeight += 80;
             }
@@ -114,9 +117,17 @@ namespace TutoringApp.ViewModels
             EducationDetails details = new EducationDetails();
             details.BindingContext = newEducationSection;
             details.SaveCommand = saveEducationCommand;
+            details.hideDelete();
             Navigation.PushAsync(details);
         });
 
+        public ICommand DeleteEducationCommand => new Command(() =>
+        {
+            EducationSections.Remove(newEducationSection);
+            Navigation.PopAsync();
+
+            EducationListHeight -= 80;
+        });
         public ICommand EditEducationCommand => new Command((object selectedSection) =>
         {
             // Used for comparison in saveEducationCommand
@@ -124,6 +135,7 @@ namespace TutoringApp.ViewModels
 
             EducationDetails details = new EducationDetails();
             details.SaveCommand = saveEducationCommand;
+            details.deleteCommand = DeleteEducationCommand;
             details.BindingContext = newEducationSection;
             Navigation.PushAsync(details);
         });
@@ -266,6 +278,25 @@ namespace TutoringApp.ViewModels
 
         public ObservableCollection<SkillSection> Skills { get; set; } = new ObservableCollection<SkillSection>();
 
+        private int requestedPay { get; set; } = 15;
+        public string RequestedPay { 
+            get { return requestedPay.ToString(); }  
+            set {
+                int tempPay;
+                Int32.TryParse( value.Replace(".", String.Empty) , out tempPay);
+                //do not notify property changed if value is same (prevents looping issue)
+                if (tempPay == requestedPay)
+                    return;
+
+                if (tempPay > 300)  //set min and max value to tutor pay               
+                    requestedPay = 300;               
+                else if(tempPay < 0)               
+                    requestedPay = 0;              
+                else             
+                    requestedPay = tempPay;
+                
+                onPropertyChanged(); } 
+                }
         public string ratingLabel { get { return string.Format("{0:0.0}", Math.Truncate(AverageRating * 10) / 10); } }
         public string pictureSrc { get; private set; } = "user.png";
         public string Biography { get; set; } = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nascetur ridiculus mus mauris vitae ultricies. " +

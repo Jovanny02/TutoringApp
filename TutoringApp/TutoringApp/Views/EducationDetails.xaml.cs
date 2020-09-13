@@ -31,9 +31,14 @@ namespace TutoringApp.Views
         public List<int> toYears = new List<int>();
         public List<int> fromYears = new List<int>();
         public ICommand SaveCommand;
+        public ICommand deleteCommand;
+
+        public void hideDelete () {
+            deleteButton.IsVisible = false;
+        }
 
         //save button pressed
-        private void Button_Clicked(object sender, EventArgs e)
+        private void Save_Clicked(object sender, EventArgs e)
         {
             //checks for incorrect inputs
             if(universityEntry.Text == "" || universityEntry.Text == null)
@@ -53,6 +58,11 @@ namespace TutoringApp.Views
             }
 
             SaveCommand.Execute(sender);
+        }
+
+        private void delete_Clicked(object sender, EventArgs e)
+        {
+            deleteCommand.Execute(sender);
         }
     }
 }

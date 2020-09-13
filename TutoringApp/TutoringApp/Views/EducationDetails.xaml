@@ -22,7 +22,8 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height=".2*"/>
-                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Grid.Row="1" Grid.Column="1">
                     <Label Text="Education Information" TextColor="{StaticResource DefaultBlack}" 
@@ -86,8 +87,12 @@
 
                 <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="6" Grid.Column="1">
                     <Button Text="Save" Style="{StaticResource HomeButtonStyle2}"
-                            Margin="25,50,25,0"  Clicked="Button_Clicked"/>
+                            Margin="25,50,25,0"  Clicked="Save_Clicked"/>
                 </StackLayout>
+
+                <Button Grid.Row="7" Grid.Column="1" Margin="50,0,50,0" Text="Delete" VerticalOptions="Start" HorizontalOptions="FillAndExpand" 
+                        Style="{StaticResource DeleteButtonStyle}" Clicked="delete_Clicked" x:Name="deleteButton"/>
+
 
             </Grid>
         </StackLayout>

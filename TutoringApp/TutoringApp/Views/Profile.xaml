@@ -21,7 +21,7 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="1.1*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
@@ -31,20 +31,19 @@
                                     VerticalOptions="CenterAndExpand">
                             <Image Source="{Binding pictureSrc}" HorizontalOptions="Center" VerticalOptions="Center"/>
                         </Frame>
-
-                        <Label Text="Jovannny Vera" HorizontalOptions="StartAndExpand" VerticalOptions="End" TextColor="{StaticResource DefaultBlack}"
+                        
+                        <Entry Text="Jovannny Vera" HorizontalOptions="StartAndExpand" VerticalOptions="End" TextColor="{StaticResource DefaultBlack}"
                                 FontSize="Large" FontAttributes="Bold" Grid.Column="1" Grid.Row="0"/>
 
-                        <Label Text="Senior Studing Computer Engineering at UF" HorizontalOptions="CenterAndExpand" VerticalOptions="Start" TextColor="{StaticResource DefaultBlack}"
-                                FontSize="Small" Grid.Column="1" Grid.Row="1"/>
+                        <Editor Text="Senior Studing Computer Engineering at UF" HorizontalOptions="StartAndExpand" VerticalOptions="FillAndExpand" TextColor="{StaticResource DefaultBlack}"
+                                FontSize="Small" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" />
 
                         <skiarate:RatingView ColorOn="{StaticResource DefaultBlue}" Count="5" Grid.Column="1" Grid.Row="2" OutlineOnColor="{StaticResource DefaultBlack}"
                                 OutlineOffColor="{StaticResource DefaultBlack}" Value="{Binding AverageRating}" isReadOnly="true" />
 
                     <!--    <Label Text="$15/hr" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="{StaticResource DefaultBlack}"
                                 FontSize="Title" Grid.Column="2" Grid.RowSpan="2"/>  -->
-                        <Entry Text="$15/hr" HorizontalOptions="End" VerticalOptions="CenterAndExpand"  Grid.Column="2" Grid.RowSpan="2"
-                                        FontSize="Title" TextColor="{StaticResource DefaultBlack}"/>
+
 
 
                         <Label Text="{Binding ratingLabel}" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}"
@@ -134,8 +133,26 @@
 
                     </StackLayout>
                     
-                    <!-- Schedule Section-->
+                    <!-- Pay and Schedule Section-->
                     <StackLayout  Margin="0,10,0,0">
+                        <StackLayout Orientation="Horizontal">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="7.5*" />
+                                    <ColumnDefinition Width="2.5*" />
+                                </Grid.ColumnDefinitions>
+
+
+                                <Label Text="Requested Hourly Pay:" HorizontalOptions="Start"  VerticalOptions="Center" 
+                                TextColor="{StaticResource DefaultBlack}" FontSize="30" HeightRequest="45"/>
+
+                                <Entry Text="{Binding RequestedPay}" Keyboard="Numeric" HorizontalOptions="FillAndExpand" Grid.Column="1"
+                                       VerticalOptions="Start" FontSize="30" TextColor="{StaticResource DefaultBlack}"/>
+                            </Grid>
+                        </StackLayout>
+                        <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
+                        
+                        
                         <Label Text="Schedule" HorizontalOptions="Start"  VerticalOptions="Start" 
                                 TextColor="{StaticResource DefaultBlack}" FontSize="30" HeightRequest="45"/>
                         <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
