@@ -15,9 +15,9 @@
                VerticalOptions="Center"
             AbsoluteLayout.LayoutBounds="0.5,0.1,100,100" AbsoluteLayout.LayoutFlags="PositionProportional"/>
         <Image Source ="who.png" AbsoluteLayout.LayoutBounds="0.5,0.5,100,100" AbsoluteLayout.LayoutFlags="PositionProportional"  />
-        <Button Text="A student" TextColor="White" BackgroundColor="{StaticResource DefaultOrange}" AbsoluteLayout.LayoutBounds="0,0.6,1,50" AbsoluteLayout.LayoutFlags="WidthProportional, PositionProportional"
+        <Button Text="A student" TextColor="White" Style="{StaticResource HomeButtonStyle2}" AbsoluteLayout.LayoutBounds="0,0.6,1,50" AbsoluteLayout.LayoutFlags="WidthProportional, PositionProportional"
                 Command="{Binding SignupTutorCommand}"/>
-        <Button Text="A Tutor"  TextColor="white" BackgroundColor="{StaticResource DefaultOrange}" AbsoluteLayout.LayoutBounds="0,0.70,1,50" AbsoluteLayout.LayoutFlags="WidthProportional,PositionProportional"
+        <Button Text="A Tutor"  TextColor="white" Style="{StaticResource HomeButtonStyle2}" AbsoluteLayout.LayoutBounds="0,0.70,1,50" AbsoluteLayout.LayoutFlags="WidthProportional,PositionProportional"
                 Command="{Binding SignupTutorCommand}"/>
 
     </AbsoluteLayout>
