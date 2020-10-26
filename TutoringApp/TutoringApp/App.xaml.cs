@@ -1,7 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-
+using TutoringApp.Models;
 namespace TutoringApp
 {
     public partial class App : Application

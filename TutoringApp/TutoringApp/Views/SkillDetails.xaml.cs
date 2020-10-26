@@ -17,7 +17,7 @@ namespace TutoringApp.Views
 
         public ICommand saveCommand;
 
-        public List<string> skillSections = new List<string>();
+        public List<string> depatmentSections = new List<string>();
 
         
         public SkillDetails(bool isNewSkill)
@@ -27,7 +27,7 @@ namespace TutoringApp.Views
             initPicker();
 
             if(isNewSkill)
-                titleLabel.Text = "Add Skill";
+                titleLabel.Text = "Add Course";
 
             deleteButton.IsVisible = !isNewSkill;
             skillSectionPicker.IsEnabled = isNewSkill;                   
@@ -41,8 +41,8 @@ namespace TutoringApp.Views
         private void initPicker()
         {
             //TODO: add a comprehensive list as a source of skills
-            skillSections.AddRange(new List<string> { "Arts", "Engineering" , "Programming Languages", "Languages", });
-            skillSectionPicker.ItemsSource = skillSections;
+            depatmentSections.AddRange(new List<string> { "ECE", "MAE" , "CISE" });
+            skillSectionPicker.ItemsSource = depatmentSections;
         }
 
 
@@ -50,7 +50,7 @@ namespace TutoringApp.Views
         {
             if (skillEntry.Text == "" || skillEntry.Text == null)
             {
-                errorLabel.Text = "Skill name can not be empty";
+                errorLabel.Text = "Course name can not be empty";
                 return;
             }
 
