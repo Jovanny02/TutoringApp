@@ -12,15 +12,21 @@ namespace TutoringApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Profile : BaseContentPage
     {
-        ProfileVM profileVM = new ProfileVM();
+        ProfileVM profileVM;
 
         public ICommand EditEducationCommand;
 
-        public ICommand EditSkillCommand;
+        public ICommand EditCourseCommand;
+        public ICommand saveUserCommand;
+
         public Profile()
         {
+            //TODO Modify to get this value from a higher level
+            profileVM = new ProfileVM();
+
             EditEducationCommand = profileVM.EditEducationCommand;
-            EditSkillCommand = profileVM.EditSkillCommand;
+            EditCourseCommand = profileVM.EditCourseCommand;
+            saveUserCommand = profileVM.saveUserCommand;
 
             BindingContext = profileVM;
             profileVM.Navigation = Navigation;
@@ -34,9 +40,9 @@ namespace TutoringApp.Views
         }
 
 
-        private void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        private void CourseList_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            EditSkillCommand.Execute(e.Item);
+            EditCourseCommand.Execute(e.Item);
 
             skillsList.SelectedItem = null;
 

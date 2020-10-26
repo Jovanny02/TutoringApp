@@ -32,10 +32,10 @@
                             <Image Source="{Binding pictureSrc}" HorizontalOptions="Center" VerticalOptions="Center"/>
                         </Frame>
                         
-                        <Entry Text="Jovannny Vera" HorizontalOptions="StartAndExpand" VerticalOptions="End" TextColor="{StaticResource DefaultBlack}"
-                                FontSize="Large" FontAttributes="Bold" Grid.Column="1" Grid.Row="0"/>
+                        <Entry Text="{Binding name}" HorizontalOptions="FillAndExpand" VerticalOptions="End" TextColor="{StaticResource DefaultBlack}"
+                                FontSize="Large" FontAttributes="Bold" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2"/>
 
-                        <Editor Text="Senior Studing Computer Engineering at UF" HorizontalOptions="StartAndExpand" VerticalOptions="FillAndExpand" TextColor="{StaticResource DefaultBlack}"
+                        <Editor Text="{Binding shortBio}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" TextColor="{StaticResource DefaultBlack}"
                                 FontSize="Small" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" />
 
                         <skiarate:RatingView ColorOn="{StaticResource DefaultBlue}" Count="5" Grid.Column="1" Grid.Row="2" OutlineOnColor="{StaticResource DefaultBlack}"
@@ -50,6 +50,8 @@
                                 FontSize="Title" Grid.Column="2" Grid.Row="2"/>
 
                     </Grid>
+                    <Button Text="Save" Style="{StaticResource SaveButtonStyle}" HorizontalOptions="Center" IsVisible="{Binding IsHeaderEdited}" Command="{Binding saveUserCommand}"/>
+
                     <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}"/>
                 </StackLayout>
                 <!--User profile sections -->
@@ -209,39 +211,52 @@
                             </ListView.ItemTemplate>
                         </ListView>
 
-
+                        <Button Text="Save" Style="{StaticResource SaveButtonStyle}" HorizontalOptions="Center" IsVisible="True" Command="{Binding saveUserCommand}"/>
                     </StackLayout>
-                        
-                    <!-- skills Section-->
+
+                    <!-- Courses Section-->
                     <StackLayout  Margin="0,10,0,0">
                         <StackLayout Orientation="Horizontal">
-                            <Label Text="Skills" HorizontalOptions="Start"  VerticalOptions="Start" 
+                            <Label Text="Courses" HorizontalOptions="Start"  VerticalOptions="Start" 
                                     TextColor="{StaticResource DefaultBlack}" FontSize="30" HeightRequest="45"/>
-                            <ImageButton Source="plus.png" HorizontalOptions="EndAndExpand" HeightRequest="45" Command="{Binding addSkillCommand}"
+                            <ImageButton Source="plus.png" HorizontalOptions="EndAndExpand" HeightRequest="45" Command="{Binding addCourseCommand}"
                                     VerticalOptions="CenterAndExpand" BackgroundColor="{StaticResource DefaultWhite}"/>
                         </StackLayout>
                         <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
                         
                         
                         <!-- list for skills -->
-                        <ListView ItemsSource="{Binding Skills}" RowHeight="40" HeightRequest="{Binding SkillListHeight}" VerticalOptions="Start"  x:Name="skillsList"
-                                  IsGroupingEnabled="True" ItemTapped="ListView_ItemTapped" SeparatorVisibility="None">
-                            <ListView.GroupHeaderTemplate>
+                        <ListView ItemsSource="{Binding Courses}" RowHeight="40" HeightRequest="{Binding CourseListHeight}" VerticalOptions="Start"  x:Name="skillsList"
+                                  IsGroupingEnabled="False" ItemTapped="CourseList_ItemTapped" SeparatorVisibility="None">
+                            <!--        <ListView.GroupHeaderTemplate>
                                 <DataTemplate>
                                     <ViewCell >
                                         <StackLayout BackgroundColor="{StaticResource BorderColor}" Padding="5">
-                                            <Label Text="{Binding sectionTitle}"  TextColor="Black" HorizontalOptions="Start" FontSize="Medium" FontAttributes="Bold"/>
+                                            <Label Text="{Binding SectionTitle}"  TextColor="Black" HorizontalOptions="Start" FontSize="Medium" FontAttributes="Bold"/>
                                         </StackLayout>
                                     </ViewCell>
                                 </DataTemplate>
                             </ListView.GroupHeaderTemplate>
-
+                            -->
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
                                         <StackLayout Padding="5">
-                                            <Label Text="{Binding skillName}" TextColor="{StaticResource DefaultBlack}" HorizontalOptions="Start" FontSize="Medium"/>
-                                        </StackLayout>
+                                            <Label Text="{Binding courseName}" TextColor="{StaticResource DefaultBlack}" HorizontalOptions="Start" FontSize="Medium"/>
+                                        </StackLayout>  
+                                        <!--   <ListView ItemsSource="{Binding skills}" RowHeight="40" HeightRequest="200" VerticalOptions="StartAndExpand" HorizontalOptions="CenterAndExpand"  x:Name="ski"
+                                         SeparatorVisibility="None" BackgroundColor="Aqua">
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <ViewCell>
+                                                        <StackLayout Padding="5">
+                                                            <Label Text="{Binding skillName}" TextColor="{StaticResource DefaultBlack}" HorizontalOptions="Start" FontSize="Medium"/>
+                                                        </StackLayout>
+
+                                                    </ViewCell>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>-->
                                     </ViewCell>
                                 </DataTemplate>
                             </ListView.ItemTemplate>

@@ -37,6 +37,8 @@
                                 RowHeight="95"  
                                 Grid.Row="1"   
                                 ItemAppearing="LoadTutors"
+                                ItemSelected="TutorSelected"
+                                x:Name="ListedTutors"
                                   >
                             <ListView.ItemTemplate>
                                 <DataTemplate>
@@ -46,8 +48,9 @@
                                             <Grid Padding="5">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="8*" />
-                                                </Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="7*" />
+                                                    <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="1.5*"/>
                                                     <RowDefinition Height="*"/>
@@ -56,14 +59,16 @@
                                                 </Grid.RowDefinitions>
                                                 
                                                 <Image Source="{Binding pictureSrc}" Grid.RowSpan="3"/>
-                                                <Label Grid.Column="1" Text="{Binding tutorName}" Grid.Row="0" 
+                                                <Label Grid.Column="1" Text="{Binding name}" Grid.Row="0" 
                                                            VerticalOptions="CenterAndExpand" HorizontalOptions="Start"
                                                            TextColor="Black" FontAttributes="Bold" FontSize="Subtitle"/>
-                                                <Label Grid.Column="1" Text="{Binding shortDescription}" HorizontalOptions="Start" TextColor="Black" Grid.Row="1" />
+                                                <Label Grid.Column="1" Text="{Binding shortBio}" HorizontalOptions="Start" TextColor="Black" Grid.Row="1" />
+                                            <Label Grid.Column="2" Grid.Row="0"  Text="{Binding RequestedPay}" 
+                                                   TextColor="{StaticResource DefaultBlack}" FontSize="Large"  FontAttributes="Bold"/>
 
                                             <skiarate:RatingView ColorOn="{StaticResource DefaultBlue}" Count="5" Grid.Column="1" Grid.Row="2" OutlineOnColor="{StaticResource DefaultBlack}"
-                                                    OutlineOffColor="{StaticResource DefaultBlack}" Value="{Binding averageRating}" isReadOnly="True" />
-                                            <BoxView HorizontalOptions="FillAndExpand" Color="{StaticResource DefaultBlack}" Grid.Row="3" Grid.ColumnSpan="2"/>
+                                                    OutlineOffColor="{StaticResource DefaultBlack}" Value="{Binding AverageRating}" isReadOnly="True" />
+                                            <BoxView HorizontalOptions="FillAndExpand" Color="{StaticResource DefaultBlack}" Grid.Row="3" Grid.ColumnSpan="3"/>
                                         </Grid>
   
                                     </StackLayout>

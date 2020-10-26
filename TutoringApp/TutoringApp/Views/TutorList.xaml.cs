@@ -26,5 +26,14 @@ namespace TutoringApp.Views
         {
             pageVM.LoadTutors(e.Item);
         }
+
+        private void TutorSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem == null)
+                return;
+
+            Navigation.PushAsync(new TutorView(e.SelectedItem));
+            ListedTutors.SelectedItem = null;
+        }
     }
 }

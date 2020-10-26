@@ -3,11 +3,18 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace TutoringApp.Models
 {
-    class ScheduleTile : INotifyPropertyChanged
+    public class ScheduleTile : INotifyPropertyChanged
     {
+
+        public ScheduleTile()
+        {
+
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void onPropertyChanged([CallerMemberName] string propertyName = "")
@@ -15,12 +22,33 @@ namespace TutoringApp.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public DayOfWeek day;
-
-        public TimeSpan startTime = new TimeSpan(0);
-
-        public TimeSpan endTime = new TimeSpan(0);
-
+        public DayOfWeek day { get; set; }
+        //use number of ticks for assignment of time since timespan cannot be deserialized due to no set methods on properties
+        public long startTicks {get; set; }
+        public long endTicks {get; set; }
+        //ignore these properties so they do not overwrite start and end ticks on deserialization 
+        
+        [JsonIgnore]
+        private TimeSpan StartTime { get; set; }
+        [JsonIgnore]
+        public TimeSpan startTime { get { return StartTime; } 
+            set {
+                StartTime = value; 
+                startTicks = StartTime.Ticks; 
+            }
+        }
+        [JsonIgnore]
+        private TimeSpan EndTime { get; set; }
+        [JsonIgnore]
+        public TimeSpan endTime
+        {
+            get { return EndTime; }
+            set
+            {
+                EndTime = value; 
+                endTicks = EndTime.Ticks;
+            }
+        }
         private bool isUnavailable { get; set; } = false;
         public bool IsUnavailable
         {

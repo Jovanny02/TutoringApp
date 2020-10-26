@@ -4,8 +4,14 @@ using System.Text;
 
 namespace TutoringApp.Models
 {
-    class EducationSection
+    public class EducationSection
     {
+        public EducationSection()
+        {
+            key = int.MaxValue;
+        }
+
+
         public string Major { get; set; }
 
         public int fromYear { get; set; } = DateTime.Now.Year;
@@ -21,6 +27,6 @@ namespace TutoringApp.Models
             }
         }
 
-        public int key = int.MaxValue;
+        public int key { get; set; }
     }
 }

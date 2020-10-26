@@ -9,6 +9,8 @@ using TutoringApp.Views;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Xamarin.Forms.Internals;
+using System.Text.Json;
+using Acr.UserDialogs;
 
 namespace TutoringApp.ViewModels
 {
@@ -16,66 +18,157 @@ namespace TutoringApp.ViewModels
     {
         public ProfileVM()
         {
-           
+            //check if a current User exists
+            if (!App.Current.Properties.ContainsKey("CurrentUser"))
+            {
+            #if (DEBUG)
+                initTestUser();
+            #endif
+            }
+                
 
-            AverageRating = 4.7;
+            getUserInfo();
             //creates circular picture
             pictureSize = (DeviceDisplay.MainDisplayInfo.Width * 0.09);
             radius = pictureSize / 2;
-            Console.WriteLine("Radius: " + radius + "  Size: " + pictureSize);
+          //  Console.WriteLine("Radius: " + radius + "  Size: " + pictureSize);
+            //clear header save button 
+            IsHeaderEdited = false;
+        }
+
+        private void initTestUser()
+        {          
 
             //NOTE ASSUMPTION IS THAT LAST ELEMENT WILL HAVE HIGHEST KEY VALUE. ASSUMPTION IS NEEDED FOR SAVE COMMAND TO WORK PROPERLY
             //set sample education sections
-            EducationSections.Add(new EducationSection{ Major = "Computer Engineering", fromYear = 2017, toYear = 2021, University = "University of Florida", key=0 });
-            EducationSections.Add(new EducationSection { Major = "Transfer Degree", fromYear = 2015, toYear = 2017, University = "Florida State College At Jacksonville", key=1 });
-            EducationListHeight = EducationSections.Count() * 80;
+            profileUser.EducationSections.Add(new EducationSection { Major = "Computer Engineering", fromYear = 2017, toYear = 2021, University = "University of Florida", key = 0 });
+            profileUser.EducationSections.Add(new EducationSection { Major = "Transfer Degree", fromYear = 2015, toYear = 2017, University = "Florida State College At Jacksonville", key = 1 });
 
-            //add sample schedule sections
-            ScheduleSections.Add(new ScheduleTile { day = DayOfWeek.Monday });
-            ScheduleSections.Add(new ScheduleTile { day = DayOfWeek.Tuesday });
-            ScheduleSections.Add(new ScheduleTile { day = DayOfWeek.Wednesday });
-            ScheduleSections.Add(new ScheduleTile { day = DayOfWeek.Thursday });
-            ScheduleSections.Add(new ScheduleTile { day = DayOfWeek.Friday });
-            ScheduleSections.Add(new ScheduleTile { day = DayOfWeek.Saturday });
-            ScheduleSections.Add(new ScheduleTile { day = DayOfWeek.Sunday });
 
-            //NOTE: need to change to programatically tell the number of different sections and skills in each one
-            SkillListHeight = 280;
-            initSkills();
+            Course EEL4712 = new Course("ECE", "EEL4712");
+            Course CIS4930 = new Course("CISE", "CIS4930");
+            Course COP4600 = new Course("CISE", "COP4600");
+
+
+            string temp = JsonSerializer.Serialize(EEL4712);
+
+           // String temp = JsonConvert.SerializeObject(languages);
+
+            profileUser.Courses.Add(EEL4712);
+            profileUser.Courses.Add(CIS4930);
+            profileUser.Courses.Add(COP4600);
+
+
+            //biography
+            profileUser.Biography = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nascetur ridiculus mus mauris vitae ultricies. " +
+            "Turpis cursus in hac habitasse platea dictumst quisque sagittis. Sed arcu non odio euismod. Amet tellus cras adipiscing enim eu turpis egestas pretium. Morbi tincidunt augue interdum velit euismod in. Id donec" +
+            " ultrices tincidunt arcu non sodales neque. Risus feugiat in ante metus dictum. Vel fringilla est ullamcorper eget nulla facilisi etiam. Adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla. Lorem ipsum";
+
+            //rating
+            profileUser.AverageRating = 4.0;
+
+            profileUser.name = "Jovanny Vera";
+
+            profileUser.shortBio = "Senior Studing Computer Engineering at UF";
+
+            profileUser.ScheduleSections = new ObservableCollection<ScheduleTile>() {
+            new ScheduleTile { day = DayOfWeek.Monday },
+            new ScheduleTile { day = DayOfWeek.Tuesday },
+            new ScheduleTile { day = DayOfWeek.Wednesday },
+            new ScheduleTile { day = DayOfWeek.Thursday },
+            new ScheduleTile { day = DayOfWeek.Friday },
+            new ScheduleTile { day = DayOfWeek.Saturday },
+            new ScheduleTile { day = DayOfWeek.Sunday }
+        };
+
+            //serialize object as string and save to properties
+            // 
+            string userString = JsonSerializer.Serialize(profileUser);
+            App.Current.Properties.Add("CurrentUser", userString);
         }
 
-        private void initSkills()
+        private void getUserInfo()
         {
+            profileUser = JsonSerializer.Deserialize<User>(App.Current.Properties["CurrentUser"] as string);
+            setDayTicks();
 
-            SkillSection ProgLanguages = new SkillSection()
-            {   
-                new Skill() {sectionTitle= "Programming Languages", skillName = "C#"},
-                new Skill() {sectionTitle= "Programming Languages", skillName = "Java"},
-                new Skill() {sectionTitle= "Programming Languages", skillName = "C++" }
-             };
-            ProgLanguages.sectionTitle = "Programming Languages";
+            //education sections
+            EducationListHeight = profileUser.EducationSections.Count() * 80;
+            EducationSections = profileUser.EducationSections;
+            //skills sections
+            Courses = profileUser.Courses;
+            CourseListHeight = 0;
+            //determine skills height
+            //  for (int i = 0; i < Courses.Count; i++)
+            // {
+            //SkillListHeight += (40 + Skills[i].skills.Count()*40); 
+            CourseListHeight += Courses.Count() * 40;
+          //  }
+            //init biography
+            Biography = profileUser.Biography;
 
-            SkillSection languages = new SkillSection()
-            {
-                new Skill() {sectionTitle= "Languages", skillName = "English"},
-                new Skill() {sectionTitle= "Languages", skillName = "Spanish"}
-            };
-            languages.sectionTitle = "Languages";
+            //init rating
+            AverageRating = profileUser.AverageRating;
 
-            Skills = new ObservableCollection<SkillSection>()
-            {
-                ProgLanguages ,
-                languages
-            };
+            //init pay
+            requestedPay = profileUser.requestedPay;
+
+            ScheduleSections = profileUser.ScheduleSections;
+
+            name = profileUser.name;
+
+            shortBio = profileUser.shortBio;
         }
 
+        private void saveUser()
+        {
+            //save all user properties
+            profileUser.EducationSections = EducationSections;
+            profileUser.Courses = Courses;
+            profileUser.Biography = Biography;
+            profileUser.requestedPay = requestedPay;
+            profileUser.ScheduleSections = ScheduleSections;
+            profileUser.name = name;
+            profileUser.shortBio = shortBio;
 
-        #region commands
+            string userString = JsonSerializer.Serialize(profileUser);
+            //update current user in properties and save 
+            if (App.Current.Properties.ContainsKey("CurrentUser"))
+                App.Current.Properties["CurrentUser"] = userString;
+            else
+                App.Current.Properties.Add("CurrentUser", userString);
+            //TODO: Add a services call that saves object in database
+            //NOTE: will need to add save button to header section to prevent multiple system calls
+
+            App.Current.SavePropertiesAsync();
+        }
+        //uses the saved number of ticks to set the schedule section timespans
+        private void setDayTicks()
+        {
+            for(int i = 0; i< profileUser.ScheduleSections.Count; i++)
+            {
+                profileUser.ScheduleSections[i].startTime = TimeSpan.FromTicks(profileUser.ScheduleSections[i].startTicks);
+                profileUser.ScheduleSections[i].endTime = TimeSpan.FromTicks(profileUser.ScheduleSections[i].endTicks);
+            }
+        }
+
+#region commands
         public ICommand editBioCommand => new Command(() =>
         {
             IsBioReadOnly = !IsBioReadOnly;
             IsBioEditing = !IsBioEditing;
+
+            if (!IsBioEditing)
+                saveUser();
+
         });
+
+        public ICommand saveUserCommand => new Command(() => {
+            saveUser();
+            UserDialogs.Instance.Alert("Saved Successfully!", null, null);
+            IsHeaderEdited = false;
+        });
+
 
         public ICommand saveEducationCommand => new Command(() =>
         {
@@ -108,6 +201,7 @@ namespace TutoringApp.ViewModels
             }
 
             newEducationSection = new EducationSection();
+            saveUser();
             Navigation.PopAsync();
         });
         public ICommand addEducationCommand => new Command(() =>
@@ -127,6 +221,7 @@ namespace TutoringApp.ViewModels
             Navigation.PopAsync();
 
             EducationListHeight -= 80;
+            saveUser();
         });
         public ICommand EditEducationCommand => new Command((object selectedSection) =>
         {
@@ -140,87 +235,104 @@ namespace TutoringApp.ViewModels
             Navigation.PushAsync(details);
         });
 
-        public ICommand EditSkillCommand => new Command((object selectedSkill) =>
+        public ICommand EditCourseCommand => new Command((object selectedCourse) =>
         {
-            newSkill = (Skill)selectedSkill;
-            oldSkill = (Skill)selectedSkill;
+            newCourse = (Course)selectedCourse;
+            oldCourse = (Course)selectedCourse;
             SkillDetails skillDetails = new SkillDetails(false);
-            skillDetails.BindingContext = newSkill;
-            skillDetails.deleteCommand = deleteSkillCommand;
-            skillDetails.saveCommand = saveSkillCommand;
+            skillDetails.BindingContext = newCourse;
+            skillDetails.deleteCommand = deleteCourseCommand;
+            skillDetails.saveCommand = saveCourseCommand;
 
             Navigation.PushAsync(skillDetails);
 
-            isEditingSkill = true;
+            isEditingCourse = true;
         });
 
-
-        public ICommand saveSkillCommand => new Command(() =>
+        public ICommand saveCourseCommand => new Command(() =>
         {
-            if (isEditingSkill)
+            if (isEditingCourse)
             {
-                for (int i = 0; i < Skills.Count; i++)
+                for (int i = 0; i < profileUser.Courses.Count; i++)
                 {
-                    if (Skills[i].sectionTitle == oldSkill.sectionTitle)
+                    // if (Skills[i].SectionTitle == oldSkill.sectionTitle)
+                    // {
+                    //finds element matching old element and overwrites it with new element
+                    //  for(int kk=0; kk < Skills[i].skills.Count; kk++)
+                    // {
+                    // if (Skills[i].skills[kk] == oldSkill)
+                    // {
+                    //     Skills[i].skills[kk] = newSkill;
+                    //     break;
+                    // }                                
+                    //     }
+
+                    if (profileUser.Courses[i] == oldCourse)
                     {
-                        //finds element matching old element and overwrites it with new element
-                        for(int kk=0; kk < Skills[i].skills.Count; kk++)
-                        {
-                            if (Skills[i].skills[kk] == oldSkill)
-                            {
-                                Skills[i].skills[kk] = newSkill;
-                                break;
-                            }                                
-                        }
-                        //clear new object 
-                        newSkill = null;
-                        oldSkill = null;
-                        Navigation.PopAsync();
-                        return;
+                        profileUser.Courses[i] = newCourse;
+                        Courses = profileUser.Courses;
                     }
                 }
+
+
+                    //clear new object 
+                    newCourse = null;
+                    oldCourse = null;
+                  //  }
+                
             }
             else
             {
-                //if sectionTitle already exists, add skill under this
-                for (int i = 0; i < Skills.Count; i++)
-                {
-                    if (Skills[i].sectionTitle == newSkill.sectionTitle)
-                    {
-                        Skills[i].Add(newSkill);
-                        newSkill = null;
-                        Navigation.PopAsync();
+                /*  //if sectionTitle already exists, add skill under this
+                  for (int i = 0; i < Skills.Count; i++)
+                  {
+                      if (Skills[i].SectionTitle == newSkill.sectionTitle)
+                      {
+                          Skills[i].Add(newSkill);
+                          newSkill = null;
+                          Navigation.PopAsync();
 
-                        SkillListHeight += 40;
-                        return;
-                    }
-                }
-                //if no section title exists, add it and add new skill to it
-                Skills.Add(new SkillSection() { sectionTitle = newSkill.sectionTitle });
-                Skills[Skills.Count - 1].Add(newSkill);
-                newSkill = null;
-                SkillListHeight += 80;
-                Navigation.PopAsync();
+                          SkillListHeight += 40;
+                          return;
+                      }
+                  }
+                  //if no section title exists, add it and add new skill to it
+                  Skills.Add(new SkillSection() { SectionTitle = newSkill.sectionTitle });
+                  Skills[Skills.Count - 1].Add(newSkill);
+                  newSkill = null;
+                  SkillListHeight += 80;
+                  Navigation.PopAsync();
+                  */
+
+                profileUser.Courses.Add(newCourse);
+                Courses = profileUser.Courses;
+                CourseListHeight += 40;
+                newCourse = null;
+                oldCourse = null;
             }
+
+
+            saveUser();
+            Navigation.PopAsync();
         });
 
-        public ICommand addSkillCommand => new Command(() =>
+        public ICommand addCourseCommand => new Command(() =>
         {
             SkillDetails skillDetails = new SkillDetails(true);
-            newSkill = new Skill();
-            skillDetails.BindingContext = newSkill;
-            skillDetails.saveCommand = saveSkillCommand;
+            newCourse = new Course("","");
+            skillDetails.BindingContext = newCourse;
+            skillDetails.saveCommand = saveCourseCommand;
             skillDetails.initSelectedIndex();
             Navigation.PushAsync(skillDetails);
 
-            isEditingSkill = false;
+            isEditingCourse = false;
         });
 
-        public ICommand deleteSkillCommand => new Command(() =>
+        public ICommand deleteCourseCommand => new Command(() =>
         {
-            for(int i = 0; i < Skills.Count; i++)
-            {
-                if (Skills[i].sectionTitle == newSkill.sectionTitle)
+            /* for(int i = 0; i < profileUser.Courses.Count; i++)
+           {
+              if (Skills[i].SectionTitle == newSkill.sectionTitle)
                 {
                     Skills[i].deleteSkill(newSkill);
                     SkillListHeight -= 40;
@@ -231,21 +343,21 @@ namespace TutoringApp.ViewModels
                         Skills.RemoveAt(i);
                         SkillListHeight -= 40;
                     }
-
                 }
                     
-            }          
 
-            //clear newSkill
-            newSkill = null;
+
+            }       */
+            profileUser.Courses.Remove(oldCourse);
+            //clear newCourse
+            newCourse = null;
+            saveUser();
             Navigation.PopAsync();
         });
-        #endregion
+#endregion
 
-
-
-        #region properties
-
+#region properties
+        public User profileUser = new User();
 
         private Double pictureSize;
         public Double PictureSize
@@ -259,31 +371,32 @@ namespace TutoringApp.ViewModels
             get { return radius; }
         }
 
-        public Double AverageRating { get; set; }
+        public Double AverageRating { get; set; } //IN USER
         //Used to allow listview resizing after adding elements to education section 
         private int educationListHeight { get; set; }
         public int EducationListHeight { get { return educationListHeight; } set { educationListHeight = value; onPropertyChanged(); } }
 
-        private int skillListHeight { get; set; }
-        public int SkillListHeight { get { return skillListHeight; } set { skillListHeight = value; onPropertyChanged(); } }
+        private int courseListHeight { get; set; }
+        public int CourseListHeight { get { return courseListHeight; } set { courseListHeight = value; onPropertyChanged(); } }
 
         //skill objects used for adding and editing
-        private Skill newSkill { get; set; } = new Skill();
-        private Skill oldSkill { get; set; } = new Skill();
+        private Course newCourse { get; set; } = new Course("","");
+        private Course oldCourse { get; set; } = new Course("","");
         private EducationSection newEducationSection { get; set; } = new EducationSection();
 
-        public ObservableCollection<EducationSection> EducationSections { get; } = new ObservableCollection<EducationSection>();
+        public ObservableCollection<EducationSection> EducationSections { get; set; } = new ObservableCollection<EducationSection>(); //IN USER
 
-        public ObservableCollection<ScheduleTile> ScheduleSections { get; } = new ObservableCollection<ScheduleTile>();
+        public ObservableCollection<ScheduleTile> ScheduleSections { get; set; } = new ObservableCollection<ScheduleTile>(); //IN USER
 
-        public ObservableCollection<SkillSection> Skills { get; set; } = new ObservableCollection<SkillSection>();
+        public ObservableCollection<Course> Courses { get; set; } = new ObservableCollection<Course>(); //IN USER
 
-        private int requestedPay { get; set; } = 15;
+        private int requestedPay { get; set; } //IN USER
         public string RequestedPay { 
             get { return requestedPay.ToString(); }  
             set {
                 int tempPay;
-                Int32.TryParse( value.Replace(".", String.Empty) , out tempPay);
+                Int32.TryParse(value.Replace(".", String.Empty), out tempPay);
+                    
                 //do not notify property changed if value is same (prevents looping issue)
                 if (tempPay == requestedPay)
                     return;
@@ -294,20 +407,42 @@ namespace TutoringApp.ViewModels
                     requestedPay = 0;              
                 else             
                     requestedPay = tempPay;
-                
+
+                saveUser();
                 onPropertyChanged(); } 
                 }
         public string ratingLabel { get { return string.Format("{0:0.0}", Math.Truncate(AverageRating * 10) / 10); } }
         public string pictureSrc { get; private set; } = "user.png";
-        public string Biography { get; set; } = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nascetur ridiculus mus mauris vitae ultricies. " +
-            "Turpis cursus in hac habitasse platea dictumst quisque sagittis. Sed arcu non odio euismod. Amet tellus cras adipiscing enim eu turpis egestas pretium. Morbi tincidunt augue interdum velit euismod in. Id donec" +
-            " ultrices tincidunt arcu non sodales neque. Risus feugiat in ante metus dictum. Vel fringilla est ullamcorper eget nulla facilisi etiam. Adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla. Lorem ipsum";
+        public string Biography { get; set; }
+        private string Name { get; set; }
 
-        private bool isEditingSkill { get; set; } = false;
+        public string name { get { return Name; } set {
+                if (Name == value)
+                    return;
+                Name = value; 
+                IsHeaderEdited = true; } }
+        private string ShortBio { get; set; }
+
+        public string shortBio { get { return ShortBio; } 
+            set {
+                if (ShortBio == value)
+                    return;
+                ShortBio = value;
+                IsHeaderEdited = true;
+            } }
+
+
+        private bool isEditingCourse { get; set; } = false;
         private bool isBioReadOnly { get; set; } = true;
         public bool IsBioReadOnly { get { return isBioReadOnly; } set { isBioReadOnly = value; onPropertyChanged(); } }
+
+        private bool isHeaderEdited { get; set; } = false;
+        public bool IsHeaderEdited { get { return isHeaderEdited; } 
+            set { isHeaderEdited = value; 
+                onPropertyChanged(); } }
+
         private bool isBioEditing { get; set; } = false;
         public bool IsBioEditing { get { return isBioEditing; } set { isBioEditing = value; onPropertyChanged(); } }
-        #endregion
+#endregion
     }
 }

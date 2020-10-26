@@ -5,19 +5,15 @@ using System.Text;
 
 namespace TutoringApp.Models
 {
-    class TutorInfo
+    class TutorInfo : User
     {
-        public string pictureSrc { get; set; } = "user.png";
-        public string tutorName { get; set; } = "";
 
-        public string shortDescription { get; set; } = "";
-
-        public string longDescription { get; set; } = "";
-
-        public List<string> tutorTopics { get; set; } = new List<string>{ "" };
-
-        public double averageRating { get; set; } = 0;
         public int displayPosition { get; set; }
+        public string ratingLabel { get { return string.Format("{0:0.0}", Math.Truncate(AverageRating * 10) / 10); } }
 
+        public string RequestedPay
+        {
+            get { return "$" + requestedPay.ToString(); }
+        }
     }
 }

@@ -18,7 +18,7 @@ namespace TutoringApp.ViewModels
             menuTiles.Add(new NavigationTile { pageName = "Home", iconSrc = "home.png", targetType = typeof(Home) });
             menuTiles.Add(new NavigationTile { pageName = "Settings", iconSrc = "settings.png", targetType = typeof(Settings) });
             menuTiles.Add(new NavigationTile { pageName = "Help", iconSrc = "question.png", targetType = typeof(Help) });
-            menuTiles.Add(new NavigationTile { pageName = "Jovanny's Resume", iconSrc = "resume.png", targetType = typeof(Resume) });
+           // menuTiles.Add(new NavigationTile { pageName = "Jovanny's Resume", iconSrc = "resume.png", targetType = typeof(Resume) });
 
             //Used to make picture always be 15% of the screen width
             pictureSize = (DeviceDisplay.MainDisplayInfo.Width * 0.15) ;

@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using System.Text;
 using TutoringApp.Models;
 using TutoringApp.Views;
+using System.Text.Json;
 
 namespace TutoringApp.ViewModels
 {
@@ -15,19 +16,16 @@ namespace TutoringApp.ViewModels
         {
             TutorList = new ObservableCollection<TutorInfo>();
 
-            PerformSearchCommand = new Command<string>((string query) =>
-            {
-                //TODO create search call
-                SearchQuery = query;
-            
-            });
             //adds inital items to list
             addTutors();
         }
 
         private int numTutorsDisplayed { get; set; } = 0;
         private string searchQuery { get; set; }
-        public ICommand PerformSearchCommand { protected set; get; }
+        public ICommand PerformSearchCommand => new Command<string>((query) =>
+        {
+            searchQuery = query;
+        });
         public string SearchQuery
         {
             get { return searchQuery; }
@@ -39,19 +37,11 @@ namespace TutoringApp.ViewModels
         //placeholder to add more tutors to list
         private void addTutors()
         {
-            List<string> topicsList = new List<string>();
-            topicsList.Add("EEL3701");
-            topicsList.Add("C#");
-            topicsList.Add("COP4701");
-
 
             for (int i = 0; i < 10; i++, numTutorsDisplayed++)
             {
                 TutorInfo info = new TutorInfo();
-                info.averageRating = 4.3298;
-                info.tutorName = "Limp Shrimp";
-                info.tutorTopics = topicsList;
-                info.shortDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit";
+                info = JsonSerializer.Deserialize<TutorInfo>(App.Current.Properties["CurrentUser"] as string);
                 info.displayPosition = numTutorsDisplayed;
                 TutorList.Add(info);
             }
