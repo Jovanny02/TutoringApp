@@ -26,7 +26,7 @@ namespace TutoringApp.ViewModels
             //Commands to handle button click for login and signup
             //TODO: change to match correct page
             SignUpCommand = new Command(() => {
-                Navigation.PushAsync(new SignUp());
+                Navigation.PushAsync(new WhoAreYou());
 
 
 
