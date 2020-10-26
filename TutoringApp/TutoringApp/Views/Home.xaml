@@ -45,7 +45,7 @@
 
                     <!-- ADD click handlers-->
                 <Button 
-                    Text="Sign Up as a Student or tutor" 
+                    Text="Sign Up" 
                     Style="{StaticResource HomeButtonStyle2}" 
                     Margin="25,20,25,20"  
                     Command="{Binding SignUpCommand}"/>
