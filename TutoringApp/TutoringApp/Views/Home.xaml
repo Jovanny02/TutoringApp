@@ -43,7 +43,7 @@
                 FontAttributes="Bold"/>
 
 
-                    <!-- ADD click handlers-->
+                    
                 <Button 
                     Text="Sign Up" 
                     Style="{StaticResource HomeButtonStyle2}" 

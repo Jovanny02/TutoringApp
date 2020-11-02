@@ -6,21 +6,43 @@
              mc:Ignorable="d"
              x:Class="TutoringApp.Views.WhoAreYou"
              Padding="10">
-    <AbsoluteLayout>
-        <Label Text=" Are you?"
-                  TextColor="Black"
-                  FontAttributes="Bold"
-                  FontSize="40"
+    <StackLayout>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".5*"/>
+                <ColumnDefinition Width="9*" />
+                <ColumnDefinition Width=".5*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height=".5*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Text=" You Are a ..."
+               TextColor="{StaticResource DefaultBlack}"
+               FontAttributes="Bold"              
+               FontSize="40"
                HorizontalOptions="CenterAndExpand"
                VerticalOptions="Center"
-            AbsoluteLayout.LayoutBounds="0.5,0.1,100,100" AbsoluteLayout.LayoutFlags="PositionProportional"/>
-        <Image Source ="who.png" AbsoluteLayout.LayoutBounds="0.5,0.5,100,100" AbsoluteLayout.LayoutFlags="PositionProportional"  />
-        <Button Text="A student" TextColor="White" Style="{StaticResource HomeButtonStyle2}" AbsoluteLayout.LayoutBounds="0,0.6,1,50" AbsoluteLayout.LayoutFlags="WidthProportional, PositionProportional"
-                Command="{Binding SignupTutorCommand}"/>
-        <Button Text="A Tutor"  TextColor="white" Style="{StaticResource HomeButtonStyle2}" AbsoluteLayout.LayoutBounds="0,0.70,1,50" AbsoluteLayout.LayoutFlags="WidthProportional,PositionProportional"
-                Command="{Binding SignupTutorCommand}"/>
+               Grid.Column="1"
+           />
+            <Image Source ="who.png" Grid.Column="1" Grid.Row="1"/>
 
-    </AbsoluteLayout>
+            <StackLayout Grid.ColumnSpan="3" Grid.Row="2">
+
+                <Button Text="Student" Margin="25,50,25,20"  
+                    VerticalOptions="End" Style="{StaticResource HomeButtonStyle2}" Command="{Binding SignupTutorCommand}" CommandParameter="False"/>
+                <Button Text="Tutor"  Margin="25,0,25,0" 
+                    VerticalOptions="Start" Style="{StaticResource HomeButtonStyle2}" Command="{Binding SignupTutorCommand}" CommandParameter="True"/>
+
+
+            </StackLayout>
+            
+            
+            
+        </Grid>
+    </StackLayout>
         
     
 </ContentPage>

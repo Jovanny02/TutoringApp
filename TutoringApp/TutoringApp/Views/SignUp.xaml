@@ -9,7 +9,7 @@
              x:Class="TutoringApp.Views.SignUp">
     <ContentPage.Content>
         <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand">
-            <Grid>
+            <Grid x:Name="myGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width=".5*" />
                     <ColumnDefinition Width="9*" />
@@ -17,6 +17,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.3*"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -39,10 +40,10 @@
 
 
                 <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="3" Grid.Column="1">
-                    <Label Text="Username" TextColor="{StaticResource DefaultBlue}" 
+                    <Label Text="Name" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="Enter Your Username" Text="{Binding userName}"/>
+                        <CustRend:CustomEntry Placeholder="Enter Your Full Name" Text="{Binding Name}"/>
                     </Frame>
                 </StackLayout>
 
@@ -53,16 +54,24 @@
                         <CustRend:CustomEntry Placeholder="Enter Your Password" IsPassword="True" Text="{Binding password}"/>
                     </Frame>
                 </StackLayout>
-
-                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="5" Grid.Column="1">
-                    <Label Text="Major" TextColor="{StaticResource DefaultBlue}" 
+                
+                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="5" Grid.Column="1" >
+                    <Label Text="UFID" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="Enter your Major"  Text="{Binding Major}"/>
+                        <CustRend:CustomEntry Placeholder="Enter Your UFID"  Text="{Binding UFID}" Keyboard="Numeric"/>
                     </Frame>
                 </StackLayout>
 
-                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="6" Grid.Column="1">
+                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="6" Grid.Column="1" x:Name="CourseSection">
+                    <Label Text="Course" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Frame Style="{StaticResource EntryFrame}">
+                        <CustRend:CustomEntry Placeholder="Enter One Course You Want to Tutor For"  Text="{Binding Course}"/>
+                    </Frame>
+                </StackLayout>
+
+                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="7" Grid.Column="1">
                     <Button Text="Sign Up" Style="{StaticResource HomeButtonStyle2}"
                             Margin="25,50,25,0" Command="{Binding SignUpCommand}" />
                 </StackLayout>

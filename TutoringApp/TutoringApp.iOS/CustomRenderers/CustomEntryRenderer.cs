@@ -18,8 +18,12 @@ namespace CustomRenderers.ios
             {
 
                 Control.BorderStyle = UITextBorderStyle.None;
-                Control.Layer.CornerRadius = 10;             
-
+                Control.Layer.CornerRadius = 10;
+                //ADD SUPPORT FOR NUMERIC KEYBOARD
+                if ((e.NewElement as CustomEntry).Keyboard == Keyboard.Numeric)
+                {
+                    Control.KeyboardType = UIKeyboardType.NumberPad;
+                }
             }
         }
     }

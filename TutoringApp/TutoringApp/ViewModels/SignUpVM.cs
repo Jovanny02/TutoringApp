@@ -12,19 +12,24 @@ namespace TutoringApp.ViewModels
         {
             SignUpCommand = new Command(() =>
             {
-                //TODO create sing up call using information in password, user, and email
-                Console.WriteLine("Triggered Sign Up Command");
+                //TODO create sign up call using information in password, user, and email
+
+                //pop twice to get to home page
                 Navigation.PopAsync();
+                Navigation.PopAsync();
+
             });
 
 
         }
 
         public ICommand SignUpCommand { protected set; get; }
-        public string Major { get; set; }
+        public string Course { get; set; }
         public string email { get; set; }
         public string password { get; set; }
-        public string userName { get; set; }
+        public string Name { get; set; }
+        public string UFID { get; set; }
+
 
     }
 }

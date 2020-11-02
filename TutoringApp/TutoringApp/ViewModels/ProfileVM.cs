@@ -93,7 +93,7 @@ namespace TutoringApp.ViewModels
             setDayTicks();
 
             //education sections
-            EducationListHeight = profileUser.EducationSections.Count() * 80;
+            EducationListHeight = profileUser.EducationSections.Count() * EducationHeight;
             EducationSections = profileUser.EducationSections;
             //skills sections
             Courses = profileUser.Courses;
@@ -101,8 +101,8 @@ namespace TutoringApp.ViewModels
             //determine skills height
             //  for (int i = 0; i < Courses.Count; i++)
             // {
-            //SkillListHeight += (40 + Skills[i].skills.Count()*40); 
-            CourseListHeight += Courses.Count() * 40;
+            //SkillListHeight += (CourseHeight + Skills[i].skills.Count()*CourseHeight); 
+            CourseListHeight += Courses.Count() * CourseHeight;
           //  }
             //init biography
             Biography = profileUser.Biography;
@@ -184,7 +184,7 @@ namespace TutoringApp.ViewModels
                     newEducationSection.key = 0;
 
                 EducationSections.Add(newEducationSection);
-                EducationListHeight += 80;
+                EducationListHeight += EducationHeight;
             }
             else
             {
@@ -220,7 +220,7 @@ namespace TutoringApp.ViewModels
             EducationSections.Remove(newEducationSection);
             Navigation.PopAsync();
 
-            EducationListHeight -= 80;
+            EducationListHeight -= EducationHeight;
             saveUser();
         });
         public ICommand EditEducationCommand => new Command((object selectedSection) =>
@@ -292,7 +292,7 @@ namespace TutoringApp.ViewModels
                           newSkill = null;
                           Navigation.PopAsync();
 
-                          SkillListHeight += 40;
+                          SkillListHeight += CourseHeight;
                           return;
                       }
                   }
@@ -300,13 +300,13 @@ namespace TutoringApp.ViewModels
                   Skills.Add(new SkillSection() { SectionTitle = newSkill.sectionTitle });
                   Skills[Skills.Count - 1].Add(newSkill);
                   newSkill = null;
-                  SkillListHeight += 80;
+                  SkillListHeight += EducationHeight;
                   Navigation.PopAsync();
                   */
 
                 profileUser.Courses.Add(newCourse);
                 Courses = profileUser.Courses;
-                CourseListHeight += 40;
+                CourseListHeight += CourseHeight;
                 newCourse = null;
                 oldCourse = null;
             }
@@ -335,13 +335,13 @@ namespace TutoringApp.ViewModels
               if (Skills[i].SectionTitle == newSkill.sectionTitle)
                 {
                     Skills[i].deleteSkill(newSkill);
-                    SkillListHeight -= 40;
+                    SkillListHeight -= CourseHeight;
 
                     if (Skills[i].skills.Count == 0)
                     {
                         //if section is empty, the section is removed and list size is shrunken
                         Skills.RemoveAt(i);
-                        SkillListHeight -= 40;
+                        SkillListHeight -= CourseHeight;
                     }
                 }
                     
@@ -349,14 +349,18 @@ namespace TutoringApp.ViewModels
 
             }       */
             profileUser.Courses.Remove(oldCourse);
+            CourseListHeight -= CourseHeight;
             //clear newCourse
             newCourse = null;
             saveUser();
             Navigation.PopAsync();
         });
-#endregion
+        #endregion
 
-#region properties
+        #region properties
+        private const int CourseHeight = 40;
+        private const int EducationHeight = 80;
+
         public User profileUser = new User();
 
         private Double pictureSize;

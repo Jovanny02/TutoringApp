@@ -10,7 +10,7 @@ using CustomRenderers.Droid;
 [assembly: ExportRenderer(typeof(CustomEntry), typeof(CustomEntryRenderer))]
 namespace CustomRenderers.Droid
 {
-    
+    [Obsolete]
     class CustomEntryRenderer : EntryRenderer
     {
         protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
@@ -22,8 +22,12 @@ namespace CustomRenderers.Droid
                 Android.Graphics.Drawables.GradientDrawable gd = new GradientDrawable();
                 gd.SetColor(global::Android.Graphics.Color.Transparent);
                 Control.SetBackgroundDrawable(gd);
-                Control.SetRawInputType(InputTypes.TextFlagNoSuggestions);
-               
+
+                //ADD SUPPORT FOR NUMERIC KEYBOARD
+                if ((e.NewElement as CustomEntry).Keyboard == Keyboard.Numeric)
+                {
+                    Control.SetRawInputType(InputTypes.ClassNumber);
+                }
             }
         }
     }

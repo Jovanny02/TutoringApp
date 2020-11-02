@@ -12,18 +12,18 @@ namespace TutoringApp.ViewModels
         
         public WhoAreYouVM() 
         {
-            SignupTutorCommand= new Command(() =>
-            {
-                Navigation.PushAsync(new SignUp());
 
-                //TODO create forgot user_email page
-                //Console.WriteLine("Triggered forgot user name command");
-
-            });
 
         }
 
-        public ICommand SignupTutorCommand { protected set; get; }
+        public ICommand SignupTutorCommand => new Command((object isTutorString) =>
+        {
+            //check to see if it is a tutor
+            bool isTutor = (isTutorString.ToString() == "True");
+
+            Navigation.PushAsync(new SignUp(isTutor));
+
+        });
 
 
     }
