@@ -65,6 +65,7 @@
     <Compile Include="CustomRenderers\CustomEntryRenderer.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="Services\PhotoPickerService.cs" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -125,6 +126,9 @@
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs">
       <Version>7.1.0.462</Version>
+    </PackageReference>
+    <PackageReference Include="CloudinaryDotNet">
+      <Version>1.13.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>

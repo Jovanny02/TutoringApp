@@ -34,11 +34,13 @@ namespace TutoringApp.ViewModels
                 int index = currUser.name.IndexOf(' ');
                 UserMessage = currUser.name.Substring(0, index);
                 //TODO add logic to get their picture uri
+                pictureSrc = currUser.pictureSrc;
 
             }
             else
             {
                 UserMessage = "New User";
+                pictureSrc = "user.png";
             }
 
 

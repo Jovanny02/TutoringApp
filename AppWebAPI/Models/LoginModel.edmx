@@ -5,6 +5,28 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="TutoringAppDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TutoringAppDB.dbo.Courses' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Courses">
+          <Key>
+            <PropertyRef Name="UFID" />
+          </Key>
+          <Property Name="UFID" Type="int" Nullable="false" />
+          <Property Name="departmentTitle" Type="varchar" MaxLength="80" />
+          <Property Name="courseName" Type="varchar" MaxLength="80" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TutoringAppDB.dbo.EducationSections' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="EducationSections">
+          <Key>
+            <PropertyRef Name="UFID" />
+          </Key>
+          <Property Name="UFID" Type="int" Nullable="false" />
+          <Property Name="Major" Type="varchar" MaxLength="50" />
+          <Property Name="University" Type="varchar" MaxLength="50" />
+          <Property Name="fromYear" Type="int" />
+          <Property Name="toYear" Type="int" />
+        </EntityType>
         <EntityType Name="loginTest">
           <Key>
             <PropertyRef Name="username" />
@@ -13,8 +35,167 @@
           <Property Name="password" Type="varchar" MaxLength="50" />
           <Property Name="email" Type="varchar" MaxLength="50" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TutoringAppDB.dbo.reservations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="reservations">
+          <Key>
+            <PropertyRef Name="tutorUFID" />
+            <PropertyRef Name="studentUFID" />
+            <PropertyRef Name="fromDateTime" />
+            <PropertyRef Name="toDateTime" />
+          </Key>
+          <Property Name="tutorUFID" Type="int" Nullable="false" />
+          <Property Name="studentUFID" Type="int" Nullable="false" />
+          <Property Name="fromDateTime" Type="datetime" Nullable="false" />
+          <Property Name="toDateTime" Type="datetime" Nullable="false" />
+          <Property Name="isCancelled" Type="bit" />
+          <Property Name="tutorRating" Type="float" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="UFID" />
+          </Key>
+          <Property Name="UFID" Type="int" Nullable="false" />
+          <Property Name="fullName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="requestedPay" Type="float" />
+          <Property Name="isTutor" Type="bit" />
+          <Property Name="averageRating" Type="float" />
+          <Property Name="shortBio" Type="varchar" MaxLength="255" />
+          <Property Name="Biography" Type="varchar" MaxLength="255" />
+          <Property Name="pictureSource" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TutoringAppDB.dbo.userSchedules' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="userSchedules">
+          <Key>
+            <PropertyRef Name="UFID" />
+          </Key>
+          <Property Name="UFID" Type="int" Nullable="false" />
+          <Property Name="day" Type="varchar" MaxLength="12" />
+          <Property Name="startTicks" Type="bigint" />
+          <Property Name="endTicks" Type="bigint" />
+          <Property Name="isUnavailable" Type="bit" />
+        </EntityType>
+        <Association Name="FK__Courses__UFID__00200768">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="Courses" Type="Self.Courses" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="UFID" />
+            </Principal>
+            <Dependent Role="Courses">
+              <PropertyRef Name="UFID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EducationS__UFID__7E37BEF6">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="EducationSections" Type="Self.EducationSections" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="UFID" />
+            </Principal>
+            <Dependent Role="EducationSections">
+              <PropertyRef Name="UFID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__reservati__stude__02084FDA">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="reservations" Type="Self.reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="UFID" />
+            </Principal>
+            <Dependent Role="reservations">
+              <PropertyRef Name="studentUFID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__reservati__tutor__01142BA1">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="reservations" Type="Self.reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="UFID" />
+            </Principal>
+            <Dependent Role="reservations">
+              <PropertyRef Name="tutorUFID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__userSchedu__UFID__7F2BE32F">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="userSchedules" Type="Self.userSchedules" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="UFID" />
+            </Principal>
+            <Dependent Role="userSchedules">
+              <PropertyRef Name="UFID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="TutoringAppDBModelStoreContainer">
           <EntitySet Name="loginTest" EntityType="Self.loginTest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Courses" EntityType="Self.Courses" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Courses].[UFID] AS [UFID], 
+    [Courses].[departmentTitle] AS [departmentTitle], 
+    [Courses].[courseName] AS [courseName]
+    FROM [dbo].[Courses] AS [Courses]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="EducationSections" EntityType="Self.EducationSections" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [EducationSections].[UFID] AS [UFID], 
+    [EducationSections].[Major] AS [Major], 
+    [EducationSections].[University] AS [University], 
+    [EducationSections].[fromYear] AS [fromYear], 
+    [EducationSections].[toYear] AS [toYear]
+    FROM [dbo].[EducationSections] AS [EducationSections]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="reservations" EntityType="Self.reservations" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [reservations].[tutorUFID] AS [tutorUFID], 
+    [reservations].[studentUFID] AS [studentUFID], 
+    [reservations].[fromDateTime] AS [fromDateTime], 
+    [reservations].[toDateTime] AS [toDateTime], 
+    [reservations].[isCancelled] AS [isCancelled], 
+    [reservations].[tutorRating] AS [tutorRating]
+    FROM [dbo].[reservations] AS [reservations]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="userSchedules" EntityType="Self.userSchedules" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [userSchedules].[UFID] AS [UFID], 
+    [userSchedules].[day] AS [day], 
+    [userSchedules].[startTicks] AS [startTicks], 
+    [userSchedules].[endTicks] AS [endTicks], 
+    [userSchedules].[isUnavailable] AS [isUnavailable]
+    FROM [dbo].[userSchedules] AS [userSchedules]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Courses__UFID__00200768" Association="Self.FK__Courses__UFID__00200768">
+            <End Role="users" EntitySet="users" />
+            <End Role="Courses" EntitySet="Courses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EducationS__UFID__7E37BEF6" Association="Self.FK__EducationS__UFID__7E37BEF6">
+            <End Role="users" EntitySet="users" />
+            <End Role="EducationSections" EntitySet="EducationSections" />
+          </AssociationSet>
+          <AssociationSet Name="FK__reservati__stude__02084FDA" Association="Self.FK__reservati__stude__02084FDA">
+            <End Role="users" EntitySet="users" />
+            <End Role="reservations" EntitySet="reservations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__reservati__tutor__01142BA1" Association="Self.FK__reservati__tutor__01142BA1">
+            <End Role="users" EntitySet="users" />
+            <End Role="reservations" EntitySet="reservations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__userSchedu__UFID__7F2BE32F" Association="Self.FK__userSchedu__UFID__7F2BE32F">
+            <End Role="users" EntitySet="users" />
+            <End Role="userSchedules" EntitySet="userSchedules" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -22,6 +203,31 @@
       <Schema Namespace="TutoringAppDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="TutoringAppDBEntities" annotation:LazyLoadingEnabled="true" >
           <EntitySet Name="loginTests" EntityType="TutoringAppDBModel.loginTest" />
+          <EntitySet Name="users" EntityType="TutoringAppDBModel.user" />
+          <EntitySet Name="Courses" EntityType="TutoringAppDBModel.Cours" />
+          <EntitySet Name="EducationSections" EntityType="TutoringAppDBModel.EducationSection" />
+          <EntitySet Name="reservations" EntityType="TutoringAppDBModel.reservation" />
+          <EntitySet Name="userSchedules" EntityType="TutoringAppDBModel.userSchedule" />
+          <AssociationSet Name="FK__Courses__UFID__00200768" Association="TutoringAppDBModel.FK__Courses__UFID__00200768">
+            <End Role="user" EntitySet="users" />
+            <End Role="Cours" EntitySet="Courses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EducationS__UFID__7E37BEF6" Association="TutoringAppDBModel.FK__EducationS__UFID__7E37BEF6">
+            <End Role="user" EntitySet="users" />
+            <End Role="EducationSection" EntitySet="EducationSections" />
+          </AssociationSet>
+          <AssociationSet Name="FK__reservati__stude__02084FDA" Association="TutoringAppDBModel.FK__reservati__stude__02084FDA">
+            <End Role="user" EntitySet="users" />
+            <End Role="reservation" EntitySet="reservations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__reservati__tutor__01142BA1" Association="TutoringAppDBModel.FK__reservati__tutor__01142BA1">
+            <End Role="user" EntitySet="users" />
+            <End Role="reservation" EntitySet="reservations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__userSchedu__UFID__7F2BE32F" Association="TutoringAppDBModel.FK__userSchedu__UFID__7F2BE32F">
+            <End Role="user" EntitySet="users" />
+            <End Role="userSchedule" EntitySet="userSchedules" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="loginTest">
           <Key>
@@ -31,6 +237,133 @@
           <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="UFID" />
+          </Key>
+          <Property Name="UFID" Type="Int32" Nullable="false" />
+          <Property Name="fullName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="requestedPay" Type="Double" />
+          <Property Name="isTutor" Type="Boolean" />
+          <Property Name="averageRating" Type="Double" />
+          <Property Name="shortBio" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Biography" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="pictureSource" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cours" Relationship="TutoringAppDBModel.FK__Courses__UFID__00200768" FromRole="user" ToRole="Cours" />
+          <NavigationProperty Name="EducationSection" Relationship="TutoringAppDBModel.FK__EducationS__UFID__7E37BEF6" FromRole="user" ToRole="EducationSection" />
+          <NavigationProperty Name="reservations" Relationship="TutoringAppDBModel.FK__reservati__stude__02084FDA" FromRole="user" ToRole="reservation" />
+          <NavigationProperty Name="reservations1" Relationship="TutoringAppDBModel.FK__reservati__tutor__01142BA1" FromRole="user" ToRole="reservation" />
+          <NavigationProperty Name="userSchedule" Relationship="TutoringAppDBModel.FK__userSchedu__UFID__7F2BE32F" FromRole="user" ToRole="userSchedule" />
+        </EntityType>
+        <EntityType Name="Cours">
+          <Key>
+            <PropertyRef Name="UFID" />
+          </Key>
+          <Property Name="UFID" Type="Int32" Nullable="false" />
+          <Property Name="departmentTitle" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="courseName" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="user" Relationship="TutoringAppDBModel.FK__Courses__UFID__00200768" FromRole="Cours" ToRole="user" />
+        </EntityType>
+        <EntityType Name="EducationSection">
+          <Key>
+            <PropertyRef Name="UFID" />
+          </Key>
+          <Property Name="UFID" Type="Int32" Nullable="false" />
+          <Property Name="Major" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="University" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fromYear" Type="Int32" />
+          <Property Name="toYear" Type="Int32" />
+          <NavigationProperty Name="user" Relationship="TutoringAppDBModel.FK__EducationS__UFID__7E37BEF6" FromRole="EducationSection" ToRole="user" />
+        </EntityType>
+        <EntityType Name="reservation">
+          <Key>
+            <PropertyRef Name="tutorUFID" />
+            <PropertyRef Name="studentUFID" />
+            <PropertyRef Name="fromDateTime" />
+            <PropertyRef Name="toDateTime" />
+          </Key>
+          <Property Name="tutorUFID" Type="Int32" Nullable="false" />
+          <Property Name="studentUFID" Type="Int32" Nullable="false" />
+          <Property Name="fromDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="toDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="isCancelled" Type="Boolean" />
+          <Property Name="tutorRating" Type="Double" />
+          <NavigationProperty Name="user" Relationship="TutoringAppDBModel.FK__reservati__stude__02084FDA" FromRole="reservation" ToRole="user" />
+          <NavigationProperty Name="user1" Relationship="TutoringAppDBModel.FK__reservati__tutor__01142BA1" FromRole="reservation" ToRole="user" />
+        </EntityType>
+        <EntityType Name="userSchedule">
+          <Key>
+            <PropertyRef Name="UFID" />
+          </Key>
+          <Property Name="UFID" Type="Int32" Nullable="false" />
+          <Property Name="day" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="startTicks" Type="Int64" />
+          <Property Name="endTicks" Type="Int64" />
+          <Property Name="isUnavailable" Type="Boolean" />
+          <NavigationProperty Name="user" Relationship="TutoringAppDBModel.FK__userSchedu__UFID__7F2BE32F" FromRole="userSchedule" ToRole="user" />
+        </EntityType>
+        <Association Name="FK__Courses__UFID__00200768">
+          <End Type="TutoringAppDBModel.user" Role="user" Multiplicity="1" />
+          <End Type="TutoringAppDBModel.Cours" Role="Cours" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="UFID" />
+            </Principal>
+            <Dependent Role="Cours">
+              <PropertyRef Name="UFID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EducationS__UFID__7E37BEF6">
+          <End Type="TutoringAppDBModel.user" Role="user" Multiplicity="1" />
+          <End Type="TutoringAppDBModel.EducationSection" Role="EducationSection" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="UFID" />
+            </Principal>
+            <Dependent Role="EducationSection">
+              <PropertyRef Name="UFID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__reservati__stude__02084FDA">
+          <End Type="TutoringAppDBModel.user" Role="user" Multiplicity="1" />
+          <End Type="TutoringAppDBModel.reservation" Role="reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="UFID" />
+            </Principal>
+            <Dependent Role="reservation">
+              <PropertyRef Name="studentUFID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__reservati__tutor__01142BA1">
+          <End Type="TutoringAppDBModel.user" Role="user" Multiplicity="1" />
+          <End Type="TutoringAppDBModel.reservation" Role="reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="UFID" />
+            </Principal>
+            <Dependent Role="reservation">
+              <PropertyRef Name="tutorUFID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__userSchedu__UFID__7F2BE32F">
+          <End Type="TutoringAppDBModel.user" Role="user" Multiplicity="1" />
+          <End Type="TutoringAppDBModel.userSchedule" Role="userSchedule" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="UFID" />
+            </Principal>
+            <Dependent Role="userSchedule">
+              <PropertyRef Name="UFID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -43,6 +376,65 @@
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="username" ColumnName="username" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="TutoringAppDBModel.user">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="pictureSource" ColumnName="pictureSource" />
+                <ScalarProperty Name="Biography" ColumnName="Biography" />
+                <ScalarProperty Name="shortBio" ColumnName="shortBio" />
+                <ScalarProperty Name="averageRating" ColumnName="averageRating" />
+                <ScalarProperty Name="isTutor" ColumnName="isTutor" />
+                <ScalarProperty Name="requestedPay" ColumnName="requestedPay" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="fullName" ColumnName="fullName" />
+                <ScalarProperty Name="UFID" ColumnName="UFID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="TutoringAppDBModel.Cours">
+              <MappingFragment StoreEntitySet="Courses">
+                <ScalarProperty Name="courseName" ColumnName="courseName" />
+                <ScalarProperty Name="departmentTitle" ColumnName="departmentTitle" />
+                <ScalarProperty Name="UFID" ColumnName="UFID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EducationSections">
+            <EntityTypeMapping TypeName="TutoringAppDBModel.EducationSection">
+              <MappingFragment StoreEntitySet="EducationSections">
+                <ScalarProperty Name="toYear" ColumnName="toYear" />
+                <ScalarProperty Name="fromYear" ColumnName="fromYear" />
+                <ScalarProperty Name="University" ColumnName="University" />
+                <ScalarProperty Name="Major" ColumnName="Major" />
+                <ScalarProperty Name="UFID" ColumnName="UFID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="reservations">
+            <EntityTypeMapping TypeName="TutoringAppDBModel.reservation">
+              <MappingFragment StoreEntitySet="reservations">
+                <ScalarProperty Name="tutorRating" ColumnName="tutorRating" />
+                <ScalarProperty Name="isCancelled" ColumnName="isCancelled" />
+                <ScalarProperty Name="toDateTime" ColumnName="toDateTime" />
+                <ScalarProperty Name="fromDateTime" ColumnName="fromDateTime" />
+                <ScalarProperty Name="studentUFID" ColumnName="studentUFID" />
+                <ScalarProperty Name="tutorUFID" ColumnName="tutorUFID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="userSchedules">
+            <EntityTypeMapping TypeName="TutoringAppDBModel.userSchedule">
+              <MappingFragment StoreEntitySet="userSchedules">
+                <ScalarProperty Name="isUnavailable" ColumnName="isUnavailable" />
+                <ScalarProperty Name="endTicks" ColumnName="endTicks" />
+                <ScalarProperty Name="startTicks" ColumnName="startTicks" />
+                <ScalarProperty Name="day" ColumnName="day" />
+                <ScalarProperty Name="UFID" ColumnName="UFID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

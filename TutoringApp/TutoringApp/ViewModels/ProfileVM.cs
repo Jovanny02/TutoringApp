@@ -11,6 +11,10 @@ using System.Linq;
 using Xamarin.Forms.Internals;
 using System.Text.Json;
 using Acr.UserDialogs;
+using System.IO;
+using TutoringApp.Services;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 
 namespace TutoringApp.ViewModels
 {
@@ -29,10 +33,12 @@ namespace TutoringApp.ViewModels
 
             getUserInfo();
             //creates circular picture
-            pictureSize = (DeviceDisplay.MainDisplayInfo.Width * 0.09);
+            pictureSize = DeviceDisplay.MainDisplayInfo.Width * 0.09;
             radius = pictureSize / 2;
-          //  Console.WriteLine("Radius: " + radius + "  Size: " + pictureSize);
-            //clear header save button 
+            EditLabelSize = (int)(pictureSize / 3);
+
+
+
             IsHeaderEdited = false;
         }
 
@@ -79,8 +85,9 @@ namespace TutoringApp.ViewModels
             new ScheduleTile { day = DayOfWeek.Friday },
             new ScheduleTile { day = DayOfWeek.Saturday },
             new ScheduleTile { day = DayOfWeek.Sunday }
-        };
+            };
 
+            profileUser.UFID = 54817581;
             //serialize object as string and save to properties
             // 
             string userString = JsonSerializer.Serialize(profileUser);
@@ -118,6 +125,8 @@ namespace TutoringApp.ViewModels
             name = profileUser.name;
 
             shortBio = profileUser.shortBio;
+
+            pictureSrc = profileUser.pictureSrc;
         }
 
         private void saveUser()
@@ -355,6 +364,46 @@ namespace TutoringApp.ViewModels
             saveUser();
             Navigation.PopAsync();
         });
+        public ICommand selectPictureCommand  => new Command(async () =>
+        {
+            try
+            {        
+                Stream stream = await DependencyService.Get<IPhotoPickerService>().GetImageStreamAsync();
+                if (stream != null)
+                {
+                    //note could add service call Web API to delete previous picture
+
+
+                    ImageUploadParams uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription("test.png", stream),
+                     //   PublicId = "Users/" + profileUser.UFID.ToString(),
+                        UploadPreset = "rzvpyvwl",
+                        Unsigned = true
+                    };
+
+                    Account account = new Account("gatoraid"); 
+                    Cloudinary cloudinary = new Cloudinary(account);
+
+                    ImageUploadResult uploadResult = cloudinary.Upload(uploadParams);
+
+                    //Set a default height as 800 pixels (width will be 800 since aspect ratio is 1:1) so that image will fit in all areas and will just be shrunk to fit
+                    profileUser.pictureSrc = uploadResult.Url.ToString().Replace("upload/", "upload/h_800,ar_1:1,c_fill,g_auto,r_max/").Replace("http", "https");
+                     
+                    pictureSrc = profileUser.pictureSrc;
+                    saveUser();
+                }
+
+
+            }
+            catch(Exception e)
+            {
+
+                Console.WriteLine(e.Message);
+            }
+
+        });
+
         #endregion
 
         #region properties
@@ -368,6 +417,7 @@ namespace TutoringApp.ViewModels
         {
             get { return pictureSize; }
         }
+        public int EditLabelSize { get; set; }
 
         private Double radius;
         public Double Radius
@@ -416,7 +466,8 @@ namespace TutoringApp.ViewModels
                 onPropertyChanged(); } 
                 }
         public string ratingLabel { get { return string.Format("{0:0.0}", Math.Truncate(AverageRating * 10) / 10); } }
-        public string pictureSrc { get; private set; } = "user.png";
+        private string PictureSrc { get; set; }
+        public string pictureSrc { get { return PictureSrc; } set { PictureSrc = value; onPropertyChanged(); } } 
         public string Biography { get; set; }
         private string Name { get; set; }
 
