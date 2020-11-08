@@ -12,7 +12,9 @@ namespace TutoringApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Login : BaseContentPage
     {
+        
         LoginVM loginVM;
+        
         public Login()
         {
             loginVM = new LoginVM();

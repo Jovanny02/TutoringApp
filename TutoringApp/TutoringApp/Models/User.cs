@@ -16,13 +16,20 @@ namespace TutoringApp.Models
 
         public Double AverageRating { get; set; }
         public string name { get; set; }
-        public ObservableCollection<EducationSection> EducationSections { get; set; } = new ObservableCollection<EducationSection>();
+        public ObservableCollection <EducationSection> EducationSections { get; set; } = new ObservableCollection<EducationSection>();
         public ObservableCollection<ScheduleTile> ScheduleSections { get; set; } = new ObservableCollection<ScheduleTile>();
 
         //public ObservableCollection<SkillSection> Skills { get; set; } = new ObservableCollection<SkillSection>();
         public ObservableCollection<Course> Courses { get; set; } = new ObservableCollection<Course>();
 
         public int requestedPay { get; set; }
+
+        public string Username { get; set; }
+
+        public string email { get; set; }
+
+        public string Password { get; set; }
+
         public string Biography { get; set; }
         public string shortBio { 
             get; 
