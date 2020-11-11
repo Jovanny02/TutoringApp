@@ -16,8 +16,8 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2.5*" />
-                            <ColumnDefinition Width="5*" />
-                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="6*" />
+                            <ColumnDefinition Width="1.5*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
@@ -25,10 +25,10 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
- 
-                        <Frame HeightRequest="{Binding PictureSize}" WidthRequest="{Binding PictureSize}" CornerRadius="{Binding Radius}" Padding="0" 
+                        <!--  HeightRequest="{Binding PictureSize}" WidthRequest="{Binding PictureSize}" CornerRadius="{Binding Radius}"-->
+                        <Frame x:Name="userPicture" Padding="0" 
                                     IsClippedToBounds="True" BorderColor="{StaticResource DefaultBlack}"  
-                                Grid.RowSpan="3" VerticalOptions="CenterAndExpand" HorizontalOptions="Start">
+                                Grid.RowSpan="3" VerticalOptions="Center" HorizontalOptions="Center">
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding selectPictureCommand}" />
                             </Frame.GestureRecognizers>
@@ -36,23 +36,24 @@
 
                             <AbsoluteLayout>
 
-                            <Image Source="{Binding pictureSrc}" HorizontalOptions="CenterAndExpand"  VerticalOptions="CenterAndExpand"/>
+                            <Image Source="{Binding pictureSrc}" HorizontalOptions="Center"  VerticalOptions="Center"/>
 
                             <BoxView
                             AbsoluteLayout.LayoutBounds="0.5, 1, -1, -1" 
                             AbsoluteLayout.LayoutFlags="PositionProportional"
                             BackgroundColor="{StaticResource DefaultBlack}"
-                            HeightRequest="{Binding EditLabelSize}"
-                            WidthRequest="{Binding PictureSize}"
+                            x:Name="editLabelShadow"
+
                             Opacity="0.6"
                             VerticalOptions="End" />
-
-                            <Label
+                                <!--HeightRequest="{Binding EditLabelSize}" -->
+                                <Label
                             AbsoluteLayout.LayoutBounds="0.5, 1, -1, -1" 
                             AbsoluteLayout.LayoutFlags="PositionProportional"
                             FontAttributes="Bold"
                             FontSize="14"
-                            HeightRequest="{Binding EditLabelSize}"
+                            x:Name="editLabel"
+                                
                             HorizontalTextAlignment="Center"
                             Text="EDIT"
                             TextColor="{StaticResource DefaultWhite}"

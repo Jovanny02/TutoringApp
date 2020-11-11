@@ -21,11 +21,6 @@ namespace TutoringApp.ViewModels
             menuTiles.Add(new NavigationTile { pageName = "Help", iconSrc = "question.png", targetType = typeof(Help) });
             menuTiles.Add(new NavigationTile { pageName = "Payment", iconSrc = "payment.png", targetType = typeof(Payment) });
 
-            //Used to make picture always be 15% of the screen width
-            pictureSize = (DeviceDisplay.MainDisplayInfo.Width * 0.15) ;
-            radius = pictureSize / 2;
-            Console.WriteLine("Radius: " + radius + "  Size: " + pictureSize);
-
             //get current user's first name
             if (App.Current.Properties.ContainsKey("CurrentUser"))
             {
@@ -46,18 +41,6 @@ namespace TutoringApp.ViewModels
 
 
 
-        }
-
-        private Double pictureSize;
-        public Double PictureSize
-        {
-            get { return pictureSize; }
-        }
-
-        private Double radius;
-        public Double Radius
-        {
-            get { return radius; }
         }
 
         private List<NavigationTile> menuTiles = new List<NavigationTile>();

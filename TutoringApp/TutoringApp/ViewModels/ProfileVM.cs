@@ -32,12 +32,6 @@ namespace TutoringApp.ViewModels
                 
 
             getUserInfo();
-            //creates circular picture
-            pictureSize = DeviceDisplay.MainDisplayInfo.Width * 0.09;
-            radius = pictureSize / 2;
-            EditLabelSize = (int)(pictureSize / 3);
-
-
 
             IsHeaderEdited = false;
         }
@@ -411,19 +405,6 @@ namespace TutoringApp.ViewModels
         private const int EducationHeight = 80;
 
         public User profileUser = new User();
-
-        private Double pictureSize;
-        public Double PictureSize
-        {
-            get { return pictureSize; }
-        }
-        public int EditLabelSize { get; set; }
-
-        private Double radius;
-        public Double Radius
-        {
-            get { return radius; }
-        }
 
         public Double AverageRating { get; set; } //IN USER
         //Used to allow listview resizing after adding elements to education section 

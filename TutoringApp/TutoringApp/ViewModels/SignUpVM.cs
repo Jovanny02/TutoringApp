@@ -30,6 +30,6 @@ namespace TutoringApp.ViewModels
         public string Name { get; set; }
         public string UFID { get; set; }
 
-
+        public bool isTutor { get; set; }
     }
 }

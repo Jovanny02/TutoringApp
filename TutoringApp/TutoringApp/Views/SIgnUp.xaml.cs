@@ -18,6 +18,7 @@ namespace TutoringApp.Views
             BindingContext = signUpVM;
             signUpVM.Navigation = Navigation;
             InitializeComponent();
+            signUpVM.isTutor = isTutor;
 
             CourseSection.IsVisible = this.isTutor;
 

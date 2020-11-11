@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TutoringApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.Essentials;
 
 namespace TutoringApp.Views
 {
@@ -20,8 +21,15 @@ namespace TutoringApp.Views
             BindingContext = pageVM;
             InitializeComponent();
 
+            //set sizing for circular picture
+            pictureSize = (DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density) * (0.1);
+            radius = pictureSize / 2;
+
         }
 
+        public Double pictureSize { get; set; }
+        public int EditLabelSize { get; set; }
+        public Double radius { get; set; }
         private void LoadTutors(object sender, ItemVisibilityEventArgs e)
         {
             pageVM.LoadTutors(e.Item);
