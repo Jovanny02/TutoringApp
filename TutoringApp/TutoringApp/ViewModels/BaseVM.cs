@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace TutoringApp.ViewModels
 {
-    class BaseVM : INotifyPropertyChanged
+    public class BaseVM : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

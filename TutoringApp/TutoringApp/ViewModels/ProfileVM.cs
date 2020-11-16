@@ -91,7 +91,7 @@ namespace TutoringApp.ViewModels
         private void getUserInfo()
         {
             profileUser = JsonSerializer.Deserialize<User>(App.Current.Properties["CurrentUser"] as string);
-            setDayTicks();
+            
 
             //education sections
             EducationListHeight = profileUser.EducationSections.Count() * EducationHeight;
@@ -144,15 +144,6 @@ namespace TutoringApp.ViewModels
             //NOTE: will need to add save button to header section to prevent multiple system calls
 
             App.Current.SavePropertiesAsync();
-        }
-        //uses the saved number of ticks to set the schedule section timespans
-        private void setDayTicks()
-        {
-            for(int i = 0; i< profileUser.ScheduleSections.Count; i++)
-            {
-                profileUser.ScheduleSections[i].startTime = TimeSpan.FromTicks(profileUser.ScheduleSections[i].startTicks);
-                profileUser.ScheduleSections[i].endTime = TimeSpan.FromTicks(profileUser.ScheduleSections[i].endTicks);
-            }
         }
 
 #region commands

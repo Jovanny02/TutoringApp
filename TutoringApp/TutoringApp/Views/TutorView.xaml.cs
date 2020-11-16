@@ -18,7 +18,9 @@ namespace TutoringApp.Views
         {
             tutorViewVM = new TutorViewVM(newTutor);
             BindingContext = tutorViewVM;
+            tutorViewVM.Navigation = Navigation;
             InitializeComponent();
+
             double deviceWidthUnits = DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
             double deviceHeightUnits = DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
 

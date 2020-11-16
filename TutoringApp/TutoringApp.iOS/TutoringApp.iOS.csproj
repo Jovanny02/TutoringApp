@@ -69,6 +69,8 @@
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <BundleResource Include="Resources\font-awesome-5-free-regular.otf" />
+    <BundleResource Include="Resources\font-awesome-5-free-solid.otf" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -147,6 +149,9 @@
     </PackageReference>
     <PackageReference Include="Xamarin.Forms">
       <Version>4.8.0.1560</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Plugin.Calendar">
+      <Version>1.2.2936</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

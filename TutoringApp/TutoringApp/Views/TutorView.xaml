@@ -225,7 +225,7 @@
             </ScrollView>
 
             <Button Grid.Row="0" Text="Reserve Now!" BackgroundColor="{StaticResource LightOrange}" TextColor="{StaticResource DefaultWhite}"
-                    x:Name="reserveButton"  Margin="25,25,25,25" VerticalOptions="End" HorizontalOptions="End" 
+                    x:Name="reserveButton"  Margin="25,25,25,25" VerticalOptions="End" HorizontalOptions="End" Command="{Binding reserveCommand}"
                     />
         </Grid>
     </ContentPage.Content>

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TutoringApp.Models
 {
-    class TutorInfo : User
+    public class TutorInfo : User
     {
 
         public int displayPosition { get; set; }

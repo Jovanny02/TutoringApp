@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<d:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:d="clr-namespace:TutoringApp.Views;assembly=TutoringApp"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:controls="clr-namespace:Xamarin.Plugin.Calendar.Controls;assembly=Xamarin.Plugin.Calendar"               
+             x:Class="TutoringApp.Views.ReserveTutor">
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="{StaticResource DefaultWhite}">
+
+            <StackLayout  x:Name="calendarStack">
+                <controls:Calendar
+                    DayViewSize="35"
+                    DaysTitleColor="{StaticResource DefaultBlack}"
+                    DeselectedDayTextColor="{StaticResource DefaultBlack}"
+                    OtherMonthDayIsVisible="False"
+                    MonthYear="{Binding currentDay}"
+                    MaximumDate="{Binding lastDay}"
+                    MinimumDate="{Binding currentDay}"
+                    DisableSwipeDetection="False"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center" 
+                    FooterSectionVisible="False"
+                    SelectedDateColor="{StaticResource DefaultBlue}"
+                    BackgroundColor="{StaticResource DefaultWhite}"
+                    YearLabelColor="{StaticResource DefaultBlue}"
+                    MonthLabelColor="{StaticResource DefaultBlue}"
+                    DayTappedCommand="{Binding DayTappedCommand}"
+                    SwipeLeftCommand="{Binding SwipeLeftCommand}"
+                    SwipeRightCommand="{Binding SwipeRightCommand}"
+                    SwipeUpToHideEnabled="False"
+                    AnimateCalendar="True"
+                    >
+
+                    <controls:Calendar.HeaderSectionTemplate>
+                        <DataTemplate>
+                            <Grid
+                                Margin="0,2"
+                                Padding="0"
+                                HorizontalOptions="FillAndExpand"
+                                IsVisible="{Binding ShowMonthPicker}"
+                                VerticalOptions="Start">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Frame
+                                    Grid.Column="0"
+                                    Padding="0"
+                                    BackgroundColor="White"
+                                    BorderColor="{StaticResource DefaultBlack}"
+                                    CornerRadius="18"
+                                    HasShadow="False"
+                                    HeightRequest="36"
+                                    HorizontalOptions="CenterAndExpand"
+                                    VerticalOptions="Center"
+                                    WidthRequest="36">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontFamily="{StaticResource FontAwesomeSolid}"
+                                        FontSize="25"
+                                        HorizontalOptions="CenterAndExpand"
+                                        HorizontalTextAlignment="Center"
+                                        InputTransparent="True"
+                                        Text="&#xf060;"
+                                        TextColor="{StaticResource DefaultBlack}"
+                                        VerticalOptions="CenterAndExpand"
+                                        VerticalTextAlignment="Center" />
+
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding PrevMonthCommand}" />
+                                    </Frame.GestureRecognizers>
+                                </Frame>
+
+                                <Label
+                                    Grid.Column="1"
+                                    FontAttributes="Bold"
+                                    FontSize="Medium"
+                                    HorizontalOptions="Center"
+                                    TextColor="{Binding MonthLabelColor}"
+                                    VerticalOptions="Center">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding MonthText, Mode=TwoWay}" />
+                                            <Span Text=", " />
+                                            <Span Text="{Binding Year, Mode=TwoWay}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+
+                                </Label>
+
+                                <Frame
+                                    Grid.Column="2"
+                                    Padding="0"
+                                    BackgroundColor="White"
+                                    BorderColor="{StaticResource DefaultBlack}"
+                                    CornerRadius="18"
+                                    HasShadow="False"
+                                    HeightRequest="36"
+                                    HorizontalOptions="CenterAndExpand"
+                                    VerticalOptions="CenterAndExpand"
+                                    WidthRequest="36">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontFamily="{StaticResource FontAwesomeSolid}"
+                                        FontSize="25"
+                                        HorizontalOptions="CenterAndExpand"
+                                        HorizontalTextAlignment="Center"
+                                        InputTransparent="True"
+                                        Text="&#xf061;"
+                                        TextColor="{StaticResource DefaultBlack}"
+                                        VerticalOptions="CenterAndExpand"
+                                        VerticalTextAlignment="Center" />
+
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding NextMonthCommand}" />
+                                    </Frame.GestureRecognizers>
+                                </Frame>
+                            </Grid>
+                        </DataTemplate>
+                    </controls:Calendar.HeaderSectionTemplate>
+
+                </controls:Calendar>
+            </StackLayout>
+            <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Color="{StaticResource DefaultBlack}"/>
+
+            <StackLayout x:Name="reservationStack" VerticalOptions="FillAndExpand">
+                <Label Text="{Binding listText}" IsVisible="{Binding isTextVisible}" TextColor="{StaticResource DefaultBlack}" FontSize="Subtitle"
+                       HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                <ListView ItemsSource="{Binding reservationList}" SelectionMode="None" IsVisible="{Binding IsListVisible}"
+                          HasUnevenRows="False" RowHeight="45" VerticalScrollBarVisibility="Always">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width=".3*"/>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width=".3*"/>
+                                            <ColumnDefinition Width="*" />
+
+                                        </Grid.ColumnDefinitions>
+
+                                        <CheckBox Grid.Column="0" IsChecked="{Binding isSelected}"  Color="{StaticResource DefaultBlack}" HorizontalOptions="End" VerticalOptions="Center"/>
+                                        <Label Text="{Binding fromDateString}" Grid.Column="1" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}" FontAttributes="Bold" FontSize="Title"/>
+                                        <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Center" HeightRequest="1" Grid.Column="2" Color="{StaticResource DefaultBlack}"/>
+                                        <Label Text="{Binding toDateString}"  Grid.Column="3" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}" FontAttributes="Bold" FontSize="Title"/>
+
+                                    </Grid>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+
+            <Button Text="Confirmation and Payment" Margin="25,5,25,20"  x:Name="submitButton" IsVisible="{Binding IsListVisible}"
+                    VerticalOptions="Center" Style="{StaticResource HomeButtonStyle2}" Command="{Binding confirmationCommand}" />
+
+
+        </StackLayout>
+    </ContentPage.Content>
+</d:BaseContentPage>
