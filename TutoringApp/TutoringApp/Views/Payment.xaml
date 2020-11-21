@@ -8,71 +8,56 @@
              mc:Ignorable="c"
              x:Class="TutoringApp.Views.Payment">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand">
+        <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand" Margin="25,25,25,0">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width=".5*" />
-                    <ColumnDefinition Width="9*" />
-                    <ColumnDefinition Width=".5*" />
+                    <ColumnDefinition Width="7*" />
+                    <ColumnDefinition Width="3*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="0.3*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height=".3*"/>
+                    <RowDefinition Height="1.2*"/>
+                    <RowDefinition Height=".7*"/>
+                    <RowDefinition Height=".7*"/>
+                    <RowDefinition Height=".7*"/>
+                    <RowDefinition Height="3*"/>
                 </Grid.RowDefinitions>
-                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Grid.Row="1" Grid.Column="1">
-                    <Label Text="Credit Card Information" TextColor="{StaticResource DefaultBlack}" 
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand"  Grid.ColumnSpan="2">
+                    <Label Text="Payment Information" TextColor="{StaticResource DefaultBlack}" 
                            FontSize="30" FontAttributes="Bold"   />
                 </StackLayout>
 
-                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="2" Grid.Column="1">
-                    <Label Text="Name on the card" TextColor="{StaticResource DefaultBlue}" 
-                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
-                    <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="Enter your card name"  Text="{Binding CardName}"/>
-                    </Frame>
+                <StackLayout VerticalOptions="Start"  Grid.Row="1" Grid.ColumnSpan="2" >
+                    <Image Source="ColorCreditCard.png" HorizontalOptions="Center" />
                 </StackLayout>
 
 
-                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="3" Grid.Column="1">
-                    <Label Text="Card Number" TextColor="{StaticResource DefaultBlue}" 
-                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
-                    <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="Enter Your Card Number" Text="{Binding CardNumber}"/>
-                    </Frame>
+                <Frame Style="{StaticResource EntryFrame}" VerticalOptions="Center"  Grid.Row="2">
+                    <CustRend:CustomEntry Placeholder="Card Number" Text="{Binding CardNumber}" Keyboard="Numeric" MaxLength="16"/>
+                </Frame>
+
+                <Frame Style="{StaticResource EntryFrame}"  Grid.Row="2" Grid.Column="1" VerticalOptions="Center">
+                    <CustRend:CustomEntry  Text="{Binding SecurityCode }" Placeholder="CVV" Keyboard="Numeric" MaxLength="3"/>
+                </Frame>
+
+
+                <StackLayout VerticalOptions="Center" Grid.Row="3" >
+                   <Frame Style="{StaticResource EntryFrame}">
+                        <CustRend:CustomEntry Placeholder="MM/YY" Text="{Binding ExpiryDate}" MaxLength="5" Keyboard="Numeric" />
+                    </Frame> 
                 </StackLayout>
 
-                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="4" Grid.Column="1">
-                    <Label Text="Expiry Year" TextColor="{StaticResource DefaultBlue}" 
-                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+
+                <StackLayout VerticalOptions="Center"  Grid.Row="4" Grid.ColumnSpan="2">
                     <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="YYYY" Text="{Binding ExpYear}" MaxLength="4"/>
+                        <CustRend:CustomEntry Placeholder="Cardholder Name"  Text="{Binding CardName}"/>
                     </Frame>
+
                 </StackLayout>
 
-                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="5" Grid.Column="1">
-                    <Label Text="Expiry Month" TextColor="{StaticResource DefaultBlue}" 
-                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
-                    <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="MM" Text="{Binding ExpMonth}" MaxLength="2"/>
-                    </Frame>
-                </StackLayout>
-
-                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="6" Grid.Column="1">
-                    <Label Text="Security Code" TextColor="{StaticResource DefaultBlue}" 
-                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
-                    <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry  Text="{Binding SecurityCode }"/>
-                    </Frame>
-                </StackLayout>
-
-                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="7" Grid.Column="1">
+                <StackLayout VerticalOptions="Start"  Grid.Row="5" Grid.ColumnSpan="2">
                     <Button Text="Make payment" Style="{StaticResource HomeButtonStyle2}"
-                            Margin="25,50,25,0" Clicked="Button_Clicked" />
+                             Clicked="Button_Clicked" />
                 </StackLayout>
 
             </Grid>

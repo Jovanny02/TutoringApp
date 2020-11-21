@@ -11,6 +11,10 @@ using System.Linq;
 using Xamarin.Forms.Internals;
 using System.Text.Json;
 using Acr.UserDialogs;
+using System.IO;
+using TutoringApp.Services;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 
 namespace TutoringApp.ViewModels
 {
@@ -29,10 +33,12 @@ namespace TutoringApp.ViewModels
 
             getUserInfo();
             //creates circular picture
-            pictureSize = (DeviceDisplay.MainDisplayInfo.Width * 0.09);
+            pictureSize = DeviceDisplay.MainDisplayInfo.Width * 0.09;
             radius = pictureSize / 2;
-          //  Console.WriteLine("Radius: " + radius + "  Size: " + pictureSize);
-            //clear header save button 
+            EditLabelSize = (int)(pictureSize / 3);
+
+
+
             IsHeaderEdited = false;
         }
 
@@ -79,8 +85,9 @@ namespace TutoringApp.ViewModels
             new ScheduleTile { day = DayOfWeek.Friday },
             new ScheduleTile { day = DayOfWeek.Saturday },
             new ScheduleTile { day = DayOfWeek.Sunday }
-        };
+            };
 
+            profileUser.UFID = 54817581;
             //serialize object as string and save to properties
             // 
             string userString = JsonSerializer.Serialize(profileUser);
@@ -93,7 +100,7 @@ namespace TutoringApp.ViewModels
             setDayTicks();
 
             //education sections
-            EducationListHeight = profileUser.EducationSections.Count() * 80;
+            EducationListHeight = profileUser.EducationSections.Count() * EducationHeight;
             EducationSections = profileUser.EducationSections;
             //skills sections
             Courses = profileUser.Courses;
@@ -101,8 +108,8 @@ namespace TutoringApp.ViewModels
             //determine skills height
             //  for (int i = 0; i < Courses.Count; i++)
             // {
-            //SkillListHeight += (40 + Skills[i].skills.Count()*40); 
-            CourseListHeight += Courses.Count() * 40;
+            //SkillListHeight += (CourseHeight + Skills[i].skills.Count()*CourseHeight); 
+            CourseListHeight += Courses.Count() * CourseHeight;
           //  }
             //init biography
             Biography = profileUser.Biography;
@@ -118,6 +125,8 @@ namespace TutoringApp.ViewModels
             name = profileUser.name;
 
             shortBio = profileUser.shortBio;
+
+            pictureSrc = profileUser.pictureSrc;
         }
 
         private void saveUser()
@@ -184,7 +193,7 @@ namespace TutoringApp.ViewModels
                     newEducationSection.key = 0;
 
                 EducationSections.Add(newEducationSection);
-                EducationListHeight += 80;
+                EducationListHeight += EducationHeight;
             }
             else
             {
@@ -220,7 +229,7 @@ namespace TutoringApp.ViewModels
             EducationSections.Remove(newEducationSection);
             Navigation.PopAsync();
 
-            EducationListHeight -= 80;
+            EducationListHeight -= EducationHeight;
             saveUser();
         });
         public ICommand EditEducationCommand => new Command((object selectedSection) =>
@@ -292,7 +301,7 @@ namespace TutoringApp.ViewModels
                           newSkill = null;
                           Navigation.PopAsync();
 
-                          SkillListHeight += 40;
+                          SkillListHeight += CourseHeight;
                           return;
                       }
                   }
@@ -300,13 +309,13 @@ namespace TutoringApp.ViewModels
                   Skills.Add(new SkillSection() { SectionTitle = newSkill.sectionTitle });
                   Skills[Skills.Count - 1].Add(newSkill);
                   newSkill = null;
-                  SkillListHeight += 80;
+                  SkillListHeight += EducationHeight;
                   Navigation.PopAsync();
                   */
 
                 profileUser.Courses.Add(newCourse);
                 Courses = profileUser.Courses;
-                CourseListHeight += 40;
+                CourseListHeight += CourseHeight;
                 newCourse = null;
                 oldCourse = null;
             }
@@ -335,13 +344,13 @@ namespace TutoringApp.ViewModels
               if (Skills[i].SectionTitle == newSkill.sectionTitle)
                 {
                     Skills[i].deleteSkill(newSkill);
-                    SkillListHeight -= 40;
+                    SkillListHeight -= CourseHeight;
 
                     if (Skills[i].skills.Count == 0)
                     {
                         //if section is empty, the section is removed and list size is shrunken
                         Skills.RemoveAt(i);
-                        SkillListHeight -= 40;
+                        SkillListHeight -= CourseHeight;
                     }
                 }
                     
@@ -349,14 +358,58 @@ namespace TutoringApp.ViewModels
 
             }       */
             profileUser.Courses.Remove(oldCourse);
+            CourseListHeight -= CourseHeight;
             //clear newCourse
             newCourse = null;
             saveUser();
             Navigation.PopAsync();
         });
-#endregion
+        public ICommand selectPictureCommand  => new Command(async () =>
+        {
+            try
+            {        
+                Stream stream = await DependencyService.Get<IPhotoPickerService>().GetImageStreamAsync();
+                if (stream != null)
+                {
+                    //note could add service call Web API to delete previous picture
 
-#region properties
+
+                    ImageUploadParams uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription("test.png", stream),
+                     //   PublicId = "Users/" + profileUser.UFID.ToString(),
+                        UploadPreset = "rzvpyvwl",
+                        Unsigned = true
+                    };
+
+                    Account account = new Account("gatoraid"); 
+                    Cloudinary cloudinary = new Cloudinary(account);
+
+                    ImageUploadResult uploadResult = cloudinary.Upload(uploadParams);
+
+                    //Set a default height as 800 pixels (width will be 800 since aspect ratio is 1:1) so that image will fit in all areas and will just be shrunk to fit
+                    profileUser.pictureSrc = uploadResult.Url.ToString().Replace("upload/", "upload/h_800,ar_1:1,c_fill,g_auto,r_max/").Replace("http", "https");
+                     
+                    pictureSrc = profileUser.pictureSrc;
+                    saveUser();
+                }
+
+
+            }
+            catch(Exception e)
+            {
+
+                Console.WriteLine(e.Message);
+            }
+
+        });
+
+        #endregion
+
+        #region properties
+        private const int CourseHeight = 40;
+        private const int EducationHeight = 80;
+
         public User profileUser = new User();
 
         private Double pictureSize;
@@ -364,6 +417,7 @@ namespace TutoringApp.ViewModels
         {
             get { return pictureSize; }
         }
+        public int EditLabelSize { get; set; }
 
         private Double radius;
         public Double Radius
@@ -412,7 +466,8 @@ namespace TutoringApp.ViewModels
                 onPropertyChanged(); } 
                 }
         public string ratingLabel { get { return string.Format("{0:0.0}", Math.Truncate(AverageRating * 10) / 10); } }
-        public string pictureSrc { get; private set; } = "user.png";
+        private string PictureSrc { get; set; }
+        public string pictureSrc { get { return PictureSrc; } set { PictureSrc = value; onPropertyChanged(); } } 
         public string Biography { get; set; }
         private string Name { get; set; }
 

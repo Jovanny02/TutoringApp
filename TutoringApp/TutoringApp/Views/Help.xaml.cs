@@ -10,7 +10,7 @@ using Xamarin.Forms.Xaml;
 namespace TutoringApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Help : BaseContentPage
+    public partial class Help : ContentPage
     {
         public Help()
         {

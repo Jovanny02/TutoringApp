@@ -12,24 +12,22 @@ namespace TutoringApp.Models
 
         }
 
-        public string pictureSrc { get; private set; } = "user.png";
+        public string pictureSrc { get;  set; } = "user.png";
 
         public Double AverageRating { get; set; }
         public string name { get; set; }
-        public ObservableCollection <EducationSection> EducationSections { get; set; } = new ObservableCollection<EducationSection>();
+        public string email { get; set; }
+        public string password { get; set; }
+
+        public ObservableCollection<EducationSection> EducationSections { get; set; } = new ObservableCollection<EducationSection>();
         public ObservableCollection<ScheduleTile> ScheduleSections { get; set; } = new ObservableCollection<ScheduleTile>();
 
         //public ObservableCollection<SkillSection> Skills { get; set; } = new ObservableCollection<SkillSection>();
         public ObservableCollection<Course> Courses { get; set; } = new ObservableCollection<Course>();
 
+        public int UFID { get; set; }
+
         public int requestedPay { get; set; }
-
-        public string Username { get; set; }
-
-        public string email { get; set; }
-
-        public string Password { get; set; }
-
         public string Biography { get; set; }
         public string shortBio { 
             get; 

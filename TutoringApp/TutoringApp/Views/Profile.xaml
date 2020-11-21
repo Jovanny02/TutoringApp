@@ -25,13 +25,44 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-
+ 
                         <Frame HeightRequest="{Binding PictureSize}" WidthRequest="{Binding PictureSize}" CornerRadius="{Binding Radius}" Padding="0" 
-                                    IsClippedToBounds="True" BorderColor="{StaticResource DefaultBlack}" HorizontalOptions="Start" Grid.RowSpan="3"
-                                    VerticalOptions="CenterAndExpand">
-                            <Image Source="{Binding pictureSrc}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    IsClippedToBounds="True" BorderColor="{StaticResource DefaultBlack}"  
+                                Grid.RowSpan="3" VerticalOptions="CenterAndExpand" HorizontalOptions="Start">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding selectPictureCommand}" />
+                            </Frame.GestureRecognizers>
+
+
+                            <AbsoluteLayout>
+
+                            <Image Source="{Binding pictureSrc}" HorizontalOptions="CenterAndExpand"  VerticalOptions="CenterAndExpand"/>
+
+                            <BoxView
+                            AbsoluteLayout.LayoutBounds="0.5, 1, -1, -1" 
+                            AbsoluteLayout.LayoutFlags="PositionProportional"
+                            BackgroundColor="{StaticResource DefaultBlack}"
+                            HeightRequest="{Binding EditLabelSize}"
+                            WidthRequest="{Binding PictureSize}"
+                            Opacity="0.6"
+                            VerticalOptions="End" />
+
+                            <Label
+                            AbsoluteLayout.LayoutBounds="0.5, 1, -1, -1" 
+                            AbsoluteLayout.LayoutFlags="PositionProportional"
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            HeightRequest="{Binding EditLabelSize}"
+                            HorizontalTextAlignment="Center"
+                            Text="EDIT"
+                            TextColor="{StaticResource DefaultWhite}"
+                            VerticalOptions="End"
+                            VerticalTextAlignment="Center" />
+
+                            </AbsoluteLayout>
+
                         </Frame>
-                        
+
                         <Entry Text="{Binding name}" HorizontalOptions="FillAndExpand" VerticalOptions="End" TextColor="{StaticResource DefaultBlack}"
                                 FontSize="Large" FontAttributes="Bold" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2"/>
 
@@ -46,7 +77,7 @@
 
 
 
-                        <Label Text="{Binding ratingLabel}" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}"
+                        <Label Text="{Binding AverageRating, StringFormat='{0:0.0}'}" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}"
                                 FontSize="Title" Grid.Column="2" Grid.Row="2"/>
 
                     </Grid>
@@ -54,6 +85,7 @@
 
                     <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}"/>
                 </StackLayout>
+
                 <!--User profile sections -->
                 <StackLayout  Margin="5,0,5,0" >
                     <!--User Biography section -->
@@ -70,8 +102,8 @@
                             </Grid.RowDefinitions>
 
 
-                            <Label Text="Biography" HorizontalOptions="Start"  VerticalOptions="Start" 
-                                   TextColor="{StaticResource DefaultBlack}" FontSize="30" Grid.Column="0"/>
+                            <Label Text="Biography" HorizontalOptions="Start"  VerticalOptions="Start" FontAttributes="Bold"
+                                   TextColor="{StaticResource DefaultOrange}" FontSize="30" Grid.Column="0"/>
                             <Label Text="Editing..." HorizontalOptions="Start"  VerticalOptions="End" 
                                    TextColor="{StaticResource DefaultBlack}" FontSize="Medium" Grid.Column="1" IsVisible="{Binding IsBioEditing}"/>
                             <ImageButton Source="edit.png" Grid.Column="2" HorizontalOptions="EndAndExpand" Command="{Binding editBioCommand}"
@@ -97,8 +129,8 @@
                             </Grid.RowDefinitions>
 
 
-                            <Label Text="Education" HorizontalOptions="Start"  VerticalOptions="Start" 
-                                   TextColor="{StaticResource DefaultBlack}" FontSize="30" Grid.Column="0"/>
+                            <Label Text="Education" HorizontalOptions="Start"  VerticalOptions="Start" FontAttributes="Bold"
+                                   TextColor="{StaticResource DefaultOrange}" FontSize="30" Grid.Column="0"/>
                             <ImageButton Source="plus.png" Grid.Column="1" HorizontalOptions="EndAndExpand" Command="{Binding addEducationCommand}"
                                          VerticalOptions="CenterAndExpand" BackgroundColor="{StaticResource DefaultWhite}"/>
                             <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}"  Grid.ColumnSpan="2" Grid.Row="1"/>
@@ -145,18 +177,18 @@
                                 </Grid.ColumnDefinitions>
 
 
-                                <Label Text="Requested Hourly Pay:" HorizontalOptions="Start"  VerticalOptions="Center" 
-                                TextColor="{StaticResource DefaultBlack}" FontSize="30" HeightRequest="45"/>
+                                <Label Text="Requested Hourly Pay:" HorizontalOptions="Start"  VerticalOptions="Center" FontAttributes="Bold"
+                                   TextColor="{StaticResource DefaultOrange}" FontSize="30" HeightRequest="45"/>
 
                                 <Entry Text="{Binding RequestedPay}" Keyboard="Numeric" HorizontalOptions="FillAndExpand" Grid.Column="1"
                                        VerticalOptions="Start" FontSize="30" TextColor="{StaticResource DefaultBlack}"/>
                             </Grid>
                         </StackLayout>
                         <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
-                        
-                        
-                        <Label Text="Schedule" HorizontalOptions="Start"  VerticalOptions="Start" 
-                                TextColor="{StaticResource DefaultBlack}" FontSize="30" HeightRequest="45"/>
+
+
+                        <Label Text="Schedule" HorizontalOptions="Start"  VerticalOptions="Start" FontAttributes="Bold"
+                                   TextColor="{StaticResource DefaultOrange}" FontSize="30" HeightRequest="45"/>
                         <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
 
                         <ListView SelectionMode="None" ItemsSource="{Binding ScheduleSections}" RowHeight="100" HeightRequest="705" VerticalOptions="StartAndExpand" >
@@ -217,8 +249,8 @@
                     <!-- Courses Section-->
                     <StackLayout  Margin="0,10,0,0">
                         <StackLayout Orientation="Horizontal">
-                            <Label Text="Courses" HorizontalOptions="Start"  VerticalOptions="Start" 
-                                    TextColor="{StaticResource DefaultBlack}" FontSize="30" HeightRequest="45"/>
+                            <Label Text="Courses" HorizontalOptions="Start"  VerticalOptions="Start" FontAttributes="Bold"
+                                   TextColor="{StaticResource DefaultOrange}" FontSize="30" HeightRequest="45"/>
                             <ImageButton Source="plus.png" HorizontalOptions="EndAndExpand" HeightRequest="45" Command="{Binding addCourseCommand}"
                                     VerticalOptions="CenterAndExpand" BackgroundColor="{StaticResource DefaultWhite}"/>
                         </StackLayout>

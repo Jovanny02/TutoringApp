@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace TutoringApp.Views.CustomRenders
 {
-    public class CustomEntry : Entry
+    public class CustomEntry : Entry 
     {
     }
 }

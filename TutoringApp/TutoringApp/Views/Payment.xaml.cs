@@ -17,14 +17,18 @@ namespace TutoringApp.Views
 
         public Payment()
         {
-          
+            InitializeComponent();
+
+
             paymentVM = new PaymentVM();
             paymentVM.Navigation = Navigation;
             BindingContext = paymentVM;
-            InitializeComponent();
+            //set source of picker
 
-           
+
+
         }
+        public List<int> Years = new List<int>();
 
         private void Button_Clicked(object sender, EventArgs e)
         {
