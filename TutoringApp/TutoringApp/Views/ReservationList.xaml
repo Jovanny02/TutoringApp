@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<d:BaseContentPage  xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="clr-namespace:TutoringApp.Views;assembly=TutoringApp"
+             xmlns:skiarate="clr-namespace:SkiaRate;assembly=TutoringApp" 
+             x:Class="TutoringApp.Views.ReservationList">
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="{StaticResource DefaultWhite}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height=".6*"/>
+                    <RowDefinition Height="4.2*"/>
+                    <RowDefinition Height=".7*"/>
+                    <RowDefinition Height="4.4*"/>
+                </Grid.RowDefinitions>
+
+
+
+                <StackLayout HorizontalOptions="FillAndExpand" Grid.Row="0" >
+                    
+                    <Label Text="Your Tutor Reservations" 
+                                        HorizontalOptions="Center"
+                                        TextColor="{StaticResource DefaultOrange}" 
+                                        FontSize="30" 
+                                        FontAttributes="Bold"   />
+                    <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Start" HeightRequest="2" Color="{StaticResource DefaultBlack}"/>
+                </StackLayout>
+
+
+                <StackLayout Grid.Row="1">
+                    <ListView
+                        IsVisible="{Binding isTutorsVisible}"
+                        ItemsSource="{Binding tutorSessions}"
+                        RowHeight="95"  
+                        SelectionMode="None"
+                        ItemTapped="Tutor_ItemTapped"
+                         >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Padding="5,0,5,5">
+
+                                        <Grid Padding="5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width=".5*"/>
+                                                <ColumnDefinition Width="3*" />
+                                                <ColumnDefinition Width="1.5*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="1.5*"/>
+                                                <RowDefinition Height="2*"/>
+                                                <RowDefinition Height=".1*"/>
+                                            </Grid.RowDefinitions>
+
+
+                                            <Image Source="{Binding studentPicture}" Grid.RowSpan="3" />
+
+                                            <Label Grid.Column="1" Text="{Binding studentName}" Grid.Row="0" 
+                                                               VerticalOptions="CenterAndExpand" HorizontalOptions="Start"
+                                                               TextColor="{StaticResource DefaultBlue}" FontAttributes="Bold" FontSize="Title"/>
+
+                                            <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalOptions="FillAndExpand">
+                                                <Label Text="{Binding formattedFromDate}" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}"  FontSize="18"/>
+                                                <BoxView HorizontalOptions="Center" VerticalOptions="Center" HeightRequest="1" Color="{StaticResource DefaultBlack}"/>
+                                                <Label Text="{Binding toDateString}" HorizontalOptions="Start" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}"  FontSize="18"/>
+
+                                            </StackLayout>
+                                            <Label Grid.Column="2" Text="completed!" Grid.Row="0"  IsVisible="{Binding isCompleted}"
+                                                               VerticalOptions="CenterAndExpand" HorizontalOptions="Start"
+                                                               TextColor="{StaticResource DefaultBlue}" FontAttributes="Bold" FontSize="20"/>
+                                            <BoxView HorizontalOptions="FillAndExpand" Color="{StaticResource DefaultBlack}" Grid.Row="2" Grid.ColumnSpan="3"/>
+                                        </Grid>
+
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <Label Text="You have no reservations" IsVisible="{Binding isTutorTextVisible}" TextColor="{StaticResource DefaultBlue}" FontSize="Title"
+                       HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                </StackLayout>
+
+                <StackLayout HorizontalOptions="FillAndExpand" Grid.Row="2" Margin="0,-2,0,0">
+                    <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Start" HeightRequest="2" Color="{StaticResource DefaultBlack}"/>
+                    <Label Text="Your Student Reservations" 
+                                        HorizontalOptions="Center"
+                                        TextColor="{StaticResource DefaultOrange}" 
+                                        FontSize="30" 
+                                        FontAttributes="Bold"   />
+                    <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" HeightRequest="2" Color="{StaticResource DefaultBlack}" />
+                </StackLayout>
+                <!--Student sessions -->
+                <StackLayout Grid.Row="3">
+                    <ListView
+                        IsVisible="{Binding isStudentsVisible}"
+                        ItemsSource="{Binding studentSessions}"
+                        RowHeight="95"  
+                        SelectionMode="None"
+                        ItemTapped="Student_ItemTapped"
+                         >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Padding="5,0,5,5">
+
+                                        <Grid Padding="5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width=".5*"/>
+                                                <ColumnDefinition Width="3*" />
+                                                <ColumnDefinition Width="1.5*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="1.5*"/>
+                                                <RowDefinition Height="2*"/>
+                                                <RowDefinition Height=".1*"/>
+                                            </Grid.RowDefinitions>
+
+
+                                            <Image Source="{Binding tutorPicture}" Grid.RowSpan="3" />
+
+                                            <Label Grid.Column="1" Text="{Binding tutorName}" Grid.Row="0" 
+                                                               VerticalOptions="CenterAndExpand" HorizontalOptions="Start"
+                                                               TextColor="{StaticResource DefaultBlue}" FontAttributes="Bold" FontSize="Title"/>
+
+                                            <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalOptions="FillAndExpand">
+                                                <Label Text="{Binding formattedFromDate}" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}"  FontSize="18"/>
+                                                <BoxView HorizontalOptions="Center" VerticalOptions="Center" HeightRequest="1" Color="{StaticResource DefaultBlack}"/>
+                                                <Label Text="{Binding toDateString}" HorizontalOptions="Start" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}"  FontSize="18"/>
+
+                                            </StackLayout>
+                                            <Label Grid.Column="2" Text="completed!" Grid.Row="0"  IsVisible="{Binding isCompleted}"
+                                                               VerticalOptions="CenterAndExpand" HorizontalOptions="Start"
+                                                               TextColor="{StaticResource DefaultBlue}" FontAttributes="Bold" FontSize="20"/>
+
+                                            <skiarate:RatingView ColorOn="{StaticResource DefaultBlue}" Count="5" Grid.Column="2" Grid.Row="1" OutlineOnColor="{StaticResource DefaultBlack}"
+                                                        OutlineOffColor="{StaticResource DefaultBlack}" Value="{Binding rating, Mode=TwoWay}" isReadOnly="True"  IsVisible="{Binding isCompleted}" />
+                                            <BoxView HorizontalOptions="FillAndExpand" Color="{StaticResource DefaultBlack}" Grid.Row="2" Grid.ColumnSpan="3"/>
+                                        </Grid>
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <Label Text="You have no reservations" IsVisible="{Binding isStudentsTextVisible}" TextColor="{StaticResource DefaultBlue}" FontSize="Title"
+                       HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+
+                </StackLayout>
+
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</d:BaseContentPage>

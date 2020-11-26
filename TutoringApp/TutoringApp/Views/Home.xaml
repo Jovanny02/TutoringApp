@@ -20,7 +20,7 @@
 
 
                 <StackLayout Grid.Row="0">
-                    <Frame Style="{StaticResource BorderStyle}">
+                    <Frame Style="{StaticResource BorderStyle}" HasShadow="True">
                         <Frame Style="{StaticResource InternalViewStyle}">
                             <SearchBar 
                             x:Name="searchBar"
@@ -35,27 +35,38 @@
                 <Image Source="alligator.png" Margin="40,0,40,0" Grid.Row="1"/>
 
 
-                <StackLayout VerticalOptions="EndAndExpand" Grid.Row="2">
-                <Label Text="Sign Up or Login" 
+                <StackLayout VerticalOptions="CenterAndExpand" Grid.Row="2">
+                <Label 
+                x:Name="homeLabel"
+                    Text="Sign Up or Login" 
                 HorizontalOptions="CenterAndExpand"
-                TextColor="{StaticResource DefaultBlack}"
+                TextColor="{StaticResource DefaultBlue}"
                 FontSize="30"
                 FontAttributes="Bold"/>
 
 
                     
                 <Button 
+                    x:Name="signUpButton"
                     Text="Sign Up" 
                     Style="{StaticResource HomeButtonStyle2}" 
                     Margin="25,20,25,20"  
                     Command="{Binding SignUpCommand}"/>
                                 
-                <Button 
+                <Button
+                    x:Name="loginInButton"
                     Text="Login"
                     Style="{StaticResource HomeButtonStyle2}" 
                     Margin="25,0,25,0" 
                     Command="{Binding LoginCommand}"/>
-                
+                    
+                    <Button
+                    IsVisible="false"
+                    x:Name="SignOutButton"
+                    Text="Sign Out"
+                    Style="{StaticResource HomeButtonStyle2}" 
+                    Margin="25,0,25,0" 
+                    Clicked="SignOutButton_Clicked"/>
                 </StackLayout>
 
             </Grid>

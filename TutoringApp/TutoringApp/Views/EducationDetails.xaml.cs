@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using System.Collections.Generic;
 using Xamarin.Forms.Xaml;
 using System;
+using Acr.UserDialogs;
 
 namespace TutoringApp.Views
 {
@@ -43,17 +44,20 @@ namespace TutoringApp.Views
             //checks for incorrect inputs
             if(universityEntry.Text == "" || universityEntry.Text == null)
             {
-                errorLabel.Text = "University name can not be empty";
+                UserDialogs.Instance.Alert("University name can not be empty", null, "OK");
+                //errorLabel.Text = "University name can not be empty";
                 return;
             }
             else if (majorEntry.Text == "" || majorEntry.Text == null)
             {
-                errorLabel.Text = "Major can not be empty";
+                UserDialogs.Instance.Alert("Major can not be empty", null, "OK");
+                //errorLabel.Text = "Major can not be empty";
                 return;
             }
             else if((int)fromYearPicker.SelectedItem > (int)toYearPicker.SelectedItem)
             {
-                errorLabel.Text = "From year can not be greater than to year";
+                UserDialogs.Instance.Alert("From year can not be greater than to year", null, "OK");
+                //errorLabel.Text = "From year can not be greater than to year";
                 return;
             }
 

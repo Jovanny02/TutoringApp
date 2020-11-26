@@ -34,7 +34,7 @@ namespace TutoringApp.Views
             InitializeComponent();
 
             //set sizing for circular picture
-            pictureSize = (DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density) * (0.23); //DeviceDisplay.MainDisplayInfo.Width * 0.09;
+            pictureSize = (DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density) * (0.23); 
             radius = pictureSize / 2;
 
             userPicture.HeightRequest = pictureSize;
@@ -46,12 +46,25 @@ namespace TutoringApp.Views
             editLabelShadow.HeightRequest = EditLabelSize;
             editLabelShadow.WidthRequest = pictureSize;
 
+
+            double deviceWidthUnits = DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
+            double deviceHeightUnits = DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
+
+
+            saveButton.HeightRequest = deviceHeightUnits * .1; //10 percent height for button
+            saveButton.WidthRequest = deviceWidthUnits * .4; //40 percent width
+            saveButton.CornerRadius = (int)(deviceHeightUnits * .05); //
+
+            emptyStack.HeightRequest = deviceHeightUnits * .1;
+
+            ZoomLabel.WidthRequest = deviceWidthUnits * .45;
+            ZoomEditor.WidthRequest = deviceWidthUnits * .55;
         }
-        public Double pictureSize { get; set; }
+        public double pictureSize { get; set; }
 
         public int EditLabelSize { get; set; }
 
-        public Double radius { get; set; }
+        public double radius { get; set; }
         private void EducationList_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             EditEducationCommand.Execute(e.Item);
@@ -64,6 +77,11 @@ namespace TutoringApp.Views
 
             skillsList.SelectedItem = null;
 
+        }
+
+        private void saveButton_Clicked(object sender, EventArgs e)
+        {
+            profileVM.saveUserCommand.Execute(e);
         }
     }
 }

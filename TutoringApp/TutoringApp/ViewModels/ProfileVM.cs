@@ -33,7 +33,7 @@ namespace TutoringApp.ViewModels
 
             getUserInfo();
 
-            IsHeaderEdited = false;
+           // IsHeaderEdited = false;
         }
 
         private void initTestUser()
@@ -81,6 +81,8 @@ namespace TutoringApp.ViewModels
             new ScheduleTile { day = DayOfWeek.Sunday }
             };
 
+            profileUser.isTutor = true;
+
             profileUser.UFID = 54817581;
             //serialize object as string and save to properties
             // 
@@ -121,10 +123,45 @@ namespace TutoringApp.ViewModels
             shortBio = profileUser.shortBio;
 
             pictureSrc = profileUser.pictureSrc;
+
+            isTutor = profileUser.isTutor;
+
+            zoomLink = profileUser.zoomLink;
         }
 
         private void saveUser()
         {
+           // IsBioReadOnly = true;
+            IsBioEditing = false;
+
+            //Pre save checks
+
+            if(name == null || name == String.Empty)
+            {
+                UserDialogs.Instance.Alert("Save Failed: Name cannot be empty", null, null);
+                return;
+            }
+            else if(isTutor && 
+                (ZoomLink == null || 
+                ZoomLink == string.Empty || 
+                !Uri.IsWellFormedUriString(ZoomLink, UriKind.Absolute) ||
+                !ZoomLink.Contains("https://ufl.zoom.us") )){ //TODO add more extensive checks for zoom link
+                UserDialogs.Instance.Alert("Save Failed: Invalid zoom link", null, null);
+                return;
+            }
+            else if(isTutor && requestedPay < 1)
+            {
+                UserDialogs.Instance.Alert("Save Failed: Requested pay must be greater than $1", null, null);
+                return;
+            }
+            else if (isTutor && (Courses == null || Courses.Count < 1) )
+            {
+                UserDialogs.Instance.Alert("Save Failed: You must have at least one course", null, null);
+                return;
+            }
+
+
+
             //save all user properties
             profileUser.EducationSections = EducationSections;
             profileUser.Courses = Courses;
@@ -133,6 +170,8 @@ namespace TutoringApp.ViewModels
             profileUser.ScheduleSections = ScheduleSections;
             profileUser.name = name;
             profileUser.shortBio = shortBio;
+            profileUser.isTutor = isTutor;
+            profileUser.zoomLink = zoomLink.Trim();
 
             string userString = JsonSerializer.Serialize(profileUser);
             //update current user in properties and save 
@@ -140,27 +179,21 @@ namespace TutoringApp.ViewModels
                 App.Current.Properties["CurrentUser"] = userString;
             else
                 App.Current.Properties.Add("CurrentUser", userString);
-            //TODO: Add a services call that saves object in database
-            //NOTE: will need to add save button to header section to prevent multiple system calls
 
+            //TODO: Add a services call that saves object in database
             App.Current.SavePropertiesAsync();
+            UserDialogs.Instance.Alert("Saved Successfully!", null, null);
+
         }
 
-#region commands
+        #region commands
         public ICommand editBioCommand => new Command(() =>
         {
-            IsBioReadOnly = !IsBioReadOnly;
             IsBioEditing = !IsBioEditing;
-
-            if (!IsBioEditing)
-                saveUser();
-
         });
 
         public ICommand saveUserCommand => new Command(() => {
             saveUser();
-            UserDialogs.Instance.Alert("Saved Successfully!", null, null);
-            IsHeaderEdited = false;
         });
 
 
@@ -195,7 +228,7 @@ namespace TutoringApp.ViewModels
             }
 
             newEducationSection = new EducationSection();
-            saveUser();
+            //saveUser();
             Navigation.PopAsync();
         });
         public ICommand addEducationCommand => new Command(() =>
@@ -215,7 +248,7 @@ namespace TutoringApp.ViewModels
             Navigation.PopAsync();
 
             EducationListHeight -= EducationHeight;
-            saveUser();
+            //saveUser();
         });
         public ICommand EditEducationCommand => new Command((object selectedSection) =>
         {
@@ -306,7 +339,7 @@ namespace TutoringApp.ViewModels
             }
 
 
-            saveUser();
+            //saveUser();
             Navigation.PopAsync();
         });
 
@@ -346,7 +379,7 @@ namespace TutoringApp.ViewModels
             CourseListHeight -= CourseHeight;
             //clear newCourse
             newCourse = null;
-            saveUser();
+            //saveUser();
             Navigation.PopAsync();
         });
         public ICommand selectPictureCommand  => new Command(async () =>
@@ -376,7 +409,7 @@ namespace TutoringApp.ViewModels
                     profileUser.pictureSrc = uploadResult.Url.ToString().Replace("upload/", "upload/h_800,ar_1:1,c_fill,g_auto,r_max/").Replace("http", "https");
                      
                     pictureSrc = profileUser.pictureSrc;
-                    saveUser();
+                    //saveUser();
                 }
 
 
@@ -397,7 +430,8 @@ namespace TutoringApp.ViewModels
 
         public User profileUser = new User();
 
-        public Double AverageRating { get; set; } //IN USER
+        public double AverageRating { get; 
+            set; } //IN USER
         //Used to allow listview resizing after adding elements to education section 
         private int educationListHeight { get; set; }
         public int EducationListHeight { get { return educationListHeight; } set { educationListHeight = value; onPropertyChanged(); } }
@@ -434,20 +468,26 @@ namespace TutoringApp.ViewModels
                 else             
                     requestedPay = tempPay;
 
-                saveUser();
+                //saveUser();
                 onPropertyChanged(); } 
                 }
         public string ratingLabel { get { return string.Format("{0:0.0}", Math.Truncate(AverageRating * 10) / 10); } }
         private string PictureSrc { get; set; }
         public string pictureSrc { get { return PictureSrc; } set { PictureSrc = value; onPropertyChanged(); } } 
         public string Biography { get; set; }
+        private bool IsTutor { get; set; } 
+        public bool isTutor { get { return IsTutor; } set { IsTutor = value; onPropertyChanged(); } }
+
+        private string ZoomLink { get; set; }
+        public string zoomLink { get { return ZoomLink; } set { ZoomLink = value; onPropertyChanged(); } }
         private string Name { get; set; }
 
         public string name { get { return Name; } set {
                 if (Name == value)
                     return;
                 Name = value; 
-                IsHeaderEdited = true; } }
+                //IsHeaderEdited = true; 
+            } }
         private string ShortBio { get; set; }
 
         public string shortBio { get { return ShortBio; } 
@@ -455,19 +495,19 @@ namespace TutoringApp.ViewModels
                 if (ShortBio == value)
                     return;
                 ShortBio = value;
-                IsHeaderEdited = true;
+              //  IsHeaderEdited = true;
             } }
 
 
         private bool isEditingCourse { get; set; } = false;
-        private bool isBioReadOnly { get; set; } = true;
-        public bool IsBioReadOnly { get { return isBioReadOnly; } set { isBioReadOnly = value; onPropertyChanged(); } }
+        /*   private bool isBioReadOnly { get; set; } = true;
+           public bool IsBioReadOnly { get { return isBioReadOnly; } set { isBioReadOnly = value; onPropertyChanged(); } }
 
-        private bool isHeaderEdited { get; set; } = false;
-        public bool IsHeaderEdited { get { return isHeaderEdited; } 
-            set { isHeaderEdited = value; 
-                onPropertyChanged(); } }
-
+           private bool isHeaderEdited { get; set; } = false;
+           public bool IsHeaderEdited { get { return isHeaderEdited; } 
+               set { isHeaderEdited = value; 
+                   onPropertyChanged(); } }
+           */
         private bool isBioEditing { get; set; } = false;
         public bool IsBioEditing { get { return isBioEditing; } set { isBioEditing = value; onPropertyChanged(); } }
 #endregion

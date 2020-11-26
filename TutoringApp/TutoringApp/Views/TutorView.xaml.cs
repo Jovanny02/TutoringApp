@@ -37,6 +37,7 @@ namespace TutoringApp.Views
             reserveButton.CornerRadius = (int)(deviceHeightUnits * .05); //
 
             emptyStack.HeightRequest = deviceHeightUnits * .1;
+
         }
     }
 }

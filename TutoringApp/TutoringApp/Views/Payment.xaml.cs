@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TutoringApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System.Windows.Input;
 using Acr.UserDialogs;
 
 namespace TutoringApp.Views
@@ -13,26 +14,15 @@ namespace TutoringApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Payment : BaseContentPage
     {
-        PaymentVM paymentVM;
-
+        public ICommand saveCommand;
         public Payment()
         {
-            InitializeComponent();
-
-
-            paymentVM = new PaymentVM();
-            paymentVM.Navigation = Navigation;
-            BindingContext = paymentVM;
-            //set source of picker
-
-
-
+            InitializeComponent();           
         }
-        public List<int> Years = new List<int>();
 
         private void Button_Clicked(object sender, EventArgs e)
         {
-            paymentVM.PaymentAsync();
+            saveCommand.Execute(this.BindingContext);
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Windows.Input;
 using TutoringApp.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Acr.UserDialogs;
 
 namespace TutoringApp.Views
 {
@@ -50,7 +51,8 @@ namespace TutoringApp.Views
         {
             if (skillEntry.Text == "" || skillEntry.Text == null)
             {
-                errorLabel.Text = "Course name can not be empty";
+                UserDialogs.Instance.Alert("Course name can not be empty", null, "OK");
+                //errorLabel.Text = "Course name can not be empty";
                 return;
             }
 

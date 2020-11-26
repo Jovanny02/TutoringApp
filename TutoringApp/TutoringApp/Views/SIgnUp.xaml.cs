@@ -21,7 +21,7 @@ namespace TutoringApp.Views
             signUpVM.isTutor = isTutor;
 
             CourseSection.IsVisible = this.isTutor;
-
+            ZoomlinkSection.IsVisible = this.isTutor;
         }
 
         public bool isTutor = false;

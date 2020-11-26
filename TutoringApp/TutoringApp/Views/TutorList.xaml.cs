@@ -11,7 +11,7 @@ using Xamarin.Essentials;
 namespace TutoringApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class TutorList : ContentPage
+    public partial class TutorList : BaseContentPage
     {
         TutorListVM pageVM;
         public TutorList(string searchParam)
@@ -30,17 +30,19 @@ namespace TutoringApp.Views
         public Double pictureSize { get; set; }
         public int EditLabelSize { get; set; }
         public Double radius { get; set; }
-        private void LoadTutors(object sender, ItemVisibilityEventArgs e)
-        {
-            pageVM.LoadTutors(e.Item);
-        }
 
-        private void TutorSelected(object sender, SelectedItemChangedEventArgs e)
+
+        // private void LoadTutors(object sender, ItemVisibilityEventArgs e)
+        // {
+        //     pageVM.LoadTutors.Execute(e.Item);
+        //  }
+
+        private void TutorSelected(object sender, SelectionChangedEventArgs e)
         {
-            if (e.SelectedItem == null)
+            if (e.CurrentSelection.Count < 1 || e.CurrentSelection[0] == null)
                 return;
 
-            Navigation.PushAsync(new TutorView(e.SelectedItem));
+            Navigation.PushAsync(new TutorView(e.CurrentSelection[0]));
             ListedTutors.SelectedItem = null;
         }
     }

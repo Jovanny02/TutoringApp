@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<d:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="clr-namespace:TutoringApp.Views;assembly=TutoringApp"
+             xmlns:CustRend="clr-namespace:TutoringApp.Views.CustomRenders;assembly=TutoringApp"
+             xmlns:c="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="c"
+             x:Class="TutoringApp.Views.Confirmation">
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand" Margin="25,25,25,25">
+            <Grid x:Name="myGrid" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height=".5*"/>
+                    <RowDefinition Height="2.5*"/>
+                    <RowDefinition Height=".5*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="Start">
+                    <Label Text="Confirmation" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="30" FontAttributes="Bold"   />
+                </StackLayout>
+
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Grid.Row="1" Orientation="Horizontal">
+                    <Label Text="Your Tutor: " TextColor="{StaticResource DefaultBlue}" FontSize="25" 
+                           FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Label Text="{Binding tutor.name}" TextColor="{StaticResource DefaultBlack}" FontSize="25" />
+                </StackLayout>
+
+                <Label Text="{Binding selectedDate, StringFormat='{0:MMMM d, yyyy}'}" Grid.Row="2" 
+                       FontSize="25" TextColor="{StaticResource DefaultBlack}" HorizontalOptions="Center" TextDecorations="Underline" />
+
+
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Grid.Row="3" >
+                    <ListView ItemsSource="{Binding reservations}" SelectionMode="None" RowHeight="45" VerticalScrollBarVisibility="Always">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width=".5*"/>
+                                                <ColumnDefinition Width="*" />
+
+                                            </Grid.ColumnDefinitions>
+
+                                            <Label Text="{Binding fromDateString}" Grid.Column="0" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}" FontAttributes="Bold" FontSize="Title"/>
+                                            <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Center" HeightRequest="1" Grid.Column="1" Color="{StaticResource DefaultBlack}"/>
+                                            <Label Text="{Binding toDateString}"  Grid.Column="2" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}" FontAttributes="Bold" FontSize="Title"/>
+
+                                        </Grid>
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+                
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Grid.Row="4" Orientation="Horizontal">
+                    <Label Text="Total Cost: " TextColor="{StaticResource DefaultBlue}"  FontSize="25" FontAttributes="Bold"/>
+                    <Label Text="{Binding totalCostString}" TextColor="{StaticResource DefaultBlack}"  FontSize="25" />
+                </StackLayout>
+
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Row="5" >
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding tapCardCommand}" />
+                    </StackLayout.GestureRecognizers>
+
+                    <Frame Padding="20" Visual="Material" BackgroundColor="{StaticResource BorderColor}" CornerRadius="5" >
+                        <Grid ColumnSpacing="30" RowSpacing="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="20"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="20"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Text="Card Number"
+                           FontAttributes="Bold"
+                           LineBreakMode="TailTruncation"
+                           FontSize="Subtitle"
+                           TextColor="{StaticResource DefaultBlack}"
+                           Grid.Row="1"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"/>
+
+                            <Label Text="{Binding payInfo.CardNumber}"
+                            FontSize="Subtitle"
+                            TextColor="{StaticResource DefaultBlack}"
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"/>
+
+                            <Label Text="Expiration"
+                           Margin="0,20,0,0"
+                           FontSize="Subtitle"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource DefaultBlack}"
+                           Grid.Row="3"
+                           Grid.Column="0"/>
+
+                            <Label Text="{Binding payInfo.ExpiryDate}"
+                            FontSize="Subtitle"
+                            TextColor="{StaticResource DefaultBlack}"
+                            Grid.Row="4"
+                            Grid.Column="0"/>
+
+                            <Label Text="CVV"
+                            FontAttributes="Bold"
+                            Margin="0,20,0,0"
+                           FontSize="Subtitle"
+                           TextColor="{StaticResource DefaultBlack}"
+                           Grid.Row="3"
+                           Grid.Column="1"/>
+
+                            <Label Text="{Binding payInfo.SecurityCode}"
+                            FontSize="Subtitle"
+                            TextColor="{StaticResource DefaultBlack}"
+                            Grid.Row="4"
+                            Grid.Column="1"/>
+                        </Grid>
+                    </Frame>
+
+
+
+
+                </StackLayout>
+
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Grid.Row="6">
+                    <Button Text="Confirm payment" VerticalOptions="Center" Style="{StaticResource HomeButtonStyle2}"  Command="{Binding confirmCommand}"/>
+                </StackLayout>
+
+
+
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</d:BaseContentPage>

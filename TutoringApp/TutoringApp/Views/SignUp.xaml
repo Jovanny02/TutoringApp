@@ -23,10 +23,11 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
                 <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Grid.Row="1" Grid.Column="1">
-                    <Label Text="Sign Up" TextColor="{StaticResource DefaultBlack}" 
+                    <Label Text="Sign Up" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="30" FontAttributes="Bold"   />
                 </StackLayout>
 
@@ -59,7 +60,7 @@
                     <Label Text="UFID" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="Enter Your UFID"  Text="{Binding UFID}" Keyboard="Numeric"/>
+                        <CustRend:CustomEntry Placeholder="Enter Your UFID (No Spaces)"  Text="{Binding UFID}" Keyboard="Numeric"/>
                     </Frame>
                 </StackLayout>
 
@@ -71,7 +72,15 @@
                     </Frame>
                 </StackLayout>
 
-                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="7" Grid.Column="1">
+                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="7" Grid.Column="1" x:Name="ZoomlinkSection">
+                    <Label Text="Zoom Link" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Frame Style="{StaticResource EntryFrame}">
+                        <CustRend:CustomEntry Placeholder="UF Zoom Personal Meeting Room Link"  Text="{Binding zoomLink}"/>
+                    </Frame>
+                </StackLayout>
+                
+                <StackLayout VerticalOptions="Center"  Grid.Row="8" Grid.Column="1">
                     <Button Text="Sign Up" Style="{StaticResource HomeButtonStyle2}"
                             Margin="25,50,25,0" Command="{Binding SignUpCommand}" />
                 </StackLayout>

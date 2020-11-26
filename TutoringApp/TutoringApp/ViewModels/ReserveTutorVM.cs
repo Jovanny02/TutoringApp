@@ -6,6 +6,7 @@ using TutoringApp.Models;
 using Xamarin.Forms;
 using System.Collections.ObjectModel;
 using Acr.UserDialogs;
+using TutoringApp.Views;
 
 namespace TutoringApp.ViewModels
 {
@@ -111,7 +112,7 @@ namespace TutoringApp.ViewModels
         public ICommand SwipeRightCommand => new Command(() => { MonthYear = MonthYear.AddMonths(-1); });
 
         public ICommand confirmationCommand => new Command(() => {
-            ObservableCollection<Reservation> selectedReservations = new ObservableCollection<Reservation>();
+            List<Reservation> selectedReservations = new List<Reservation>();
             for (int i = 0; reservationList != null && i < reservationList.Count ; i++)
             {
                 if (reservationList[i].isSelected)
@@ -124,7 +125,7 @@ namespace TutoringApp.ViewModels
                 return;
             }
             //TODO add push to confirmation page
-            UserDialogs.Instance.Alert("Success!", null, null);
+            Navigation.PushAsync(new Confirmation(tutor, selectedReservations));
 
         });
 

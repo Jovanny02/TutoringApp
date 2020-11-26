@@ -209,4 +209,7 @@
   <ItemGroup>
     <BundleResource Include="Resources\CreditCard.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\WeWantYou.png" />
+  </ItemGroup>
 </Project>

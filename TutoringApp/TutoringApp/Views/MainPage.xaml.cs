@@ -18,8 +18,11 @@ namespace TutoringApp
     {
         public MainPage()
         {
+            NavigationPage.SetHasNavigationBar(this, false);
             InitializeComponent();
-            BindingContext = new MainPageVM();
+            mainPageVM = new MainPageVM();
+            BindingContext = mainPageVM;
+            this.IsPresentedChanged += checkUser;
 
             pictureSize = (DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density) * (.5); //DeviceDisplay.MainDisplayInfo.Width * 0.09;
             radius = pictureSize / 2;
@@ -30,6 +33,7 @@ namespace TutoringApp
 
         }
 
+        private MainPageVM mainPageVM;
         public Double pictureSize { get; set; }
         public Double radius { get; set; }
 
@@ -38,15 +42,31 @@ namespace TutoringApp
             NavigationTile tile = ((NavigationTile)e.SelectedItem);
             if (tile != null)
             {
-                //set detail page to selected item from menu 
-                Detail = new NavigationPage((Page)Activator.CreateInstance(tile.targetType));
+                if((tile.targetType == typeof(Profile) || tile.targetType == typeof(ReservationList)  )&& !App.Current.Properties.ContainsKey("CurrentUser"))
+                {
+                    Navigation.PushAsync(new Login()); // redirect to login if not logged in and page is profile
+                                                       //deselect menu item and set menu presentation to false
+                    listView.SelectedItem = null;
+                    IsPresented = false;
+                }
+                else
+                {
 
-                //deselect menu item and set menu presentation to false
-                listView.SelectedItem = null;
-                IsPresented = false;
+
+                    //set detail page to selected item from menu 
+                    Detail = new NavigationPage((Page)Activator.CreateInstance(tile.targetType));
+
+                    //deselect menu item and set menu presentation to false
+                    listView.SelectedItem = null;
+                    IsPresented = false;
+                }
             }
         }
-
+        private void checkUser(object sender, EventArgs e)
+        {
+            //check and update user picture and message
+            mainPageVM.checkUserStatus();
+        }
 
         public void NavigateToHelp()
         {

@@ -19,11 +19,10 @@ namespace TutoringApp.Views
             InitializeComponent();
             reserveVM = new ReserveTutorVM(tutor);
             BindingContext = reserveVM;
-
+            reserveVM.Navigation = this.Navigation;
 
             double deviceHeightUnits = DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
             calendarStack.HeightRequest = deviceHeightUnits * .35;
-            reservationStack.HeightRequest = deviceHeightUnits * .5;
             submitButton.HeightRequest = deviceHeightUnits * .08;
 
         }

@@ -146,7 +146,7 @@
 
                                         </Grid.ColumnDefinitions>
 
-                                        <CheckBox Grid.Column="0" IsChecked="{Binding isSelected}"  Color="{StaticResource DefaultBlack}" HorizontalOptions="End" VerticalOptions="Center"/>
+                                        <CheckBox Grid.Column="0" IsChecked="{Binding isSelected}"  Color="{StaticResource DefaultBlue}" HorizontalOptions="End" VerticalOptions="Center"/>
                                         <Label Text="{Binding fromDateString}" Grid.Column="1" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}" FontAttributes="Bold" FontSize="Title"/>
                                         <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Center" HeightRequest="1" Grid.Column="2" Color="{StaticResource DefaultBlack}"/>
                                         <Label Text="{Binding toDateString}"  Grid.Column="3" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}" FontAttributes="Bold" FontSize="Title"/>

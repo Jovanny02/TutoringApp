@@ -24,7 +24,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Margin="0,25,0,0" Grid.Column="1">
-                    <Label Text="Edit Course" TextColor="{StaticResource DefaultBlack}" x:Name="titleLabel"
+                    <Label Text="Edit Course" TextColor="{StaticResource DefaultBlue}" x:Name="titleLabel"
                            FontSize="30" FontAttributes="Bold"   />
                 </StackLayout>
 

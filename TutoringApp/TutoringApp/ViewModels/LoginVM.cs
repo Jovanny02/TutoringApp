@@ -15,7 +15,7 @@ namespace TutoringApp.ViewModels
             {
                 //TODO create login call using information in password and user_email
                 Console.WriteLine("Triggered Login Command");
-                Navigation.PopAsync();
+                Navigation.PopToRootAsync();
             });
 
             ForgotUserCommand = new Command(() =>

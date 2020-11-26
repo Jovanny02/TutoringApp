@@ -15592,10 +15592,13 @@ namespace TutoringApp.Droid
 			public const int user = 2131165321;
 			
 			// aapt resource value: 0x7F07008A
-			public const int whistle = 2131165322;
+			public const int WeWantYou = 2131165322;
 			
 			// aapt resource value: 0x7F07008B
-			public const int who = 2131165323;
+			public const int whistle = 2131165323;
+			
+			// aapt resource value: 0x7F07008C
+			public const int who = 2131165324;
 			
 			static Drawable()
 			{
