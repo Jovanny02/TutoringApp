@@ -26,5 +26,15 @@ namespace TutoringApp.Views
             submitButton.HeightRequest = deviceHeightUnits * .08;
 
         }
+
+        private void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.CurrentSelection == null | e.CurrentSelection.Count < 1)
+                return;
+
+            reserveVM.handleTappedReservation(e.CurrentSelection[0]);
+
+            ((CollectionView)sender).SelectedItem = null;
+        }
     }
 }

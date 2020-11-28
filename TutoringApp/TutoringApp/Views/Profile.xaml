@@ -69,11 +69,14 @@
 
                         </Frame>
 
-                        <Entry Text="{Binding name}" HorizontalOptions="FillAndExpand" VerticalOptions="End" TextColor="{StaticResource DefaultBlack}"
+                        <Entry Text="{Binding name}" HorizontalOptions="FillAndExpand" VerticalOptions="End"
+                               Placeholder="Enter Your Name" TextColor="{StaticResource DefaultBlack}"
                                 FontSize="Large" FontAttributes="Bold" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" MaxLength="80"/>
 
                         <Editor Text="{Binding shortBio}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" TextColor="{StaticResource DefaultBlack}"
-                                FontSize="Small" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" MaxLength="150" AutoSize="TextChanges"/>
+                                Placeholder="Enter a Short Bio" x:Name="shortBioEditor"
+                                WidthRequest="{Binding Source={x:Reference shortBioEditor}, Path=Width}"
+                                FontSize="Subtitle" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" MaxLength="150" AutoSize="TextChanges"/>
 
                         <skiarate:RatingView ColorOn="{StaticResource DefaultBlue}" Count="5" Grid.Column="1" Grid.Row="2" OutlineOnColor="{StaticResource DefaultBlack}"
                                 OutlineOffColor="{StaticResource DefaultBlack}" Value="{Binding AverageRating}" isReadOnly="True" />
@@ -114,7 +117,7 @@
                                      Grid.ColumnSpan="3" Grid.Row="1"/>
                         </Grid>
 
-                        <Editor Text="{Binding Biography}" IsReadOnly="{Binding IsBioEditing, Converter={d:BooleanConverter}}" Placeholder="Enter a Short Biography Here" AutoSize="TextChanges" MaxLength="500"/>
+                        <Editor Text="{Binding Biography}" IsReadOnly="{Binding IsBioEditing, Converter={d:BooleanConverter}}" Placeholder="Enter a Biography Here" AutoSize="TextChanges" MaxLength="500"/>
                         <!-- Button Text="Save" Style="{StaticResource SaveButtonStyle}" HorizontalOptions="Center" IsVisible="{Binding IsBioEditing}" Command="{Binding editBioCommand}"/> -->
                     </StackLayout>
 
@@ -193,7 +196,7 @@
                         <!-- Pay and zoomlink Section-->
                         <StackLayout>
                             <StackLayout Orientation="Horizontal">
-                                <Grid>
+                                <Grid Padding="0" ColumnSpacing="0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="7.5*" />
                                         <ColumnDefinition Width="2.5*" />
@@ -250,9 +253,14 @@
                                                     <RowDefinition Height=".3*"/>
                                                 </Grid.RowDefinitions>
 
-                                                <Label Text="{Binding dayString}" TextColor="{StaticResource DefaultBlack}"  Grid.Row="1"
-                                                    FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"/>
 
+                                                <Label Text="{Binding shortDayString}" TextColor="{StaticResource DefaultBlack}" 
+                                                       Grid.Row="0" Grid.Column="0" LineBreakMode="WordWrap" Grid.RowSpan="3"
+                                                    FontSize="30" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                            
+                                            <!--    <Label Text="{Binding dayString}" TextColor="{StaticResource DefaultBlack}"  Grid.Row="1"
+                                                    FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"/>
+                                            -->
                                                 <Label Text="Start Time" TextColor="{StaticResource DefaultBlue}"  Grid.Column="1"
                                                     FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
 

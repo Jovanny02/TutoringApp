@@ -15,6 +15,7 @@ using System.IO;
 using TutoringApp.Services;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using System.Linq;
 
 namespace TutoringApp.ViewModels
 {
@@ -71,7 +72,7 @@ namespace TutoringApp.ViewModels
 
             profileUser.shortBio = "Senior Studing Computer Engineering at UF";
 
-            profileUser.ScheduleSections = new ObservableCollection<ScheduleTile>() {
+            profileUser.ScheduleSections = new List<ScheduleTile>() {
             new ScheduleTile { day = DayOfWeek.Monday },
             new ScheduleTile { day = DayOfWeek.Tuesday },
             new ScheduleTile { day = DayOfWeek.Wednesday },
@@ -97,9 +98,9 @@ namespace TutoringApp.ViewModels
 
             //education sections
             EducationListHeight = profileUser.EducationSections.Count() * EducationHeight;
-            EducationSections = profileUser.EducationSections;
+            EducationSections = new ObservableCollection<EducationSection>(profileUser.EducationSections);
             //skills sections
-            Courses = profileUser.Courses;
+            Courses = new ObservableCollection<Course>(profileUser.Courses);
             CourseListHeight = 0;
             //determine skills height
             //  for (int i = 0; i < Courses.Count; i++)
@@ -116,7 +117,7 @@ namespace TutoringApp.ViewModels
             //init pay
             requestedPay = profileUser.requestedPay;
 
-            ScheduleSections = profileUser.ScheduleSections;
+            ScheduleSections = new ObservableCollection<ScheduleTile>(profileUser.ScheduleSections);
 
             name = profileUser.name;
 
@@ -163,11 +164,11 @@ namespace TutoringApp.ViewModels
 
 
             //save all user properties
-            profileUser.EducationSections = EducationSections;
-            profileUser.Courses = Courses;
+            profileUser.EducationSections = EducationSections.ToList<EducationSection>();
+            profileUser.Courses = Courses.ToList<Course>();
             profileUser.Biography = Biography;
             profileUser.requestedPay = requestedPay;
-            profileUser.ScheduleSections = ScheduleSections;
+            profileUser.ScheduleSections = ScheduleSections.ToList<ScheduleTile>();
             profileUser.name = name;
             profileUser.shortBio = shortBio;
             profileUser.isTutor = isTutor;
@@ -210,7 +211,7 @@ namespace TutoringApp.ViewModels
                 else
                     newEducationSection.key = 0;
 
-                EducationSections.Add(newEducationSection);
+                EducationSections.Add(new EducationSection(newEducationSection));
                 EducationListHeight += EducationHeight;
             }
             else
@@ -220,13 +221,25 @@ namespace TutoringApp.ViewModels
                     //finds education section with matching key and overwrites it
                     if (EducationSections[i].key == newEducationSection.key)
                     {
-                        EducationSections[i] = newEducationSection;
+                        EducationSections[i] = new EducationSection(newEducationSection);
                         break;
                     }
                 }
 
             }
+            //sort List by toYear high to low
+            List<EducationSection> tempSections = EducationSections.ToList();
+            tempSections.Sort(delegate (EducationSection c1, EducationSection c2) { return -1 * c1.toYear.CompareTo(c2.toYear); });
+            EducationSections = new ObservableCollection<EducationSection>(tempSections);
 
+            //reset keys for all Education Sections
+            for(int kk = 0; kk < EducationSections.Count; kk++)
+            {
+                EducationSections[kk].key = kk;
+            }
+
+
+            onPropertyChanged(nameof(EducationSections));
             newEducationSection = new EducationSection();
             //saveUser();
             Navigation.PopAsync();
@@ -253,7 +266,7 @@ namespace TutoringApp.ViewModels
         public ICommand EditEducationCommand => new Command((object selectedSection) =>
         {
             // Used for comparison in saveEducationCommand
-            newEducationSection = (EducationSection)selectedSection;
+            newEducationSection = new EducationSection((EducationSection)selectedSection);
 
             EducationDetails details = new EducationDetails();
             details.SaveCommand = saveEducationCommand;
@@ -264,8 +277,8 @@ namespace TutoringApp.ViewModels
 
         public ICommand EditCourseCommand => new Command((object selectedCourse) =>
         {
-            newCourse = (Course)selectedCourse;
-            oldCourse = (Course)selectedCourse;
+            newCourse = new Course { departmentTitle = ((Course)selectedCourse).departmentTitle, courseName = ((Course)selectedCourse).courseName };
+            oldCourse = new Course { departmentTitle = ((Course)selectedCourse).departmentTitle, courseName = ((Course)selectedCourse).courseName };
             SkillDetails skillDetails = new SkillDetails(false);
             skillDetails.BindingContext = newCourse;
             skillDetails.deleteCommand = deleteCourseCommand;
@@ -278,64 +291,59 @@ namespace TutoringApp.ViewModels
 
         public ICommand saveCourseCommand => new Command(() =>
         {
-            if (isEditingCourse)
+        if (isEditingCourse)
+        {
+                //employee => employee.LastName.Equals(somename, StringComparison.Ordinal)
+            //int index = profileUser.Courses.IndexOf(oldCourse);
+            int index = profileUser.Courses.FindIndex(listCourse => listCourse.courseName.Equals(oldCourse.courseName) && listCourse.departmentTitle.Equals(oldCourse.departmentTitle));
+            if (profileUser.Courses.FindIndex(listCourse => listCourse.courseName.Equals(newCourse.courseName) && listCourse.departmentTitle.Equals(newCourse.departmentTitle)) > -1)
             {
-                for (int i = 0; i < profileUser.Courses.Count; i++)
-                {
-                    // if (Skills[i].SectionTitle == oldSkill.sectionTitle)
-                    // {
-                    //finds element matching old element and overwrites it with new element
-                    //  for(int kk=0; kk < Skills[i].skills.Count; kk++)
-                    // {
-                    // if (Skills[i].skills[kk] == oldSkill)
-                    // {
-                    //     Skills[i].skills[kk] = newSkill;
-                    //     break;
-                    // }                                
-                    //     }
+                UserDialogs.Instance.Alert("Course Already Exist", null, null);
+                return;
+            }
+            if (index < 0)
+            {
+                Console.WriteLine("ERROR incorrect index");
+                return;
+            }
 
-                    if (profileUser.Courses[i] == oldCourse)
-                    {
-                        profileUser.Courses[i] = newCourse;
-                        Courses = profileUser.Courses;
-                    }
-                }
+            profileUser.Courses[index] = new Course
+            {
+                departmentTitle = newCourse.departmentTitle,
+                courseName = newCourse.courseName
+            };
 
+            profileUser.Courses.Sort(delegate (Course c1, Course c2) { return c1.courseName.CompareTo(c2.courseName); });
+            Courses = new ObservableCollection<Course>(profileUser.Courses);
 
-                    //clear new object 
-                    newCourse = null;
-                    oldCourse = null;
-                  //  }
-                
+            onPropertyChanged(nameof(Courses));
+
+            //clear new object 
+            newCourse = null;
+            oldCourse = null;                
             }
             else
             {
-                /*  //if sectionTitle already exists, add skill under this
-                  for (int i = 0; i < Skills.Count; i++)
-                  {
-                      if (Skills[i].SectionTitle == newSkill.sectionTitle)
-                      {
-                          Skills[i].Add(newSkill);
-                          newSkill = null;
-                          Navigation.PopAsync();
+                if (profileUser.Courses.Contains(newCourse))
+                {
+                    UserDialogs.Instance.Alert("Course Already Exist", null, null);
+                    return;
+                }
+                profileUser.Courses.Add(new Course
+                {
+                    departmentTitle = newCourse.departmentTitle,
+                    courseName = newCourse.courseName
+                });
 
-                          SkillListHeight += CourseHeight;
-                          return;
-                      }
-                  }
-                  //if no section title exists, add it and add new skill to it
-                  Skills.Add(new SkillSection() { SectionTitle = newSkill.sectionTitle });
-                  Skills[Skills.Count - 1].Add(newSkill);
-                  newSkill = null;
-                  SkillListHeight += EducationHeight;
-                  Navigation.PopAsync();
-                  */
+                profileUser.Courses.Sort(delegate (Course c1, Course c2) { return c1.courseName.CompareTo(c2.courseName); });
+                Courses = new ObservableCollection<Course>(profileUser.Courses);
 
-                profileUser.Courses.Add(newCourse);
-                Courses = profileUser.Courses;
+
                 CourseListHeight += CourseHeight;
                 newCourse = null;
                 oldCourse = null;
+                onPropertyChanged(nameof(Courses));
+
             }
 
 
@@ -357,25 +365,10 @@ namespace TutoringApp.ViewModels
 
         public ICommand deleteCourseCommand => new Command(() =>
         {
-            /* for(int i = 0; i < profileUser.Courses.Count; i++)
-           {
-              if (Skills[i].SectionTitle == newSkill.sectionTitle)
-                {
-                    Skills[i].deleteSkill(newSkill);
-                    SkillListHeight -= CourseHeight;
-
-                    if (Skills[i].skills.Count == 0)
-                    {
-                        //if section is empty, the section is removed and list size is shrunken
-                        Skills.RemoveAt(i);
-                        SkillListHeight -= CourseHeight;
-                    }
-                }
-                    
-
-
-            }       */
-            profileUser.Courses.Remove(oldCourse);
+            //int index = Courses.FindIndex(listCourse => listCourse.courseName.Equals(oldCourse.courseName) && listCourse.departmentTitle.Equals(oldCourse.departmentTitle));
+            int temp = Courses.IndexOf(oldCourse);
+            Courses.Remove(oldCourse);
+           // Courses.RemoveAt(index);
             CourseListHeight -= CourseHeight;
             //clear newCourse
             newCourse = null;
@@ -452,9 +445,10 @@ namespace TutoringApp.ViewModels
 
         private int requestedPay { get; set; } //IN USER
         public string RequestedPay { 
-            get { return requestedPay.ToString(); }  
+            get { return "$" + requestedPay.ToString(); }  
             set {
                 int tempPay;
+                value = value.Replace("$", String.Empty);
                 Int32.TryParse(value.Replace(".", String.Empty), out tempPay);
                     
                 //do not notify property changed if value is same (prevents looping issue)

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:d="clr-namespace:TutoringApp.Views;assembly=TutoringApp"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+            android:TabbedPage.ToolbarPlacement="Bottom"
+             x:Class="TutoringApp.Views.TabbedReservationList"
+            BarBackgroundColor="{StaticResource DefaultOrange}"         
+            UnselectedTabColor="{StaticResource DefaultWhite}"           
+            BarTextColor="White"
+            >
+  <!--Pages can be added as references or inline-->
+
+    <NavigationPage Title="Tutor View" IconImageSource="tutor.png">
+
+        <x:Arguments>
+            <d:tutorReservationList />
+        </x:Arguments>
+    </NavigationPage>
+    <NavigationPage Title="Student View" IconImageSource="cap.png">
+        <x:Arguments>
+            <d:studentReservationList />
+        </x:Arguments>
+    </NavigationPage>
+</TabbedPage>

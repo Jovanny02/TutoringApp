@@ -6,16 +6,16 @@
              xmlns:skiarate="clr-namespace:SkiaRate;assembly=TutoringApp" 
              x:Class="TutoringApp.Views.ReservationDetails">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand" Margin="25,50,25,0">
-            <Grid>
+        <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand" Margin="25,25,25,0">
+            <Grid VerticalOptions="FillAndExpand">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="2*"/>
-                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="2.6*"/>
+                    <RowDefinition Height=".8*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height=".5*"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1.9*"/>
                     <RowDefinition Height="1.5*"/>
                 </Grid.RowDefinitions>
                 <!--student Information -->
@@ -92,15 +92,14 @@
                     </Label.GestureRecognizers>
                 </Label>
 
-                <Label Text="Submit a Rating!" 
+                <Label 
                        FontSize="35" 
                        HorizontalOptions="Center"  
                        Grid.Row="5" 
                        TextColor="{StaticResource DefaultBlue}"
                        FontAttributes="Bold" 
-                       IsVisible="false"
-                       x:Name="submitLabel"/>
-
+                       x:Name="statusLabel"/>
+                
                 <skiarate:RatingView ColorOn="{StaticResource DefaultBlue}" 
                                      Count="5" Grid.Row="6" 
                                      OutlineOnColor="{StaticResource DefaultBlack}"
@@ -108,6 +107,7 @@
                                      Value="{Binding rating, Mode=TwoWay}" 
                                      x:Name="submitRating"
                                      IsVisible="false"
+                                     HorizontalOptions="FillAndExpand"
                                      isReadOnly="{Binding isCompleted}" />
 
                 <Button

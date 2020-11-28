@@ -84,6 +84,12 @@ namespace TutoringApp.Models
                 StartTime = value.Add(new TimeSpan(0, -1* value.Minutes, 0));
                 startTicks = StartTime.Ticks;
                 onPropertyChanged();
+
+                if(EndTime < StartTime)
+                {
+                    endTime = value;
+                }
+
             }
         }
         [JsonIgnore]
@@ -96,6 +102,13 @@ namespace TutoringApp.Models
             {
                 EndTime = value.Add(new TimeSpan(0, -1 * value.Minutes, 0));
                 EndTicks = EndTime.Ticks;
+
+                if (EndTime < StartTime)
+                {
+                    EndTime = StartTime;
+                }
+
+
                 onPropertyChanged();
             }
         }
@@ -117,7 +130,10 @@ namespace TutoringApp.Models
                 onPropertyChanged(); 
             } 
         }
-
+        [JsonIgnore]
         public string dayString { get { return day.ToString(); } }
+        [JsonIgnore]
+        public string shortDayString { get { return day.ToString().Substring(0, 3); } }
+
     }
 }

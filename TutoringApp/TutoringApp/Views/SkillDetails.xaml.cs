@@ -8,6 +8,7 @@ using TutoringApp.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Acr.UserDialogs;
+using TutoringApp.Services;
 
 namespace TutoringApp.Views
 {
@@ -31,7 +32,7 @@ namespace TutoringApp.Views
                 titleLabel.Text = "Add Course";
 
             deleteButton.IsVisible = !isNewSkill;
-            skillSectionPicker.IsEnabled = isNewSkill;                   
+            //skillSectionPicker.IsEnabled = isNewSkill;                   
         }
         //Work around to set a starting value
         public void initSelectedIndex ()
@@ -41,21 +42,12 @@ namespace TutoringApp.Views
 
         private void initPicker()
         {
-            //TODO: add a comprehensive list as a source of skills
-            depatmentSections.AddRange(new List<string> { "ECE", "MAE" , "CISE" });
-            skillSectionPicker.ItemsSource = depatmentSections;
+            skillSectionPicker.ItemsSource = helperServices.departmentTitles;
         }
 
 
         private void save_Clicked(object sender, EventArgs e)
         {
-            if (skillEntry.Text == "" || skillEntry.Text == null)
-            {
-                UserDialogs.Instance.Alert("Course name can not be empty", null, "OK");
-                //errorLabel.Text = "Course name can not be empty";
-                return;
-            }
-
             saveCommand.Execute(sender);
         }
 
@@ -64,6 +56,13 @@ namespace TutoringApp.Views
             deleteCommand.Execute(sender);
         }
 
+        private void skillSectionPicker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (skillSectionPicker.SelectedIndex < 0)
+                return;
+            CoursePicker.ItemsSource = helperServices.CourseList[skillSectionPicker.SelectedIndex].courses;
 
+            CoursePicker.SelectedIndex = 0;
+        }
     }
 }

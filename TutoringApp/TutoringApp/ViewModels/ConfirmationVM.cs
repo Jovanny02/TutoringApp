@@ -36,7 +36,6 @@ namespace TutoringApp.ViewModels
 
         public DateTime selectedDate { get { return reservations[0].fromDate; } }
 
-
        public ICommand tapCardCommand => new Command(() => {
            Payment cardPage = new Payment();
            cardPage.BindingContext = new PaymentInformation(); ;

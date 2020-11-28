@@ -29,6 +29,13 @@ namespace TutoringApp.ViewModels
 
         });
 
+        public ICommand PerformSearchCommand => new Command<string>((string query) =>
+        {
+            //TODO create search call
+            //navigate to search page
+
+        });
+
         public TutorInfo tutorInfo { get; set; }
 
         public int courseListHeight { get; set; }

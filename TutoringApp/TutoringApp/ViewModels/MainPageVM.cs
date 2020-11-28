@@ -6,6 +6,7 @@ using TutoringApp.Views;
 using Xamarin.Forms;
 using Xamarin.Essentials;
 using System.Text.Json;
+using System.Windows.Input;
 
 namespace TutoringApp.ViewModels
 {
@@ -17,7 +18,7 @@ namespace TutoringApp.ViewModels
 
             menuTiles.Add(new NavigationTile { pageName = "Profile", iconSrc = "user.png", targetType = typeof(Profile) });
             menuTiles.Add(new NavigationTile { pageName = "Home", iconSrc = "home.png", targetType = typeof(Home) });
-            menuTiles.Add(new NavigationTile { pageName = "Reservations", iconSrc = "calendar.png", targetType = typeof(ReservationList) });
+            menuTiles.Add(new NavigationTile { pageName = "Reservations", iconSrc = "calendar.png", targetType = typeof(TabbedReservationList) });
             //menuTiles.Add(new NavigationTile { pageName = "Settings", iconSrc = "settings.png", targetType = typeof(Settings) });
             menuTiles.Add(new NavigationTile { pageName = "Help", iconSrc = "question.png", targetType = typeof(Help) });
 
@@ -25,7 +26,7 @@ namespace TutoringApp.ViewModels
         }
 
 
-        public void checkUserStatus ()
+        public bool checkUserStatus ()
         {
             //get current user's first name
             if (App.Current.Properties.ContainsKey("CurrentUser"))
@@ -42,6 +43,7 @@ namespace TutoringApp.ViewModels
                     onPropertyChanged(nameof(pictureSrc));
                 }
 
+                return true;
             }
             else
             {
@@ -53,12 +55,21 @@ namespace TutoringApp.ViewModels
                     onPropertyChanged(nameof(pictureSrc));
                 }
 
+                return false;
 
             }
 
 
         }
 
+        public ICommand SignOutCommand => new Command(() => {
+            if (App.Current.Properties.ContainsKey("CurrentUser"))//if a user is logged in
+            {
+                //delete the user information (logout)
+                App.Current.Properties.Remove("CurrentUser");
+            }
+
+        });
 
 
         private List<NavigationTile> menuTiles = new List<NavigationTile>();

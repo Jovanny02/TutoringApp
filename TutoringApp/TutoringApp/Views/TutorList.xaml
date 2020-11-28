@@ -4,6 +4,7 @@
              xmlns:c="http://xamarin.com/schemas/2014/forms/design"
               xmlns:d="clr-namespace:TutoringApp.Views;assembly=TutoringApp"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
             xmlns:skiarate="clr-namespace:SkiaRate;assembly=TutoringApp" 
              mc:Ignorable="c"
              x:Class="TutoringApp.Views.TutorList">
@@ -21,13 +22,24 @@
                 <StackLayout BackgroundColor="{StaticResource DefaultWhite}" Grid.Row="0">
                     <Frame Style="{StaticResource BorderStyle}" >
                         <Frame Style="{StaticResource InternalViewStyle}">
-                            <SearchBar 
+         <!--                   <SearchBar 
                                 x:Name="searchBar"
                                 Text="{Binding SearchQuery}"
                                 SearchCommand="{Binding PerformSearchCommand}"
                                 SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
                                 Style="{StaticResource searchBarStyle}"
-                                />
+                                />   -->
+                            <forms:AutoSuggestBox 
+                                x:Name="inputBox"
+                                TextColor="{StaticResource DefaultBlack}"
+                                PlaceholderTextColor="{StaticResource DefaultBlack}"                                
+                                PlaceholderText="Search for a Course Code"
+                                TextChanged="AutoSuggestBox_TextChanged"
+                                QuerySubmitted="AutoSuggestBox_QuerySubmitted"
+                                SuggestionChosen="AutoSuggestBox_SuggestionChosen"
+                            />
+
+
                         </Frame>
                     </Frame>
 

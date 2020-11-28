@@ -36,11 +36,10 @@
 
 
                 <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Grid.Row="3" >
-                    <ListView ItemsSource="{Binding reservations}" SelectionMode="None" RowHeight="45" VerticalScrollBarVisibility="Always">
-                        <ListView.ItemTemplate>
+                    <CollectionView ItemsSource="{Binding reservations}" SelectionMode="None"  VerticalScrollBarVisibility="Always">
+                        <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <ViewCell>
-                                    <StackLayout>
+                                <StackLayout HeightRequest="45">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*" />
@@ -51,14 +50,12 @@
 
                                             <Label Text="{Binding fromDateString}" Grid.Column="0" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}" FontAttributes="Bold" FontSize="Title"/>
                                             <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Center" HeightRequest="1" Grid.Column="1" Color="{StaticResource DefaultBlack}"/>
-                                            <Label Text="{Binding toDateString}"  Grid.Column="2" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}" FontAttributes="Bold" FontSize="Title"/>
-
-                                        </Grid>
-                                    </StackLayout>
-                                </ViewCell>
+                                        <Label Text="{Binding toDateString}"  Grid.Column="2" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}" FontAttributes="Bold" FontSize="Title"/>
+                                    </Grid>
+                                </StackLayout>
                             </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </StackLayout>
                 
                 <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Grid.Row="4" Orientation="Horizontal">
@@ -76,7 +73,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="20"/>
+                                <RowDefinition Height="10"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="20"/>
                             </Grid.RowDefinitions>
@@ -85,49 +82,81 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Label Text="Card Number"
+                            <Label 
                            FontAttributes="Bold"
                            LineBreakMode="TailTruncation"
-                           FontSize="Subtitle"
+                           FontSize="Title"
                            TextColor="{StaticResource DefaultBlack}"
                            Grid.Row="1"
                            Grid.Column="0"
-                           Grid.ColumnSpan="2"/>
+                           Grid.ColumnSpan="2">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Card Number: "
+                                        TextColor="{StaticResource DefaultBlack}"
+                                        FontAttributes="Bold"
+                                        FontSize="22">
+                                        </Span>
+                                        <Span 
+                                        TextColor="{StaticResource DefaultBlack}"
+                                        Text="{Binding payInfo.CardNumber}"
+                                        FontSize="20"/>
 
-                            <Label Text="{Binding payInfo.CardNumber}"
-                            FontSize="Subtitle"
-                            TextColor="{StaticResource DefaultBlack}"
-                            Grid.Row="2"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                                
+                            </Label>
 
-                            <Label Text="Expiration"
+
+                        <Label 
                            Margin="0,20,0,0"
-                           FontSize="Subtitle"
+                           FontSize="Title"
                            FontAttributes="Bold"
                            TextColor="{StaticResource DefaultBlack}"
                            Grid.Row="3"
-                           Grid.Column="0"/>
+                           Grid.Column="0">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Expiration: "
+                                        TextColor="{StaticResource DefaultBlack}"
+                                        FontAttributes="Bold"
+                                        FontSize="22">
+                                        </Span>
+                                        <Span 
+                                        TextColor="{StaticResource DefaultBlack}"
+                                        Text="{Binding payInfo.ExpiryDate}"
+                                        FontSize="20"/>
 
-                            <Label Text="{Binding payInfo.ExpiryDate}"
-                            FontSize="Subtitle"
-                            TextColor="{StaticResource DefaultBlack}"
-                            Grid.Row="4"
-                            Grid.Column="0"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
 
-                            <Label Text="CVV"
+
+                            <Label 
                             FontAttributes="Bold"
                             Margin="0,20,0,0"
-                           FontSize="Subtitle"
-                           TextColor="{StaticResource DefaultBlack}"
-                           Grid.Row="3"
-                           Grid.Column="1"/>
-
-                            <Label Text="{Binding payInfo.SecurityCode}"
-                            FontSize="Subtitle"
+                            FontSize="Title"
                             TextColor="{StaticResource DefaultBlack}"
-                            Grid.Row="4"
-                            Grid.Column="1"/>
+                            Grid.Row="3"
+                            Grid.Column="1">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="CVV: "
+                                        TextColor="{StaticResource DefaultBlack}"
+                                        FontAttributes="Bold"
+                                        FontSize="22">
+                                        </Span>
+                                        <Span 
+                                        TextColor="{StaticResource DefaultBlack}"
+                                        Text="{Binding payInfo.SecurityCode}"
+                                        FontSize="20"/>
+
+                                    </FormattedString>
+                                </Label.FormattedText>
+
+                            </Label>
+
+ 
                         </Grid>
                     </Frame>
 
@@ -137,7 +166,7 @@
                 </StackLayout>
 
                 <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Grid.Row="6">
-                    <Button Text="Confirm payment" VerticalOptions="Center" Style="{StaticResource HomeButtonStyle2}"  Command="{Binding confirmCommand}"/>
+                    <Button Text="{Binding totalCostString, StringFormat='Confirm Payment: {0:N}'}" VerticalOptions="Center" Style="{StaticResource HomeButtonStyle2}"  Command="{Binding confirmCommand}"/>
                 </StackLayout>
 
 

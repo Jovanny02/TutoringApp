@@ -19,11 +19,11 @@ namespace TutoringApp.Models
         public string email { get; set; }
         public string password { get; set; }
 
-        public ObservableCollection<EducationSection> EducationSections { get; set; } = new ObservableCollection<EducationSection>();
-        public ObservableCollection<ScheduleTile> ScheduleSections { get; set; } = new ObservableCollection<ScheduleTile>();
+        public List<EducationSection> EducationSections { get; set; } = new List<EducationSection>();
+        public List<ScheduleTile> ScheduleSections { get; set; } = new List<ScheduleTile>();
 
         //public ObservableCollection<SkillSection> Skills { get; set; } = new ObservableCollection<SkillSection>();
-        public ObservableCollection<Course> Courses { get; set; } = new ObservableCollection<Course>();
+        public List<Course> Courses { get; set; } = new List<Course>();
 
         public int UFID { get; set; }
 

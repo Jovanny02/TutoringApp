@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace TutoringApp.Models
 {
-    public class ReservationTile : Reservation, INotifyPropertyChanged
+    public class ReservationTile : Reservation
     {
         public string tutorName { get; set; }
         public string studentName { get; set;}
@@ -25,18 +25,38 @@ namespace TutoringApp.Models
         private bool IsCompleted { get; set; } = false;
         [JsonIgnore]
 
-        public bool isCompleted { get { return IsCompleted; } set { IsCompleted = value; onPropertyChanged(); } } 
+        public bool isCompleted { get { return IsCompleted; } set { IsCompleted = value; onPropertyChanged(); onPropertyChanged(nameof(statusMessage));  } } 
 
         [JsonIgnore]
-        public string formattedFromDate { get { return (fromDate.ToString("MMM d - ") + fromDateString); } }
+        public string formattedFromDate { get { return (fromDate.ToString("MMM d: ") + fromDateString); } }
 
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void onPropertyChanged([CallerMemberName] string propertyName = "")
+        [JsonIgnore]
+        public string statusMessage
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            get
+            {
+                if (isCompleted)
+                {
+                    return "Completed";
+                }
+                else if (!isCompleted && toDate < DateTime.Now)
+                {
+                    return "Awaiting Review";
+                }
+                else if (!isCompleted && fromDate < DateTime.Now && DateTime.Now < toDate)
+                {
+                    return "In Progress";
+                }
+                else if (!isCompleted && DateTime.Now < fromDate)
+                {
+                    return "Upcoming";
+
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
         }
 
     }

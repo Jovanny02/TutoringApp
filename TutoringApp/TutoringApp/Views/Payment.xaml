@@ -9,7 +9,7 @@
              x:Class="TutoringApp.Views.Payment">
     <ContentPage.Content>
         <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand" Margin="25,25,25,0">
-            <Grid>
+            <Grid VerticalOptions="FillAndExpand">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="7*" />
                     <ColumnDefinition Width="3*" />

@@ -14,11 +14,11 @@ namespace TutoringApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ReservationDetails : BaseContentPage
     {
-        public ReservationDetails(bool isStudentReservation, bool canSubmitRating, bool isComplete, bool awaitingReview)
+        public ReservationDetails(bool isStudentReservation, bool canSubmitRating, string labelText)
         {
             InitializeComponent();
 
-            double pictureSize = (DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density) * (.3); 
+            double pictureSize = (DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density) * (.18); 
             double radius = pictureSize / 2;
 
             //if it is a student reservation, show the tutor's information
@@ -30,12 +30,29 @@ namespace TutoringApp.Views
                 tutorName.IsVisible = true;
                 tutorPicture.IsVisible = true;
 
-                if (isComplete)
+                if (labelText == "Completed")
                 {
-                    submitLabel.IsVisible = true;
-                    submitLabel.Text = "Session Completed!";
+                    statusLabel.Text = "Session Completed";
                     submitRating.IsVisible = true;
                 }
+                else if (labelText == "Awaiting Review")
+                {
+                    statusLabel.Text = "Submit A Review";
+                    submitRating.IsVisible = true;
+                }
+                else if (labelText == "In Progress")
+                {
+                    statusLabel.Text = "Session In Progress";
+                }
+                else if (labelText == "Upcoming")
+                {
+                    statusLabel.Text = "Upcoming Session";
+                }
+                else
+                {
+                    statusLabel.Text = labelText;
+                }
+
             }
             else
             {
@@ -46,15 +63,21 @@ namespace TutoringApp.Views
                 studentName.IsVisible = true;
                 studentPicture.IsVisible = true;
 
-                if (isComplete)
+                if (labelText == "Completed")
                 {
-                    submitLabel.IsVisible = true;
-                    submitLabel.Text = "Session Completed!";
+                    statusLabel.Text = "Session Completed";
                 }
-                else if (awaitingReview)
+                else if(labelText == "In Progress")
                 {
-                    submitLabel.IsVisible = true;
-                    submitLabel.Text = "Awaiting Review";
+                    statusLabel.Text = "Session In Progress";
+                }
+                else if (labelText == "Upcoming")
+                {
+                    statusLabel.Text = "Upcoming Session";
+                }
+                else
+                {
+                    statusLabel.Text = labelText;
                 }
 
             }
@@ -63,7 +86,6 @@ namespace TutoringApp.Views
             if (canSubmitRating)
             {
                 submitButton.IsVisible = true;
-                submitLabel.IsVisible = true;
                 submitRating.IsVisible = true;
             }
 
