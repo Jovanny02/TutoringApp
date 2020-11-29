@@ -24,10 +24,27 @@ namespace AppWebAPI.Controllers
         // POST: api/Login  
         public HttpResponseMessage Xamarin_reg(string username, string password)
         {
-            user login = new user();
-            login.fullName= username;
-            login.Password = password;
-            db.users.Add(login);
+            TutoringApp.Models.User appUser = new TutoringApp.Models.User();
+
+            user signup = new user();
+            signup.fullName= username;
+            signup.Password = password;
+            signup.Email = appUser.email;
+            signup.UFID = appUser.UFID;     
+            
+            
+           
+
+            Cours coursesSignUp = new Cours();
+
+
+            coursesSignUp.courseName = appUser.Courses[0].courseName;
+            coursesSignUp.departmentTitle = appUser.Courses[0].departmentTitle;
+            coursesSignUp.UFID = appUser.UFID;
+            
+
+            db.users.Add(signup);
+            db.Courses.Add(coursesSignUp);
             db.SaveChanges();
             return Request.CreateResponse(HttpStatusCode.Accepted, "Successfully Created");
         }

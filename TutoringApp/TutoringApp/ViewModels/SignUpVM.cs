@@ -18,14 +18,15 @@ namespace TutoringApp.ViewModels
              SignUpCommand = new Command(async
                 () =>
             {
-                var getSignupDetails = await service.CheckSignupIfExists(userName, password);
+                UserDialogs.Instance.ShowLoading("SignUp Processing ...");
+                var getSignupDetails = await service.CheckSignupIfExists( Name, password,email,UFID);
                 if (getSignupDetails)
                 {
                     UserDialogs.Instance.Alert("SignUp", "Sucess", "OK");
                     UserDialogs.Instance.HideLoading();
                 }
 
-                else if (userName == null && password == null && email == null && Major == null)
+                else if (Name == null && password == null && email == null && password == null)
                 {
                     UserDialogs.Instance.Alert("Signup failed", "enter all necessay field", "OK");
                     UserDialogs.Instance.HideLoading();
@@ -45,10 +46,16 @@ namespace TutoringApp.ViewModels
         }
 
         public ICommand SignUpCommand { protected set; get; }
-        public string Major { get; set; }
+     
         public string email { get; set; }
         public string password { get; set; }
-        public string userName { get; set; }
+        public string Name { get; set; }
+
+        public int UFID { get; set; }
+
+        public string Course { get; set; }
+
+
 
         APIServices service = new APIServices();
 

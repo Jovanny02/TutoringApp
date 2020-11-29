@@ -25,15 +25,19 @@ namespace TutoringApp.RestApiClass
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> checkSignup(string username, string password)
+        public async Task<bool> checkSignup(string username, string password,string email, int ufid)
         {
             
             
              var client = new HttpClient();
             var model = new User { 
 
-               name = username,
-             password = password
+              name=username,
+              password= password,
+              email= email,
+              UFID= ufid,
+              
+              
             };
 
             var json = JsonConvert.SerializeObject(model);

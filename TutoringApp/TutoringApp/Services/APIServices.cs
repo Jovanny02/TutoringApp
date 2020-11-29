@@ -39,9 +39,9 @@ namespace TutoringApp.Services
         }
 
 
-        public async Task<bool> CheckSignupIfExists(string username, string password)
+        public async Task<bool> CheckSignupIfExists(string name, string password,string email,int ufid )
         {
-            var check = await _restClient.checkSignup(username, password);
+            var check = await _restClient.checkSignup(name, password,email,ufid);
             return check;
 
         }
