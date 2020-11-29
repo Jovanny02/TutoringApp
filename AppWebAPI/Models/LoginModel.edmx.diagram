@@ -5,7 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="0a304186222c4448844dc5523d32446a" Name="Diagram1" >
-        <EntityTypeShape EntityType="TutoringAppDBModel.loginTest" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="TutoringAppDBModel.loginTest" Width="1.5" PointX="1.5" PointY="0.625" />
         <EntityTypeShape EntityType="TutoringAppDBModel.user" Width="1.5" PointX="3.375" PointY="4.875" />
         <EntityTypeShape EntityType="TutoringAppDBModel.Cours" Width="1.5" PointX="5.625" PointY="4.25" />
         <EntityTypeShape EntityType="TutoringAppDBModel.EducationSection" Width="1.5" PointX="5.625" PointY="1.375" />

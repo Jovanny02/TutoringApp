@@ -18,23 +18,27 @@ namespace TutoringApp.ViewModels
              SignUpCommand = new Command(async
                 () =>
             {
+                var getSignupDetails = await service.CheckSignupIfExists(userName, password);
+                if (getSignupDetails)
+                {
+                    UserDialogs.Instance.Alert("SignUp", "Sucess", "OK");
+                    UserDialogs.Instance.HideLoading();
+                }
+
+                else if (userName == null && password == null && email == null && Major == null)
+                {
+                    UserDialogs.Instance.Alert("Signup failed", "enter all necessay field", "OK");
+                    UserDialogs.Instance.HideLoading();
+                }
+                else
+                {
+                    UserDialogs.Instance.Alert("Failed", "Account Already exist", "OK");
+                    UserDialogs.Instance.HideLoading();
+                }
                 //TODO create sing up call using information in password, user, and email
                 Console.WriteLine("Triggered Sign Up Command");
-                var isSucess = await service.LogininSucess(userName, password, email);
-                if (isSucess)
-                
-                    {
-                        UserDialogs.Instance.Alert("Sucess", "Sucess", "OK");
-                        UserDialogs.Instance.HideLoading();
-                    }
-                else
-                    {
+                Navigation.PopAsync();
 
-                        UserDialogs.Instance.HideLoading();
-                        UserDialogs.Instance.Alert("something went wrong", "Payment failed", "Ok");
-
-                    }
-                
             });
 
 

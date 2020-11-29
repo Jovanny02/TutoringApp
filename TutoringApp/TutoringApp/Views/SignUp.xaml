@@ -43,7 +43,7 @@
                     <Label Text="Name" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="Enter Your Full Name" Text="{Binding Name}"/>
+                        <CustRend:CustomEntry Placeholder="Enter Your Full Name" Text="{Binding userName}"/>
                     </Frame>
                 </StackLayout>
 

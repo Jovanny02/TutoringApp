@@ -31,7 +31,7 @@
                     <Label Text="Username" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="Enter Your Username" Text="{Binding user_email}"/>
+                        <CustRend:CustomEntry Placeholder="Enter Your Username" Text="{Binding username}"/>
                     </Frame>
                     <Button FontSize="Subtitle" HorizontalOptions="End" 
                             Text="Forgot Username?" BackgroundColor="{StaticResource DefaultWhite}" 

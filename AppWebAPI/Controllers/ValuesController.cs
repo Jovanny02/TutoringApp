@@ -1,24 +1,52 @@
-﻿using System;
+﻿using AppWebAPI.Models;
+using AppWebAPI.DataBase;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
+using Microsoft.AspNet.Identity;
 
 namespace AppWebAPI.Controllers
 {
     public class ValuesController : ApiController
     {
+        TutoringAppDBEntities ddb = new TutoringAppDBEntities();
+
+        public readonly List<user> Usersssssss = new List<user>{
+            new user
+            {
+                fullName= "kevin",
+                averageRating=2.9 
+            }
+        };
+
+       [HttpGet]
+        [Route("api/Values")]
+        
         // GET api/values
-        public IEnumerable<string> Get()
+        public IEnumerable<user> Get()
         {
-            return new string[] { "value1", "value2" };
+            // reservation reserve = new reservation();
+            // reserve.toDateTime = 
+          //  List<user> hello = UFID;
+
+            return  Usersssssss;
+           // return new string[] { "value1", "value2" };
         }
 
-        // GET api/values/5
-        public string Get(int id)
+
+
+        [HttpGet]
+        [Route("api/Values/{id}")]
+        public string Get(string id)
         {
-            return "value";
+            
+         
+            
+            return "Value1";
         }
 
         // POST api/values
