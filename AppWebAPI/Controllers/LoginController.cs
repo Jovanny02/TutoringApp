@@ -1,5 +1,4 @@
 ﻿using AppWebAPI.Models;
-using AppWebAPI.DataBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +19,7 @@ namespace AppWebAPI.Controllers
 
 
         [HttpPost]
-        [Route("api/Login?username={username}&password={password}")]
+       // [Route("api/Login?username={username}&password={password}")]
         [ActionName("XAMARIN_REG")]
         // POST: api/Login  
         public HttpResponseMessage Xamarin_reg(string username, string password)
@@ -33,7 +32,7 @@ namespace AppWebAPI.Controllers
             return Request.CreateResponse(HttpStatusCode.Accepted, "Successfully Created");
         }
         [HttpGet]
-        [Route("api/Login?username={username}&password={password}")]
+        //[Route("api/Login?username={username}&password={password}")]
         [ActionName("XAMARIN_Login")]
         // GET: api/Login/5  
         public HttpResponseMessage Xamarin_login (string username, string password)

@@ -1,5 +1,4 @@
 ﻿using AppWebAPI.Models;
-using AppWebAPI.DataBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Microsoft.AspNet.Identity;
+
 
 namespace AppWebAPI.Controllers
 {
@@ -24,7 +23,7 @@ namespace AppWebAPI.Controllers
         };
 
        [HttpGet]
-        [Route("api/Values")]
+      //  [Route("api/Values")]
         
         // GET api/values
         public IEnumerable<user> Get()
@@ -40,7 +39,7 @@ namespace AppWebAPI.Controllers
 
 
         [HttpGet]
-        [Route("api/Values/{id}")]
+        //[Route("api/Values/{id}")]
         public string Get(string id)
         {
             
