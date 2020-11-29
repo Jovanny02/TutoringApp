@@ -60,6 +60,6 @@ namespace TutoringApp.ViewModels
         APIServices service = new APIServices();
 
 
-
+        public bool isTutor { get; set; }
     }
 }

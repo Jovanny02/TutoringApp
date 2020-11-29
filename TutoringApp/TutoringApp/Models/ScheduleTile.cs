@@ -24,16 +24,27 @@ namespace TutoringApp.Models
 
         public DayOfWeek day { get; set; }
         //use number of ticks for assignment of time since timespan cannot be deserialized due to no set methods on properties
-        public long startTicks {get; set; }
-        public long endTicks {get; set; }
+
+        private long StartTicks { get; set; }
+        public long EndTicks { get; set; }
+
+        public long startTicks { get { return StartTicks; } 
+            set { StartTime = TimeSpan.FromTicks(value); StartTicks = value; } }
+        public long endTicks
+        {
+            get { return EndTicks; }
+            set { EndTime = TimeSpan.FromTicks(value); EndTicks = value; }
+        }
+
+
+
         //ignore these properties so they do not overwrite start and end ticks on deserialization 
-        
         [JsonIgnore]
         private TimeSpan StartTime { get; set; }
         [JsonIgnore]
         public TimeSpan startTime { get { return StartTime; } 
             set {
-                StartTime = value; 
+                StartTime = value;
                 startTicks = StartTime.Ticks; 
             }
         }
@@ -45,8 +56,8 @@ namespace TutoringApp.Models
             get { return EndTime; }
             set
             {
-                EndTime = value; 
-                endTicks = EndTime.Ticks;
+                EndTime = value;
+                EndTicks = EndTime.Ticks;
             }
         }
         private bool isUnavailable { get; set; } = false;

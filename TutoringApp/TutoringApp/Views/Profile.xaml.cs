@@ -6,6 +6,7 @@ using Xamarin.Forms.Xaml;
 using SkiaSharp.Views.Forms;
 using System.Windows.Input;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace TutoringApp.Views
 {
@@ -32,8 +33,25 @@ namespace TutoringApp.Views
             profileVM.Navigation = Navigation;
             InitializeComponent();
 
-        }
+            //set sizing for circular picture
+            pictureSize = (DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density) * (0.23); //DeviceDisplay.MainDisplayInfo.Width * 0.09;
+            radius = pictureSize / 2;
 
+            userPicture.HeightRequest = pictureSize;
+            userPicture.WidthRequest = pictureSize;
+            userPicture.CornerRadius = (float)radius;
+
+            EditLabelSize = (int)(pictureSize / 3);
+            editLabel.HeightRequest = EditLabelSize;
+            editLabelShadow.HeightRequest = EditLabelSize;
+            editLabelShadow.WidthRequest = pictureSize;
+
+        }
+        public Double pictureSize { get; set; }
+
+        public int EditLabelSize { get; set; }
+
+        public Double radius { get; set; }
         private void EducationList_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             EditEducationCommand.Execute(e.Item);
