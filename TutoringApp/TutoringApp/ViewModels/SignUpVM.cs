@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Acr.UserDialogs;
 using System.Text.RegularExpressions;
+using TutoringApp.Services;
 
 namespace TutoringApp.ViewModels
 {
@@ -39,9 +40,9 @@ namespace TutoringApp.ViewModels
                 UserDialogs.Instance.Alert("Sign Up Failed: Incorrect UFID format", null, null);
                 return;
             }
-            else if (isTutor && (Course == null || Course == String.Empty))
+            else if (isTutor && (Course == null || Course == String.Empty || !helperServices.allCourses.Contains(Course)))
             {
-                UserDialogs.Instance.Alert("Sign Up Failed: Course cannot be empty", null, null);
+                UserDialogs.Instance.Alert("Sign Up Failed: Invalid course", null, null);
                 return;
             }
             else if (isTutor &&

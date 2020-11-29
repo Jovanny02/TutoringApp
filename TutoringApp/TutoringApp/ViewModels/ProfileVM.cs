@@ -46,18 +46,16 @@ namespace TutoringApp.ViewModels
             profileUser.EducationSections.Add(new EducationSection { Major = "Transfer Degree", fromYear = 2015, toYear = 2017, University = "Florida State College At Jacksonville", key = 1 });
 
 
-            Course EEL4712 = new Course("ECE", "EEL4712");
-            Course CIS4930 = new Course("CISE", "CIS4930");
-            Course COP4600 = new Course("CISE", "COP4600");
+          //  Course EEL4712 = new Course("ECE", "EEL4712");
+           // Course CIS4930 = new Course("CISE", "CIS4930");
+           // Course COP4600 = new Course("CISE", "COP4600");
 
 
-            string temp = JsonSerializer.Serialize(EEL4712);
+          //  string temp = JsonSerializer.Serialize(EEL4712);
 
-           // String temp = JsonConvert.SerializeObject(languages);
-
-            profileUser.Courses.Add(EEL4712);
-            profileUser.Courses.Add(CIS4930);
-            profileUser.Courses.Add(COP4600);
+         //   profileUser.Courses.Add(EEL4712);
+           // profileUser.Courses.Add(CIS4930);
+           // profileUser.Courses.Add(COP4600);
 
 
             //biography
@@ -472,7 +470,7 @@ namespace TutoringApp.ViewModels
         private bool IsTutor { get; set; } 
         public bool isTutor { get { return IsTutor; } set { IsTutor = value; onPropertyChanged(); } }
 
-        private string ZoomLink { get; set; }
+        private string ZoomLink { get; set; } = "";
         public string zoomLink { get { return ZoomLink; } set { ZoomLink = value; onPropertyChanged(); } }
         private string Name { get; set; }
 

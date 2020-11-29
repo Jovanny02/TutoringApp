@@ -39,18 +39,21 @@ namespace TutoringApp.Views
         public Double radius { get; set; }
 
 
-        // private void LoadTutors(object sender, ItemVisibilityEventArgs e)
-        // {
-        //     pageVM.LoadTutors.Execute(e.Item);
-        //  }
-
         private void TutorSelected(object sender, SelectionChangedEventArgs e)
         {
             if (e.CurrentSelection.Count < 1 || e.CurrentSelection[0] == null)
                 return;
+            ListedTutors.SelectedItem = null;
+
+            //if a user is not logged in
+            if (!App.Current.Properties.ContainsKey("CurrentUser"))
+            {
+                //navigate to login instead
+                Navigation.PushAsync(new Login());
+                return;
+            }
 
             Navigation.PushAsync(new TutorView(e.CurrentSelection[0]));
-            ListedTutors.SelectedItem = null;
         }
 
         private void AutoSuggestBox_TextChanged(object sender, dotMorten.Xamarin.Forms.AutoSuggestBoxTextChangedEventArgs e)

@@ -7,7 +7,7 @@
              x:Class="TutoringApp.Views.PaswordRenew">
     <ContentPage.Content>
         <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand">
-            <Grid>
+            <Grid VerticalOptions="FillAndExpand">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width=".5*" />
                     <ColumnDefinition Width="9*" />
@@ -15,6 +15,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.3*"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -33,9 +34,17 @@
                     </Frame>
                 
                 </StackLayout>
-
-
+                
                 <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="3" Grid.Column="1">
+                    <Label Text=" Enter Your UFID" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Frame Style="{StaticResource EntryFrame}">
+                        <CustRend:CustomEntry Placeholder="Enter Your UFID"  Text="{Binding UFID}"/>
+                    </Frame>
+
+                </StackLayout>
+
+                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="4" Grid.Column="1">
                     <Label Text=" Enter Your Email" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
@@ -44,7 +53,7 @@
                    
                 </StackLayout>
 
-                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="4" Grid.Column="1">
+                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="5" Grid.Column="1">
                     <Button Text="Update" Style="{StaticResource HomeButtonStyle2}"
                             Margin="25,50,25,50"/>
                 </StackLayout>

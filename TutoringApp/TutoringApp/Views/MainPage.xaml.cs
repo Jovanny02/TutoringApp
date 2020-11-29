@@ -52,17 +52,17 @@ namespace TutoringApp
             NavigationTile tile = ((NavigationTile)e.CurrentSelection[0]);
             if (tile != null)
             {
-                /*   if((tile.targetType == typeof(Profile) || tile.targetType == typeof(ReservationList)  )&& !App.Current.Properties.ContainsKey("CurrentUser"))
-                   {
-                       Navigation.PushAsync(new Login()); // redirect to login if not logged in and page is profile
-                                                          //deselect menu item and set menu presentation to false
-                       listView.SelectedItem = null;
-                       IsPresented = false;
-                   }
-                   else
-                   {
+                if((tile.targetType == typeof(Profile) || tile.targetType == typeof(TabbedReservationList)  )&& !App.Current.Properties.ContainsKey("CurrentUser"))
+                {
+                    Navigation.PushAsync(new Login()); // redirect to login if not logged in and page is profile
+                                                       //deselect menu item and set menu presentation to false
+                    menuCollection.SelectedItem = null;
+                    IsPresented = false;
+                }
+                else
+                {
 
-                   */
+                   
 
                 if (tile.targetType == typeof(TabbedReservationList))
                 {
@@ -79,7 +79,7 @@ namespace TutoringApp
                     //deselect menu item and set menu presentation to false
                     menuCollection.SelectedItem = null;
                     IsPresented = false;
-              //  }
+                }
             }
         }
         private void checkUser(object sender, EventArgs e)

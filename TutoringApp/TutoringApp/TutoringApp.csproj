@@ -100,9 +100,6 @@
     <EmbeddedResource Update="Views\WorkDetails.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\Resume.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\SkiaShared\SkiaShared.projitems" Label="Shared" Condition="Exists('..\SkiaShared\SkiaShared.projitems')" />
 </Project>

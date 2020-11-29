@@ -10,17 +10,18 @@ namespace TutoringApp.ViewModels
     {
         public PasswordRenewVM()
         {
-            UpdatePassCommand = new Command(() =>
+
+
+        }
+        public string UFID { get; set; }
+        public string newPassword { get; set; }
+        public string user_email { get; set; }     
+        public ICommand UpdatePassCommand = new Command(() =>
             {
                 //TODO go home with update password
                 Console.WriteLine("Triggered updated password");
 
 
             });
-
-        }
-        public string newpassword { get; set; }
-        public string user_email { get; set; }     
-        public ICommand UpdatePassCommand { protected set; get; }
     }
 }

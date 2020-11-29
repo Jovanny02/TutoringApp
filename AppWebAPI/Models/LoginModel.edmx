@@ -50,6 +50,7 @@ warning 6002: The table/view 'TutoringAppDB.dbo.reservations' does not have a pr
           <Property Name="toDateTime" Type="datetime" Nullable="false" />
           <Property Name="isCancelled" Type="bit" />
           <Property Name="tutorRating" Type="float" />
+          <Property Name="isCompleted" Type="bit" />
         </EntityType>
         <EntityType Name="users">
           <Key>
@@ -63,8 +64,9 @@ warning 6002: The table/view 'TutoringAppDB.dbo.reservations' does not have a pr
           <Property Name="isTutor" Type="bit" />
           <Property Name="averageRating" Type="float" />
           <Property Name="shortBio" Type="varchar" MaxLength="255" />
-          <Property Name="Biography" Type="varchar" MaxLength="255" />
+          <Property Name="Biography" Type="varchar" MaxLength="600" />
           <Property Name="pictureSource" Type="varchar" MaxLength="255" />
+          <Property Name="zoomLink" Type="varchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'TutoringAppDB.dbo.userSchedules' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -164,7 +166,8 @@ warning 6002: The table/view 'TutoringAppDB.dbo.userSchedules' does not have a p
     [reservations].[fromDateTime] AS [fromDateTime], 
     [reservations].[toDateTime] AS [toDateTime], 
     [reservations].[isCancelled] AS [isCancelled], 
-    [reservations].[tutorRating] AS [tutorRating]
+    [reservations].[tutorRating] AS [tutorRating], 
+    [reservations].[isCompleted] AS [isCompleted]
     FROM [dbo].[reservations] AS [reservations]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="userSchedules" EntityType="Self.userSchedules" store:Type="Tables" store:Schema="dbo">
@@ -249,13 +252,14 @@ warning 6002: The table/view 'TutoringAppDB.dbo.userSchedules' does not have a p
           <Property Name="isTutor" Type="Boolean" />
           <Property Name="averageRating" Type="Double" />
           <Property Name="shortBio" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Biography" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Biography" Type="String" MaxLength="600" FixedLength="false" Unicode="false" />
           <Property Name="pictureSource" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Cours" Relationship="TutoringAppDBModel.FK__Courses__UFID__00200768" FromRole="user" ToRole="Cours" />
           <NavigationProperty Name="EducationSection" Relationship="TutoringAppDBModel.FK__EducationS__UFID__7E37BEF6" FromRole="user" ToRole="EducationSection" />
           <NavigationProperty Name="reservations" Relationship="TutoringAppDBModel.FK__reservati__stude__02084FDA" FromRole="user" ToRole="reservation" />
           <NavigationProperty Name="reservations1" Relationship="TutoringAppDBModel.FK__reservati__tutor__01142BA1" FromRole="user" ToRole="reservation" />
           <NavigationProperty Name="userSchedule" Relationship="TutoringAppDBModel.FK__userSchedu__UFID__7F2BE32F" FromRole="user" ToRole="userSchedule" />
+          <Property Name="zoomLink" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Cours">
           <Key>
@@ -292,6 +296,7 @@ warning 6002: The table/view 'TutoringAppDB.dbo.userSchedules' does not have a p
           <Property Name="tutorRating" Type="Double" />
           <NavigationProperty Name="user" Relationship="TutoringAppDBModel.FK__reservati__stude__02084FDA" FromRole="reservation" ToRole="user" />
           <NavigationProperty Name="user1" Relationship="TutoringAppDBModel.FK__reservati__tutor__01142BA1" FromRole="reservation" ToRole="user" />
+          <Property Name="isCompleted" Type="Boolean" />
         </EntityType>
         <EntityType Name="userSchedule">
           <Key>
@@ -382,6 +387,7 @@ warning 6002: The table/view 'TutoringAppDB.dbo.userSchedules' does not have a p
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="TutoringAppDBModel.user">
               <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="zoomLink" ColumnName="zoomLink" />
                 <ScalarProperty Name="pictureSource" ColumnName="pictureSource" />
                 <ScalarProperty Name="Biography" ColumnName="Biography" />
                 <ScalarProperty Name="shortBio" ColumnName="shortBio" />
@@ -418,6 +424,7 @@ warning 6002: The table/view 'TutoringAppDB.dbo.userSchedules' does not have a p
           <EntitySetMapping Name="reservations">
             <EntityTypeMapping TypeName="TutoringAppDBModel.reservation">
               <MappingFragment StoreEntitySet="reservations">
+                <ScalarProperty Name="isCompleted" ColumnName="isCompleted" />
                 <ScalarProperty Name="tutorRating" ColumnName="tutorRating" />
                 <ScalarProperty Name="isCancelled" ColumnName="isCancelled" />
                 <ScalarProperty Name="toDateTime" ColumnName="toDateTime" />
