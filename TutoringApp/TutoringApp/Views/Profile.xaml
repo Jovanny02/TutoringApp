@@ -2,6 +2,7 @@
 <d1:BaseContentPage  xmlns:d1="clr-namespace:TutoringApp.Views" xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="clr-namespace:TutoringApp.Views;assembly=TutoringApp"
+             xmlns:converters="clr-namespace:TutoringApp.Views"
              xmlns:CustRend="clr-namespace:TutoringApp.Views.CustomRenders;assembly=TutoringApp"
              xmlns:c="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -9,10 +10,14 @@
              xmlns:skiarate="clr-namespace:SkiaRate;assembly=TutoringApp" 
              x:Class="TutoringApp.Views.Profile">
     <ContentPage.Content>
-        <ScrollView Orientation="Vertical" BackgroundColor="{StaticResource DefaultWhite}" VerticalScrollBarVisibility="Always" Margin="0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ScrollView Orientation="Vertical" BackgroundColor="{StaticResource DefaultWhite}" VerticalScrollBarVisibility="Always" Margin="0">
             <StackLayout>
                 <!-- Header Section -->
-                <StackLayout Grid.Row="0" Grid.Column="1" BackgroundColor="{StaticResource DefaultWhite}" Margin="5,10,5,0">
+                <StackLayout Grid.Row="0" BackgroundColor="{StaticResource DefaultWhite}" Margin="5,10,5,0">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2.5*" />
@@ -21,7 +26,7 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="1.1*"/>
+                            <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
@@ -64,25 +69,24 @@
 
                         </Frame>
 
-                        <Entry Text="{Binding name}" HorizontalOptions="FillAndExpand" VerticalOptions="End" TextColor="{StaticResource DefaultBlack}"
-                                FontSize="Large" FontAttributes="Bold" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2"/>
+                        <Entry Text="{Binding name}" HorizontalOptions="FillAndExpand" VerticalOptions="End"
+                               Placeholder="Enter Your Name" TextColor="{StaticResource DefaultBlack}"
+                                FontSize="Large" FontAttributes="Bold" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" MaxLength="80"/>
 
                         <Editor Text="{Binding shortBio}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" TextColor="{StaticResource DefaultBlack}"
-                                FontSize="Small" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" />
+                                Placeholder="Enter a Short Bio" x:Name="shortBioEditor"
+                                WidthRequest="{Binding Source={x:Reference shortBioEditor}, Path=Width}"
+                                FontSize="Subtitle" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" MaxLength="150" AutoSize="TextChanges"/>
 
                         <skiarate:RatingView ColorOn="{StaticResource DefaultBlue}" Count="5" Grid.Column="1" Grid.Row="2" OutlineOnColor="{StaticResource DefaultBlack}"
-                                OutlineOffColor="{StaticResource DefaultBlack}" Value="{Binding AverageRating}" isReadOnly="true" />
-
-                    <!--    <Label Text="$15/hr" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="{StaticResource DefaultBlack}"
-                                FontSize="Title" Grid.Column="2" Grid.RowSpan="2"/>  -->
-
+                                OutlineOffColor="{StaticResource DefaultBlack}" Value="{Binding AverageRating}" isReadOnly="True" />
 
 
                         <Label Text="{Binding AverageRating, StringFormat='{0:0.0}'}" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}"
                                 FontSize="Title" Grid.Column="2" Grid.Row="2"/>
 
                     </Grid>
-                    <Button Text="Save" Style="{StaticResource SaveButtonStyle}" HorizontalOptions="Center" IsVisible="{Binding IsHeaderEdited}" Command="{Binding saveUserCommand}"/>
+                  <!--  <Button Text="Save" Style="{StaticResource SaveButtonStyle}" HorizontalOptions="Center" IsVisible="{Binding IsHeaderEdited}" Command="{Binding saveUserCommand}"/> -->
 
                     <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}"/>
                 </StackLayout>
@@ -112,92 +116,130 @@
                             <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" 
                                      Grid.ColumnSpan="3" Grid.Row="1"/>
                         </Grid>
+
+                        <Editor Text="{Binding Biography}" IsReadOnly="{Binding IsBioEditing, Converter={d:BooleanConverter}}" Placeholder="Enter a Biography Here" AutoSize="TextChanges" MaxLength="500"/>
+                        <!-- Button Text="Save" Style="{StaticResource SaveButtonStyle}" HorizontalOptions="Center" IsVisible="{Binding IsBioEditing}" Command="{Binding editBioCommand}"/> -->
+                    </StackLayout>
+
+
+
+                    <StackLayout Orientation="Horizontal">
+
+                            <Label Text="Enable Tutor View" HorizontalOptions="Start"  VerticalOptions="Start" FontAttributes="Bold"
+                                   TextColor="{StaticResource DefaultOrange}" FontSize="30"/>
                         
-                        <Editor Text="{Binding Biography}" IsReadOnly="{Binding IsBioReadOnly}" Placeholder="Enter a Short Biography Here" AutoSize="TextChanges"/>
-                        <Button Text="Save" Style="{StaticResource SaveButtonStyle}" HorizontalOptions="Center" IsVisible="{Binding IsBioEditing}" Command="{Binding editBioCommand}"/>
-                    </StackLayout>
-
-                    <!--User Education sections -->
-                    <StackLayout Margin="0,10,0,0" >
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="45"/>
-                                <RowDefinition Height="auto"/>
-                            </Grid.RowDefinitions>
-
-
-                            <Label Text="Education" HorizontalOptions="Start"  VerticalOptions="Start" FontAttributes="Bold"
-                                   TextColor="{StaticResource DefaultOrange}" FontSize="30" Grid.Column="0"/>
-                            <ImageButton Source="plus.png" Grid.Column="1" HorizontalOptions="EndAndExpand" Command="{Binding addEducationCommand}"
-                                         VerticalOptions="CenterAndExpand" BackgroundColor="{StaticResource DefaultWhite}"/>
-                            <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}"  Grid.ColumnSpan="2" Grid.Row="1"/>
-                        </Grid>
-
-                        <ListView ItemsSource="{Binding EducationSections}" ItemTapped="EducationList_ItemTapped"  SelectionMode="None"  RowHeight="80" HeightRequest="{Binding EducationListHeight}" VerticalOptions="StartAndExpand" >
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <StackLayout Padding="5,0,5,5">
-
-                                            <Grid Padding="5">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="*"/>
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="*" />
-                                                </Grid.ColumnDefinitions>
-
-                                                <Label Text="{Binding University}"  HorizontalOptions="Start" TextColor="{StaticResource DefaultBlack}" Grid.Row="0" FontAttributes="Bold"/>
-                                                <Label Text="{Binding Major}" HorizontalOptions="Start" TextColor="{StaticResource DefaultBlack}" Grid.Row="1" />
-                                                <Label Text="{Binding fullDate}" HorizontalOptions="Start" TextColor="{StaticResource DefaultBlack}" Grid.Row="2" />
-
-                                            </Grid>
-                                        </StackLayout>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-
+                            <CheckBox HorizontalOptions="StartAndExpand" 
+                                  Color="{StaticResource DefaultBlue}" 
+                                  VerticalOptions="CenterAndExpand"                                
+                                  IsChecked="{Binding isTutor}"/>
 
                     </StackLayout>
+                    <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}"  Grid.ColumnSpan="2" Grid.Row="1"/>
+
+                        <!--Tutor sections  stack used to hide all tutor info -->
+                    <StackLayout IsVisible="{Binding isTutor}">
                     
-                    <!-- Pay and Schedule Section-->
-                    <StackLayout  Margin="0,10,0,0">
-                        <StackLayout Orientation="Horizontal">
+                    
+                                                                                            
+                    
+                        <!--User Education sections -->
+                        <StackLayout Margin="0,10,0,0" >
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="7.5*" />
-                                    <ColumnDefinition Width="2.5*" />
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="45"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
 
 
-                                <Label Text="Requested Hourly Pay:" HorizontalOptions="Start"  VerticalOptions="Center" FontAttributes="Bold"
-                                   TextColor="{StaticResource DefaultOrange}" FontSize="30" HeightRequest="45"/>
-
-                                <Entry Text="{Binding RequestedPay}" Keyboard="Numeric" HorizontalOptions="FillAndExpand" Grid.Column="1"
-                                       VerticalOptions="Start" FontSize="30" TextColor="{StaticResource DefaultBlack}"/>
+                                <Label Text="Education" HorizontalOptions="Start"  VerticalOptions="Start" FontAttributes="Bold"
+                                       TextColor="{StaticResource DefaultOrange}" FontSize="30" Grid.Column="0"/>
+                                <ImageButton Source="plus.png" Grid.Column="1" HorizontalOptions="EndAndExpand" Command="{Binding addEducationCommand}"
+                                             VerticalOptions="CenterAndExpand" BackgroundColor="{StaticResource DefaultWhite}"/>
+                                <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}"  Grid.ColumnSpan="2" Grid.Row="1"/>
                             </Grid>
+
+                            <ListView ItemsSource="{Binding EducationSections}" ItemTapped="EducationList_ItemTapped"  SelectionMode="None"  RowHeight="80" HeightRequest="{Binding EducationListHeight}" VerticalOptions="StartAndExpand" >
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <StackLayout Padding="5,0,5,5">
+
+                                                <Grid Padding="5">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*"/>
+                                                        <RowDefinition Height="*"/>
+                                                        <RowDefinition Height="*"/>
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="2*"/>
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <Label Text="{Binding University}"  HorizontalOptions="Start" TextColor="{StaticResource DefaultBlack}" Grid.Row="0" FontAttributes="Bold"/>
+                                                    <Label Text="{Binding Major}" HorizontalOptions="Start" TextColor="{StaticResource DefaultBlack}" Grid.Row="1" />
+                                                    <Label Text="{Binding fullDate}" HorizontalOptions="Start" TextColor="{StaticResource DefaultBlack}" Grid.Row="2" />
+
+                                                </Grid>
+                                            </StackLayout>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+
+
                         </StackLayout>
-                        <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
+
+                        <!-- Pay and zoomlink Section-->
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Grid Padding="0" ColumnSpacing="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="7.5*" />
+                                        <ColumnDefinition Width="2.5*" />
+                                    </Grid.ColumnDefinitions>
 
 
-                        <Label Text="Schedule" HorizontalOptions="Start"  VerticalOptions="Start" FontAttributes="Bold"
-                                   TextColor="{StaticResource DefaultOrange}" FontSize="30" HeightRequest="45"/>
-                        <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
+                                    <Label Text="Requested Hourly Pay:" HorizontalOptions="Start"  VerticalOptions="Center" FontAttributes="Bold"
+                                       TextColor="{StaticResource DefaultOrange}" FontSize="30" HeightRequest="45"/>
 
-                        <ListView SelectionMode="None" ItemsSource="{Binding ScheduleSections}" RowHeight="100" HeightRequest="705" VerticalOptions="StartAndExpand" >
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <StackLayout Margin="0,0,0,5">
-                                            <Grid>
+                                    <Entry Text="{Binding RequestedPay}" Keyboard="Numeric" HorizontalOptions="FillAndExpand" Grid.Column="1"
+                                           VerticalOptions="Start" FontSize="30" TextColor="{StaticResource DefaultBlack}"/>
+                                </Grid>
+                            </StackLayout>
+                            <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
+
+                                <StackLayout Orientation="Horizontal">
+
+                                        <Label Text="Zoom Link:" HorizontalOptions="StartAndExpand"  VerticalOptions="Center" FontAttributes="Bold" LineBreakMode="WordWrap"
+                                       TextColor="{StaticResource DefaultOrange}" FontSize="30" HeightRequest="45" x:Name="ZoomLabel"/>
+
+
+
+                                    <Editor Text="{Binding zoomLink}" HorizontalOptions="End"  x:Name="ZoomEditor"
+                                           FontSize="Medium" TextColor="{StaticResource DefaultBlack}" MaxLength="150" AutoSize="TextChanges"/>
+                                </StackLayout>
+                                <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
+
+
+                        </StackLayout>
+
+
+                            <!-- Schedule Section-->
+                        <StackLayout  Margin="0,10,0,0">
+
+                            <Label Text="Schedule" HorizontalOptions="Start"  VerticalOptions="Start" FontAttributes="Bold"
+                                       TextColor="{StaticResource DefaultOrange}" FontSize="30" HeightRequest="45"/>
+                            <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
+
+                            <CollectionView ItemsSource="{Binding ScheduleSections}" HeightRequest="705" VerticalOptions="StartAndExpand" Margin="0,0,0,5">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate >
+                                        
+                                        <Grid  HeightRequest="100">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width=".6*" />
                                                     <ColumnDefinition Width="*" />
@@ -211,9 +253,14 @@
                                                     <RowDefinition Height=".3*"/>
                                                 </Grid.RowDefinitions>
 
-                                                <Label Text="{Binding dayString}" TextColor="{StaticResource DefaultBlack}"  Grid.Row="1"
-                                                    FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"/>
 
+                                                <Label Text="{Binding shortDayString}" TextColor="{StaticResource DefaultBlack}" 
+                                                       Grid.Row="0" Grid.Column="0" LineBreakMode="WordWrap" Grid.RowSpan="3"
+                                                    FontSize="30" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                            
+                                            <!--    <Label Text="{Binding dayString}" TextColor="{StaticResource DefaultBlack}"  Grid.Row="1"
+                                                    FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"/>
+                                            -->
                                                 <Label Text="Start Time" TextColor="{StaticResource DefaultBlue}"  Grid.Column="1"
                                                     FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
 
@@ -231,79 +278,108 @@
                                                 </Frame>
 
                                                 <CheckBox HorizontalOptions="End" Color="{StaticResource DefaultBlack}" Grid.Row="3" 
-                                                          VerticalOptions="FillAndExpand" IsChecked="{Binding IsUnavailable}"/>
+                                                            VerticalOptions="FillAndExpand" IsChecked="{Binding IsUnavailable}"/>
                                                 <Label Text="Unavailable?" TextColor="{StaticResource DefaultBlack}" Grid.Row="3" Grid.Column="1"
                                                         HorizontalOptions="Start" VerticalOptions="Start" />
                                                 
                                             </Grid>
-                                            
 
-                                        </StackLayout>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
 
-                        <Button Text="Save" Style="{StaticResource SaveButtonStyle}" HorizontalOptions="Center" IsVisible="True" Command="{Binding saveUserCommand}"/>
-                    </StackLayout>
+                                        
+                                        </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
 
-                    <!-- Courses Section-->
-                    <StackLayout  Margin="0,10,0,0">
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="Courses" HorizontalOptions="Start"  VerticalOptions="Start" FontAttributes="Bold"
-                                   TextColor="{StaticResource DefaultOrange}" FontSize="30" HeightRequest="45"/>
-                            <ImageButton Source="plus.png" HorizontalOptions="EndAndExpand" HeightRequest="45" Command="{Binding addCourseCommand}"
-                                    VerticalOptions="CenterAndExpand" BackgroundColor="{StaticResource DefaultWhite}"/>
                         </StackLayout>
-                        <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
+
+                        <!-- Courses Section-->
+                        <StackLayout  Margin="0,10,0,0">
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Courses" HorizontalOptions="Start"  VerticalOptions="Start" FontAttributes="Bold"
+                                       TextColor="{StaticResource DefaultOrange}" FontSize="30" HeightRequest="45"/>
+                                <ImageButton Source="plus.png" HorizontalOptions="EndAndExpand" HeightRequest="45" Command="{Binding addCourseCommand}"
+                                        VerticalOptions="CenterAndExpand" BackgroundColor="{StaticResource DefaultWhite}"/>
+                            </StackLayout>
+                            <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
                         
                         
-                        <!-- list for skills -->
-                        <ListView ItemsSource="{Binding Courses}" RowHeight="40" HeightRequest="{Binding CourseListHeight}" VerticalOptions="Start"  x:Name="skillsList"
-                                  IsGroupingEnabled="False" ItemTapped="CourseList_ItemTapped" SeparatorVisibility="None">
-                            <!--        <ListView.GroupHeaderTemplate>
-                                <DataTemplate>
-                                    <ViewCell >
-                                        <StackLayout BackgroundColor="{StaticResource BorderColor}" Padding="5">
-                                            <Label Text="{Binding SectionTitle}"  TextColor="Black" HorizontalOptions="Start" FontSize="Medium" FontAttributes="Bold"/>
-                                        </StackLayout>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.GroupHeaderTemplate>
-                            -->
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <StackLayout Padding="5">
-                                            <Label Text="{Binding courseName}" TextColor="{StaticResource DefaultBlack}" HorizontalOptions="Start" FontSize="Medium"/>
-                                        </StackLayout>  
-                                        <!--   <ListView ItemsSource="{Binding skills}" RowHeight="40" HeightRequest="200" VerticalOptions="StartAndExpand" HorizontalOptions="CenterAndExpand"  x:Name="ski"
-                                         SeparatorVisibility="None" BackgroundColor="Aqua">
-                                            <ListView.ItemTemplate>
-                                                <DataTemplate>
-                                                    <ViewCell>
-                                                        <StackLayout Padding="5">
-                                                            <Label Text="{Binding skillName}" TextColor="{StaticResource DefaultBlack}" HorizontalOptions="Start" FontSize="Medium"/>
-                                                        </StackLayout>
+                            <!-- list for skills -->
+                            <ListView ItemsSource="{Binding Courses}" RowHeight="40" HeightRequest="{Binding CourseListHeight}" VerticalOptions="Start"  x:Name="skillsList"
+                                      IsGroupingEnabled="False" ItemTapped="CourseList_ItemTapped" SeparatorVisibility="None">
+                                <!--        <ListView.GroupHeaderTemplate>
+                                    <DataTemplate>
+                                        <ViewCell >
+                                            <StackLayout BackgroundColor="{StaticResource BorderColor}" Padding="5">
+                                                <Label Text="{Binding SectionTitle}"  TextColor="Black" HorizontalOptions="Start" FontSize="Medium" FontAttributes="Bold"/>
+                                            </StackLayout>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.GroupHeaderTemplate>
+                                -->
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <StackLayout Padding="5">
+                                                <Label Text="{Binding courseName}" TextColor="{StaticResource DefaultBlack}" HorizontalOptions="Start" FontSize="Medium"/>
+                                            </StackLayout>  
+                                            <!--   <ListView ItemsSource="{Binding skills}" RowHeight="40" HeightRequest="200" VerticalOptions="StartAndExpand" HorizontalOptions="CenterAndExpand"  x:Name="ski"
+                                             SeparatorVisibility="None" BackgroundColor="Aqua">
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <ViewCell>
+                                                            <StackLayout Padding="5">
+                                                                <Label Text="{Binding skillName}" TextColor="{StaticResource DefaultBlack}" HorizontalOptions="Start" FontSize="Medium"/>
+                                                            </StackLayout>
 
-                                                    </ViewCell>
-                                                </DataTemplate>
-                                            </ListView.ItemTemplate>
-                                        </ListView>-->
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
+                                                        </ViewCell>
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                            </ListView>-->
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
 
-                        </ListView>
+                            </ListView>
 
+                        </StackLayout>
+
+                            
                     </StackLayout>
 
-
-
+                    
+                            
+                    
                 </StackLayout>
 
 
+                <StackLayout x:Name="emptyStack">
+                    <!-- empty stack to give extra space for the save button -->
+                </StackLayout>
+                
+
             </StackLayout>
+            
+            
         </ScrollView>
+            
+        <Button Grid.Row="0" 
+                Text="Save Changes" 
+                BackgroundColor="{StaticResource LightOrange}" 
+                TextColor="{StaticResource DefaultWhite}"
+                x:Name="saveButton"  
+                Margin="25,25,25,25" 
+                VerticalOptions="End" 
+                HorizontalOptions="End"
+                Clicked="saveButton_Clicked"
+                />
+            
+            
+        </Grid>
+        
     </ContentPage.Content>
 </d1:BaseContentPage>
+
+
+
+
+

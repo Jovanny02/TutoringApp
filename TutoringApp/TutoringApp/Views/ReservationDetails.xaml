@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<d:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:d="clr-namespace:TutoringApp.Views;assembly=TutoringApp"
+             xmlns:CustRend="clr-namespace:TutoringApp.Views.CustomRenders;assembly=TutoringApp"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:skiarate="clr-namespace:SkiaRate;assembly=TutoringApp" 
+             x:Class="TutoringApp.Views.ReservationDetails">
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand" Margin="25,25,25,0">
+            <Grid VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2.6*"/>
+                    <RowDefinition Height=".8*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height=".5*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1.9*"/>
+                    <RowDefinition Height="1.5*"/>
+                </Grid.RowDefinitions>
+                <!--student Information -->
+                <Frame x:Name="studentPicture" 
+                       IsVisible="false"
+                       Padding="0"                                   
+                       IsClippedToBounds="True" 
+                       BorderColor="{StaticResource DefaultBlack}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="FillAndExpand"
+                       Grid.Row="0">
+
+                    <Image Source="{Binding studentPicture}"
+                           HorizontalOptions="CenterAndExpand" 
+                           VerticalOptions="CenterAndExpand" />
+                </Frame>
+                <Label Text="{Binding studentName}" 
+                       IsVisible="false"
+                       x:Name="studentName" 
+                       FontSize="35" 
+                       HorizontalOptions="Center"  
+                       Grid.Row="1" 
+                       TextColor="{StaticResource DefaultBlue}"
+                       FontAttributes="Bold" />
+                
+                <!--Tutor Information -->
+                <Frame x:Name="tutorPicture" 
+                       IsVisible="false"
+                       Padding="0"                                   
+                       IsClippedToBounds="True" 
+                       BorderColor="{StaticResource DefaultBlack}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="FillAndExpand"
+                       Grid.Row="0">
+
+                    <Image Source="{Binding tutorPicture}"
+                           HorizontalOptions="CenterAndExpand" 
+                           VerticalOptions="CenterAndExpand" />
+                </Frame>
+                <Label Text="{Binding tutorName}" 
+                       IsVisible="false"
+                       x:Name="tutorName" 
+                       FontSize="35" 
+                       HorizontalOptions="Center"  
+                       Grid.Row="1" 
+                       TextColor="{StaticResource DefaultBlue}"
+                       FontAttributes="Bold" />
+                
+               <!--Information for both -->
+                <Label Text="{Binding fromDate, StringFormat='{0:MMMM d, yyyy}'}" 
+                       Grid.Row="2" 
+                       HorizontalOptions="CenterAndExpand"
+                       VerticalOptions="End"
+                       FontSize="30"
+                       TextColor="{StaticResource DefaultBlack}"
+                       TextDecorations="Underline"/>
+                
+                
+                <StackLayout Orientation="Horizontal" Grid.Row="3" HorizontalOptions="CenterAndExpand" VerticalOptions="Start">
+                    <Label Text="{Binding fromDateString}" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}"  FontSize="30"/>
+                    <BoxView HorizontalOptions="Center" VerticalOptions="Center" HeightRequest="1" Color="{StaticResource DefaultBlack}"/>
+                    <Label Text="{Binding toDateString}" HorizontalOptions="Start" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}"  FontSize="30"/>
+                </StackLayout>
+
+                <Label Grid.Row="4"
+                       x:Name="zoomLinkLabel"
+                       Text="{Binding zoomLink}"                           
+                       TextColor="Blue"
+                       FontSize="25"
+                       TextDecorations="Underline"
+                       HorizontalOptions="CenterAndExpand">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="zoomLink_Tapped"/>
+                    </Label.GestureRecognizers>
+                </Label>
+
+                <Label 
+                       FontSize="35" 
+                       HorizontalOptions="Center"  
+                       Grid.Row="5" 
+                       TextColor="{StaticResource DefaultBlue}"
+                       FontAttributes="Bold" 
+                       x:Name="statusLabel"/>
+                
+                <skiarate:RatingView ColorOn="{StaticResource DefaultBlue}" 
+                                     Count="5" Grid.Row="6" 
+                                     OutlineOnColor="{StaticResource DefaultBlack}"
+                                     OutlineOffColor="{StaticResource DefaultBlack}" 
+                                     Value="{Binding rating, Mode=TwoWay}" 
+                                     x:Name="submitRating"
+                                     IsVisible="false"
+                                     HorizontalOptions="FillAndExpand"
+                                     isReadOnly="{Binding isCompleted}" />
+
+                <Button
+                    x:Name="submitButton"
+                    Grid.Row="7" 
+                    IsVisible="false"
+                    Text="Submit Review!"
+                    Style="{StaticResource HomeButtonStyle2}" 
+                    Margin="25,0,25,25"
+                    Clicked="submitButton_Clicked"
+                    />
+
+
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</d:BaseContentPage>

@@ -15,7 +15,7 @@
                     OtherMonthDayIsVisible="False"
                     MonthYear="{Binding currentDay}"
                     MaximumDate="{Binding lastDay}"
-                    MinimumDate="{Binding currentDay}"
+                    MinimumDate="{Binding minDate}"
                     DisableSwipeDetection="False"
                     VerticalOptions="Center"
                     HorizontalOptions="Center" 
@@ -129,37 +129,39 @@
             <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Color="{StaticResource DefaultBlack}"/>
 
             <StackLayout x:Name="reservationStack" VerticalOptions="FillAndExpand">
-                <Label Text="{Binding listText}" IsVisible="{Binding isTextVisible}" TextColor="{StaticResource DefaultBlack}" FontSize="Subtitle"
+                <Label Text="{Binding listText}" IsVisible="{Binding isListVisible, Converter={d:BooleanConverter}}" TextColor="{StaticResource DefaultBlack}" FontSize="Subtitle"
                        HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
-                <ListView ItemsSource="{Binding reservationList}" SelectionMode="None" IsVisible="{Binding IsListVisible}"
-                          HasUnevenRows="False" RowHeight="45" VerticalScrollBarVisibility="Always">
-                    <ListView.ItemTemplate>
+                <CollectionView ItemsSource="{Binding reservationList}" 
+                                SelectionMode="Single" 
+                                SelectionChanged="CollectionView_SelectionChanged"
+                                IsVisible="{Binding isListVisible}"                               
+                                 >
+                    <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <StackLayout>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width=".3*"/>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width=".3*"/>
-                                            <ColumnDefinition Width="*" />
+                            <StackLayout>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width=".3*"/>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width=".3*"/>
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="45"/>
+                                    </Grid.RowDefinitions>
+                                    <CheckBox Grid.Column="0" IsChecked="{Binding isSelected}"  Color="{StaticResource DefaultBlue}" HorizontalOptions="End" VerticalOptions="Center"/>
+                                    <Label Text="{Binding fromDateString}" Grid.Column="1" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}" FontAttributes="Bold" FontSize="Title"/>
+                                    <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Center" HeightRequest="1" Grid.Column="2" Color="{StaticResource DefaultBlack}"/>
+                                    <Label Text="{Binding toDateString}"  Grid.Column="3" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}" FontAttributes="Bold" FontSize="Title"/>
 
-                                        </Grid.ColumnDefinitions>
-
-                                        <CheckBox Grid.Column="0" IsChecked="{Binding isSelected}"  Color="{StaticResource DefaultBlack}" HorizontalOptions="End" VerticalOptions="Center"/>
-                                        <Label Text="{Binding fromDateString}" Grid.Column="1" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}" FontAttributes="Bold" FontSize="Title"/>
-                                        <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Center" HeightRequest="1" Grid.Column="2" Color="{StaticResource DefaultBlack}"/>
-                                        <Label Text="{Binding toDateString}"  Grid.Column="3" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}" FontAttributes="Bold" FontSize="Title"/>
-
-                                    </Grid>
-                                </StackLayout>
-                            </ViewCell>
+                                </Grid>
+                            </StackLayout>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </StackLayout>
 
-            <Button Text="Confirmation and Payment" Margin="25,5,25,20"  x:Name="submitButton" IsVisible="{Binding IsListVisible}"
+            <Button Text="Confirmation and Payment" Margin="25,5,25,20"  x:Name="submitButton" IsVisible="{Binding isListVisible}"
                     VerticalOptions="Center" Style="{StaticResource HomeButtonStyle2}" Command="{Binding confirmationCommand}" />
 
 

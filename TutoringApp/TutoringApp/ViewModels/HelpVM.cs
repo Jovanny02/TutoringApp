@@ -21,16 +21,16 @@ namespace TutoringApp.ViewModels
         { 
             QAview= new ObservableCollection<QA>
                     {
-                        new QA { Questions = "Do i need to be a student at UF to use this app ?", Answers = "Yes since all the help provided relate to the courses at UF" },
-                        new QA { Questions = "Will i get a refund if i cancel a class ? ", Answers = "No you will be charge with the amount you and the tutor agreeed" },
-                        new QA {Questions= "Are these meeting available online ?", Answers= "For the moment we only provide in person meeting"}
+                        new QA { Questions = "Do i need to be a student at UF to use this app?", Answers = "Yes since all the help provided relates to courses at UF" },
+                        new QA { Questions = "Will i get a refund if i cancel a class? ", Answers = "No, you will be charged a non refundable fee at the time of the reservation " },
+                        new QA {Questions= "Are these meeting available in person?", Answers= "For the moment we only provide online meetings"}
 
                     };
 
         }
             
 
-            private Boolean IsValidUri(String uri)
+            private bool IsValidUri(String uri)
             {
                 try
                 {

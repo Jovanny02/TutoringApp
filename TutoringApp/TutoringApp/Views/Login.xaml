@@ -9,7 +9,7 @@
              x:Class="TutoringApp.Views.Login">
     <ContentPage.Content>
         <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand">
-            <Grid>
+            <Grid VerticalOptions="FillAndExpand">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width=".5*" />
                     <ColumnDefinition Width="9*" />
@@ -23,20 +23,20 @@
                     <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
                 <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Grid.Row="1" Grid.Column="1">
-                    <Label Text="Login" TextColor="{StaticResource DefaultBlack}" 
+                    <Label Text="Login" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="30" FontAttributes="Bold"   />
                 </StackLayout>
 
                 <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="2" Grid.Column="1">
-                    <Label Text="Username" TextColor="{StaticResource DefaultBlue}" 
+                    <Label Text="UFID" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="Enter Your Username" Text="{Binding username}"/>
+                        <CustRend:CustomEntry Placeholder="Enter Your UFID" Text="{Binding UFID}" MaxLength="8" />
                     </Frame>
-                    <Button FontSize="Subtitle" HorizontalOptions="End" 
-                            Text="Forgot Username?" BackgroundColor="{StaticResource DefaultWhite}" 
+                  <!--  <Button FontSize="Subtitle" HorizontalOptions="End" 
+                            Text="Forgot UFID?" BackgroundColor="{StaticResource DefaultWhite}" 
                             Padding="0" Command="{Binding ForgotUserCommand}"
-                            TextColor="{StaticResource DefaultOrange}"/>
+                            TextColor="{StaticResource DefaultOrange}"/>  -->
                 </StackLayout>
 
 

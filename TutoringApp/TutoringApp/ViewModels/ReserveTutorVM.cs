@@ -6,6 +6,7 @@ using TutoringApp.Models;
 using Xamarin.Forms;
 using System.Collections.ObjectModel;
 using Acr.UserDialogs;
+using TutoringApp.Views;
 
 namespace TutoringApp.ViewModels
 {
@@ -14,18 +15,19 @@ namespace TutoringApp.ViewModels
         public ReserveTutorVM(object tutor)
         {
             this.tutor = (TutorInfo)tutor;
+            minDate = DateTime.Today.AddDays(-1 * DateTime.Today.Day + 1);
             currentDay = DateTime.Now.AddDays(-1);
             lastDay = DateTime.Now.AddDays(21);
             MonthYear = DateTime.Now;
             listText = "Select a day to see available sessions";
             isListVisible = false;
-            isTextVisible = true;
         }
         public TutorInfo tutor { get; set; }
 
         public DateTime MonthYear { get; set; }
         public DateTime currentDay { get; set; }
         public DateTime lastDay { get; set; }
+        public DateTime minDate { get; set; }
 
         public int currentMonth { get { return currentDay.Month; }  }
         public int currentYear { get { return currentDay.Year; } }
@@ -42,13 +44,24 @@ namespace TutoringApp.ViewModels
             set { IsListVisible = value; onPropertyChanged(); }
         }
 
-        private bool IsTextVisible { get; set; }
-
-        public bool isTextVisible
+        public void handleTappedReservation(object selectedReservation)
         {
-            get { return IsTextVisible; }
-            set { IsTextVisible = value; onPropertyChanged(); }
+            Reservation reservation = (Reservation)selectedReservation;
+
+            int index = reservationList.IndexOf(reservation);
+
+            if (index == -1) //return due to error
+            {
+                return;
+            }
+            else
+            {
+                reservationList[index].isSelected = !reservationList[index].isSelected;
+            }
+
+           // onPropertyChanged(nameof(reservationList));
         }
+
 
 
         public ICommand DayTappedCommand => new Command<DateTime>((selectedDate) => {
@@ -65,6 +78,14 @@ namespace TutoringApp.ViewModels
 
             //clear list
             reservationList = new ObservableCollection<Reservation>();
+            if(selectedDate < DateTime.Today)
+            {
+                isListVisible = false;
+                listText = "No sessions available";
+                onPropertyChanged(nameof(reservationList));
+                return;
+            }
+
 
             int startingHour = tutor.ScheduleSections[index].startTime.Hours;
             int endingHour = tutor.ScheduleSections[index].endTime.Hours;
@@ -94,13 +115,11 @@ namespace TutoringApp.ViewModels
             if(reservationList.Count == 0)
             {
                 isListVisible = false;
-                isTextVisible = true;
                 listText = "No sessions available";
             }
             else
             {
                 isListVisible = true;
-                isTextVisible = false;
             }
 
             onPropertyChanged(nameof(reservationList));
@@ -111,7 +130,7 @@ namespace TutoringApp.ViewModels
         public ICommand SwipeRightCommand => new Command(() => { MonthYear = MonthYear.AddMonths(-1); });
 
         public ICommand confirmationCommand => new Command(() => {
-            ObservableCollection<Reservation> selectedReservations = new ObservableCollection<Reservation>();
+            List<Reservation> selectedReservations = new List<Reservation>();
             for (int i = 0; reservationList != null && i < reservationList.Count ; i++)
             {
                 if (reservationList[i].isSelected)
@@ -123,8 +142,7 @@ namespace TutoringApp.ViewModels
                 UserDialogs.Instance.Alert("You must select at least 1 section to continue", null, null);
                 return;
             }
-            //TODO add push to confirmation page
-            UserDialogs.Instance.Alert("Success!", null, null);
+            Navigation.PushAsync(new Confirmation(tutor, selectedReservations));
 
         });
 

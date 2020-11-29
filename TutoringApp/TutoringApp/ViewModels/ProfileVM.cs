@@ -15,6 +15,7 @@ using System.IO;
 using TutoringApp.Services;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using System.Linq;
 
 namespace TutoringApp.ViewModels
 {
@@ -33,7 +34,7 @@ namespace TutoringApp.ViewModels
 
             getUserInfo();
 
-            IsHeaderEdited = false;
+           // IsHeaderEdited = false;
         }
 
         private void initTestUser()
@@ -45,18 +46,16 @@ namespace TutoringApp.ViewModels
             profileUser.EducationSections.Add(new EducationSection { Major = "Transfer Degree", fromYear = 2015, toYear = 2017, University = "Florida State College At Jacksonville", key = 1 });
 
 
-            Course EEL4712 = new Course("ECE", "EEL4712");
-            Course CIS4930 = new Course("CISE", "CIS4930");
-            Course COP4600 = new Course("CISE", "COP4600");
+          //  Course EEL4712 = new Course("ECE", "EEL4712");
+           // Course CIS4930 = new Course("CISE", "CIS4930");
+           // Course COP4600 = new Course("CISE", "COP4600");
 
 
-            string temp = JsonSerializer.Serialize(EEL4712);
+          //  string temp = JsonSerializer.Serialize(EEL4712);
 
-           // String temp = JsonConvert.SerializeObject(languages);
-
-            profileUser.Courses.Add(EEL4712);
-            profileUser.Courses.Add(CIS4930);
-            profileUser.Courses.Add(COP4600);
+         //   profileUser.Courses.Add(EEL4712);
+           // profileUser.Courses.Add(CIS4930);
+           // profileUser.Courses.Add(COP4600);
 
 
             //biography
@@ -71,7 +70,7 @@ namespace TutoringApp.ViewModels
 
             profileUser.shortBio = "Senior Studing Computer Engineering at UF";
 
-            profileUser.ScheduleSections = new ObservableCollection<ScheduleTile>() {
+            profileUser.ScheduleSections = new List<ScheduleTile>() {
             new ScheduleTile { day = DayOfWeek.Monday },
             new ScheduleTile { day = DayOfWeek.Tuesday },
             new ScheduleTile { day = DayOfWeek.Wednesday },
@@ -80,6 +79,8 @@ namespace TutoringApp.ViewModels
             new ScheduleTile { day = DayOfWeek.Saturday },
             new ScheduleTile { day = DayOfWeek.Sunday }
             };
+
+            profileUser.isTutor = true;
 
             profileUser.UFID = 54817581;
             //serialize object as string and save to properties
@@ -95,9 +96,9 @@ namespace TutoringApp.ViewModels
 
             //education sections
             EducationListHeight = profileUser.EducationSections.Count() * EducationHeight;
-            EducationSections = profileUser.EducationSections;
+            EducationSections = new ObservableCollection<EducationSection>(profileUser.EducationSections);
             //skills sections
-            Courses = profileUser.Courses;
+            Courses = new ObservableCollection<Course>(profileUser.Courses);
             CourseListHeight = 0;
             //determine skills height
             //  for (int i = 0; i < Courses.Count; i++)
@@ -114,25 +115,62 @@ namespace TutoringApp.ViewModels
             //init pay
             requestedPay = profileUser.requestedPay;
 
-            ScheduleSections = profileUser.ScheduleSections;
+            ScheduleSections = new ObservableCollection<ScheduleTile>(profileUser.ScheduleSections);
 
             name = profileUser.name;
 
             shortBio = profileUser.shortBio;
 
             pictureSrc = profileUser.pictureSrc;
+
+            isTutor = profileUser.isTutor;
+
+            zoomLink = profileUser.zoomLink;
         }
 
         private void saveUser()
         {
+           // IsBioReadOnly = true;
+            IsBioEditing = false;
+
+            //Pre save checks
+
+            if(name == null || name == String.Empty)
+            {
+                UserDialogs.Instance.Alert("Save Failed: Name cannot be empty", null, null);
+                return;
+            }
+            else if(isTutor && 
+                (ZoomLink == null || 
+                ZoomLink == string.Empty || 
+                !Uri.IsWellFormedUriString(ZoomLink, UriKind.Absolute) ||
+                !ZoomLink.Contains("https://ufl.zoom.us") )){ //TODO add more extensive checks for zoom link
+                UserDialogs.Instance.Alert("Save Failed: Invalid zoom link", null, null);
+                return;
+            }
+            else if(isTutor && requestedPay < 1)
+            {
+                UserDialogs.Instance.Alert("Save Failed: Requested pay must be greater than $1", null, null);
+                return;
+            }
+            else if (isTutor && (Courses == null || Courses.Count < 1) )
+            {
+                UserDialogs.Instance.Alert("Save Failed: You must have at least one course", null, null);
+                return;
+            }
+
+
+
             //save all user properties
-            profileUser.EducationSections = EducationSections;
-            profileUser.Courses = Courses;
+            profileUser.EducationSections = EducationSections.ToList<EducationSection>();
+            profileUser.Courses = Courses.ToList<Course>();
             profileUser.Biography = Biography;
             profileUser.requestedPay = requestedPay;
-            profileUser.ScheduleSections = ScheduleSections;
+            profileUser.ScheduleSections = ScheduleSections.ToList<ScheduleTile>();
             profileUser.name = name;
             profileUser.shortBio = shortBio;
+            profileUser.isTutor = isTutor;
+            profileUser.zoomLink = zoomLink.Trim();
 
             string userString = JsonSerializer.Serialize(profileUser);
             //update current user in properties and save 
@@ -140,27 +178,21 @@ namespace TutoringApp.ViewModels
                 App.Current.Properties["CurrentUser"] = userString;
             else
                 App.Current.Properties.Add("CurrentUser", userString);
-            //TODO: Add a services call that saves object in database
-            //NOTE: will need to add save button to header section to prevent multiple system calls
 
+            //TODO: Add a services call that saves object in database
             App.Current.SavePropertiesAsync();
+            UserDialogs.Instance.Alert("Saved Successfully!", null, null);
+
         }
 
-#region commands
+        #region commands
         public ICommand editBioCommand => new Command(() =>
         {
-            IsBioReadOnly = !IsBioReadOnly;
             IsBioEditing = !IsBioEditing;
-
-            if (!IsBioEditing)
-                saveUser();
-
         });
 
         public ICommand saveUserCommand => new Command(() => {
             saveUser();
-            UserDialogs.Instance.Alert("Saved Successfully!", null, null);
-            IsHeaderEdited = false;
         });
 
 
@@ -177,7 +209,7 @@ namespace TutoringApp.ViewModels
                 else
                     newEducationSection.key = 0;
 
-                EducationSections.Add(newEducationSection);
+                EducationSections.Add(new EducationSection(newEducationSection));
                 EducationListHeight += EducationHeight;
             }
             else
@@ -187,15 +219,27 @@ namespace TutoringApp.ViewModels
                     //finds education section with matching key and overwrites it
                     if (EducationSections[i].key == newEducationSection.key)
                     {
-                        EducationSections[i] = newEducationSection;
+                        EducationSections[i] = new EducationSection(newEducationSection);
                         break;
                     }
                 }
 
             }
+            //sort List by toYear high to low
+            List<EducationSection> tempSections = EducationSections.ToList();
+            tempSections.Sort(delegate (EducationSection c1, EducationSection c2) { return -1 * c1.toYear.CompareTo(c2.toYear); });
+            EducationSections = new ObservableCollection<EducationSection>(tempSections);
 
+            //reset keys for all Education Sections
+            for(int kk = 0; kk < EducationSections.Count; kk++)
+            {
+                EducationSections[kk].key = kk;
+            }
+
+
+            onPropertyChanged(nameof(EducationSections));
             newEducationSection = new EducationSection();
-            saveUser();
+            //saveUser();
             Navigation.PopAsync();
         });
         public ICommand addEducationCommand => new Command(() =>
@@ -215,12 +259,12 @@ namespace TutoringApp.ViewModels
             Navigation.PopAsync();
 
             EducationListHeight -= EducationHeight;
-            saveUser();
+            //saveUser();
         });
         public ICommand EditEducationCommand => new Command((object selectedSection) =>
         {
             // Used for comparison in saveEducationCommand
-            newEducationSection = (EducationSection)selectedSection;
+            newEducationSection = new EducationSection((EducationSection)selectedSection);
 
             EducationDetails details = new EducationDetails();
             details.SaveCommand = saveEducationCommand;
@@ -231,8 +275,8 @@ namespace TutoringApp.ViewModels
 
         public ICommand EditCourseCommand => new Command((object selectedCourse) =>
         {
-            newCourse = (Course)selectedCourse;
-            oldCourse = (Course)selectedCourse;
+            newCourse = new Course { departmentTitle = ((Course)selectedCourse).departmentTitle, courseName = ((Course)selectedCourse).courseName };
+            oldCourse = new Course { departmentTitle = ((Course)selectedCourse).departmentTitle, courseName = ((Course)selectedCourse).courseName };
             SkillDetails skillDetails = new SkillDetails(false);
             skillDetails.BindingContext = newCourse;
             skillDetails.deleteCommand = deleteCourseCommand;
@@ -245,68 +289,63 @@ namespace TutoringApp.ViewModels
 
         public ICommand saveCourseCommand => new Command(() =>
         {
-            if (isEditingCourse)
+        if (isEditingCourse)
+        {
+                //employee => employee.LastName.Equals(somename, StringComparison.Ordinal)
+            //int index = profileUser.Courses.IndexOf(oldCourse);
+            int index = profileUser.Courses.FindIndex(listCourse => listCourse.courseName.Equals(oldCourse.courseName) && listCourse.departmentTitle.Equals(oldCourse.departmentTitle));
+            if (profileUser.Courses.FindIndex(listCourse => listCourse.courseName.Equals(newCourse.courseName) && listCourse.departmentTitle.Equals(newCourse.departmentTitle)) > -1)
             {
-                for (int i = 0; i < profileUser.Courses.Count; i++)
-                {
-                    // if (Skills[i].SectionTitle == oldSkill.sectionTitle)
-                    // {
-                    //finds element matching old element and overwrites it with new element
-                    //  for(int kk=0; kk < Skills[i].skills.Count; kk++)
-                    // {
-                    // if (Skills[i].skills[kk] == oldSkill)
-                    // {
-                    //     Skills[i].skills[kk] = newSkill;
-                    //     break;
-                    // }                                
-                    //     }
+                UserDialogs.Instance.Alert("Course Already Exist", null, null);
+                return;
+            }
+            if (index < 0)
+            {
+                Console.WriteLine("ERROR incorrect index");
+                return;
+            }
 
-                    if (profileUser.Courses[i] == oldCourse)
-                    {
-                        profileUser.Courses[i] = newCourse;
-                        Courses = profileUser.Courses;
-                    }
-                }
+            profileUser.Courses[index] = new Course
+            {
+                departmentTitle = newCourse.departmentTitle,
+                courseName = newCourse.courseName
+            };
 
+            profileUser.Courses.Sort(delegate (Course c1, Course c2) { return c1.courseName.CompareTo(c2.courseName); });
+            Courses = new ObservableCollection<Course>(profileUser.Courses);
 
-                    //clear new object 
-                    newCourse = null;
-                    oldCourse = null;
-                  //  }
-                
+            onPropertyChanged(nameof(Courses));
+
+            //clear new object 
+            newCourse = null;
+            oldCourse = null;                
             }
             else
             {
-                /*  //if sectionTitle already exists, add skill under this
-                  for (int i = 0; i < Skills.Count; i++)
-                  {
-                      if (Skills[i].SectionTitle == newSkill.sectionTitle)
-                      {
-                          Skills[i].Add(newSkill);
-                          newSkill = null;
-                          Navigation.PopAsync();
+                if (profileUser.Courses.Contains(newCourse))
+                {
+                    UserDialogs.Instance.Alert("Course Already Exist", null, null);
+                    return;
+                }
+                profileUser.Courses.Add(new Course
+                {
+                    departmentTitle = newCourse.departmentTitle,
+                    courseName = newCourse.courseName
+                });
 
-                          SkillListHeight += CourseHeight;
-                          return;
-                      }
-                  }
-                  //if no section title exists, add it and add new skill to it
-                  Skills.Add(new SkillSection() { SectionTitle = newSkill.sectionTitle });
-                  Skills[Skills.Count - 1].Add(newSkill);
-                  newSkill = null;
-                  SkillListHeight += EducationHeight;
-                  Navigation.PopAsync();
-                  */
+                profileUser.Courses.Sort(delegate (Course c1, Course c2) { return c1.courseName.CompareTo(c2.courseName); });
+                Courses = new ObservableCollection<Course>(profileUser.Courses);
 
-                profileUser.Courses.Add(newCourse);
-                Courses = profileUser.Courses;
+
                 CourseListHeight += CourseHeight;
                 newCourse = null;
                 oldCourse = null;
+                onPropertyChanged(nameof(Courses));
+
             }
 
 
-            saveUser();
+            //saveUser();
             Navigation.PopAsync();
         });
 
@@ -324,29 +363,14 @@ namespace TutoringApp.ViewModels
 
         public ICommand deleteCourseCommand => new Command(() =>
         {
-            /* for(int i = 0; i < profileUser.Courses.Count; i++)
-           {
-              if (Skills[i].SectionTitle == newSkill.sectionTitle)
-                {
-                    Skills[i].deleteSkill(newSkill);
-                    SkillListHeight -= CourseHeight;
-
-                    if (Skills[i].skills.Count == 0)
-                    {
-                        //if section is empty, the section is removed and list size is shrunken
-                        Skills.RemoveAt(i);
-                        SkillListHeight -= CourseHeight;
-                    }
-                }
-                    
-
-
-            }       */
-            profileUser.Courses.Remove(oldCourse);
+            //int index = Courses.FindIndex(listCourse => listCourse.courseName.Equals(oldCourse.courseName) && listCourse.departmentTitle.Equals(oldCourse.departmentTitle));
+            int temp = Courses.IndexOf(oldCourse);
+            Courses.Remove(oldCourse);
+           // Courses.RemoveAt(index);
             CourseListHeight -= CourseHeight;
             //clear newCourse
             newCourse = null;
-            saveUser();
+            //saveUser();
             Navigation.PopAsync();
         });
         public ICommand selectPictureCommand  => new Command(async () =>
@@ -376,7 +400,7 @@ namespace TutoringApp.ViewModels
                     profileUser.pictureSrc = uploadResult.Url.ToString().Replace("upload/", "upload/h_800,ar_1:1,c_fill,g_auto,r_max/").Replace("http", "https");
                      
                     pictureSrc = profileUser.pictureSrc;
-                    saveUser();
+                    //saveUser();
                 }
 
 
@@ -397,7 +421,8 @@ namespace TutoringApp.ViewModels
 
         public User profileUser = new User();
 
-        public Double AverageRating { get; set; } //IN USER
+        public double AverageRating { get; 
+            set; } //IN USER
         //Used to allow listview resizing after adding elements to education section 
         private int educationListHeight { get; set; }
         public int EducationListHeight { get { return educationListHeight; } set { educationListHeight = value; onPropertyChanged(); } }
@@ -418,9 +443,10 @@ namespace TutoringApp.ViewModels
 
         private int requestedPay { get; set; } //IN USER
         public string RequestedPay { 
-            get { return requestedPay.ToString(); }  
+            get { return "$" + requestedPay.ToString(); }  
             set {
                 int tempPay;
+                value = value.Replace("$", String.Empty);
                 Int32.TryParse(value.Replace(".", String.Empty), out tempPay);
                     
                 //do not notify property changed if value is same (prevents looping issue)
@@ -434,20 +460,26 @@ namespace TutoringApp.ViewModels
                 else             
                     requestedPay = tempPay;
 
-                saveUser();
+                //saveUser();
                 onPropertyChanged(); } 
                 }
         public string ratingLabel { get { return string.Format("{0:0.0}", Math.Truncate(AverageRating * 10) / 10); } }
         private string PictureSrc { get; set; }
         public string pictureSrc { get { return PictureSrc; } set { PictureSrc = value; onPropertyChanged(); } } 
         public string Biography { get; set; }
+        private bool IsTutor { get; set; } 
+        public bool isTutor { get { return IsTutor; } set { IsTutor = value; onPropertyChanged(); } }
+
+        private string ZoomLink { get; set; } = "";
+        public string zoomLink { get { return ZoomLink; } set { ZoomLink = value; onPropertyChanged(); } }
         private string Name { get; set; }
 
         public string name { get { return Name; } set {
                 if (Name == value)
                     return;
                 Name = value; 
-                IsHeaderEdited = true; } }
+                //IsHeaderEdited = true; 
+            } }
         private string ShortBio { get; set; }
 
         public string shortBio { get { return ShortBio; } 
@@ -455,19 +487,19 @@ namespace TutoringApp.ViewModels
                 if (ShortBio == value)
                     return;
                 ShortBio = value;
-                IsHeaderEdited = true;
+              //  IsHeaderEdited = true;
             } }
 
 
         private bool isEditingCourse { get; set; } = false;
-        private bool isBioReadOnly { get; set; } = true;
-        public bool IsBioReadOnly { get { return isBioReadOnly; } set { isBioReadOnly = value; onPropertyChanged(); } }
+        /*   private bool isBioReadOnly { get; set; } = true;
+           public bool IsBioReadOnly { get { return isBioReadOnly; } set { isBioReadOnly = value; onPropertyChanged(); } }
 
-        private bool isHeaderEdited { get; set; } = false;
-        public bool IsHeaderEdited { get { return isHeaderEdited; } 
-            set { isHeaderEdited = value; 
-                onPropertyChanged(); } }
-
+           private bool isHeaderEdited { get; set; } = false;
+           public bool IsHeaderEdited { get { return isHeaderEdited; } 
+               set { isHeaderEdited = value; 
+                   onPropertyChanged(); } }
+           */
         private bool isBioEditing { get; set; } = false;
         public bool IsBioEditing { get { return isBioEditing; } set { isBioEditing = value; onPropertyChanged(); } }
 #endregion

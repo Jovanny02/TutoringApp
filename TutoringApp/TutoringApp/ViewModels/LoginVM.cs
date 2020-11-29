@@ -7,6 +7,7 @@ using TutoringApp.Views;
 using TutoringApp.Services;
 using Acr.UserDialogs;
 
+
 namespace TutoringApp.ViewModels
 {
     class LoginVM : BaseVM
@@ -15,28 +16,41 @@ namespace TutoringApp.ViewModels
         {
             LoginCommand = new Command(async () =>
             {
-                //TODO create login call using information in password and user_email
-                Console.WriteLine("Triggered Login Command");
-                Navigation.PopAsync();
-                var getLoginDetails = await service.CheckLoginIfExists(username, password);
-                if (getLoginDetails)
+                //check values
+                if(string.IsNullOrWhiteSpace(UFID) || string.IsNullOrWhiteSpace(password))
                 {
-                    UserDialogs.Instance.Alert("Sucess", "Sucess", "OK");
-                    UserDialogs.Instance.HideLoading(); 
+                    UserDialogs.Instance.Alert("UFID and password cannot be empty", null, null);
+                    return;
                 }
 
-                // education page for cheking page
-                else if(username == null || password== null)
+
+
+                //attempt login
+                UserDialogs.Instance.ShowLoading("Logging In");
+                bool didLogin = false;
+                try
                 {
-                    UserDialogs.Instance.Alert("Login failed", "Enter username and password", "OK");
+                     didLogin = await WebAPIServices.checkLoginCredentials(UFID.Replace(" ", string.Empty), password.Replace(" ", string.Empty));
+                }
+                catch(Exception e)
+                {
+                    UserDialogs.Instance.Alert("Error:" + e.Message, null, null);
                     UserDialogs.Instance.HideLoading();
+                    return;
+                }
+
+                //validate login result
+                UserDialogs.Instance.HideLoading();
+                if (didLogin)
+                {
+                    UserDialogs.Instance.Alert("Logged in successfully!", null, null);
+                    await Navigation.PopToRootAsync();
                 }
                 else
                 {
-                    UserDialogs.Instance.Alert("Login failed", "Username or password incorrect", "OK");
-                    UserDialogs.Instance.HideLoading();
-                }
+                    UserDialogs.Instance.Alert("Login Failed: Please enter a valid UFID and password", null, null);
 
+                }
 
 
             });
@@ -59,14 +73,12 @@ namespace TutoringApp.ViewModels
         }
 
 
-        public string password { get; set; }
-        public string username { get; set; }
+        public string password { get; set; } = "";
+        public string UFID { get; set; } = "";
         public ICommand LoginCommand { protected set; get; }
         public ICommand ForgotUserCommand { protected set; get; }
 
         public ICommand ForgotPassCommand { protected set; get; }
-
-        APIServices service = new APIServices();
     }
 
 

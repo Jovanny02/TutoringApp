@@ -13,37 +13,43 @@ namespace TutoringApp.ViewModels
 
         public HomeVM()
         {
-            PerformSearchCommand = new Command<string> ((string query) =>
-            {
-                //TODO create search call
-                SearchQuery = query;
-                //navigate to search page
-                Navigation.PushAsync(new TutorList(query));
 
-
-            });
-
-            //Commands to handle button click for login and signup
-            //TODO: change to match correct page
-            SignUpCommand = new Command(() => {
-                Navigation.PushAsync(new WhoAreYou());
-
-
-
-            });
-
-            LoginCommand = new Command(() => {
-                Navigation.PushAsync(new Login());
-            });
 
         }
 
 
 
-        public ICommand PerformSearchCommand { protected set; get; }
-        public ICommand SignUpCommand { protected set; get; }
+        public ICommand PerformSearchCommand => new Command<string>((string query) =>
+        {
+            //TODO create search call
+            SearchQuery = query;
 
-        public ICommand LoginCommand { protected set; get; }
+            //TEMP FIX TO PREVENT CRASHING UNTIL APP IS HOOKED UP TO BACKEND
+            if (!App.Current.Properties.ContainsKey("CurrentUser"))//if a user is logged in
+            {
+                return;
+            }
+            //navigate to search page
+            Navigation.PushAsync(new TutorList(query));
+
+        });
+        public ICommand SignUpCommand => new Command(() => {
+            Navigation.PushAsync(new WhoAreYou());
+        });
+
+        public ICommand LoginCommand => new Command(() => {
+            Navigation.PushAsync(new Login());
+        });
+
+        public ICommand SignOutCommand => new Command(() => {
+            if (App.Current.Properties.ContainsKey("CurrentUser"))//if a user is logged in
+            {
+                //delete the user information (logout)
+                App.Current.Properties.Remove("CurrentUser");
+            }
+
+        });
+
         private string searchQuery { get; set; }
         public string SearchQuery
         {

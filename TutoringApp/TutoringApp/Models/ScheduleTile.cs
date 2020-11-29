@@ -36,6 +36,43 @@ namespace TutoringApp.Models
             set { EndTime = TimeSpan.FromTicks(value); EndTicks = value; }
         }
 
+        [JsonIgnore]
+        public string startTimeString
+        {
+            get
+            {
+                string returnString = (StartTime.Hours % 12).ToString();
+                if (StartTime.Hours == 0)
+                    returnString = "12 am";
+                else if (StartTime.Hours == 12)
+                    returnString = "12 pm";
+                else if (StartTime.Hours < 12)
+                    returnString += " am";
+                else
+                    returnString += " pm";
+
+                return returnString;
+            }
+        }
+
+        [JsonIgnore]
+        public string endTimeString
+        {
+            get
+            {
+                string returnString = (EndTime.Hours % 12).ToString();
+                if (EndTime.Hours == 0)
+                    returnString = "12 am";
+                else if (EndTime.Hours == 12)
+                    returnString = "12 pm";
+                else if (EndTime.Hours < 12)
+                    returnString += " am";
+                else
+                    returnString += " pm";
+
+                return returnString;
+            }
+        }
 
 
         //ignore these properties so they do not overwrite start and end ticks on deserialization 
@@ -44,8 +81,15 @@ namespace TutoringApp.Models
         [JsonIgnore]
         public TimeSpan startTime { get { return StartTime; } 
             set {
-                StartTime = value;
-                startTicks = StartTime.Ticks; 
+                StartTime = value.Add(new TimeSpan(0, -1* value.Minutes, 0));
+                startTicks = StartTime.Ticks;
+                onPropertyChanged();
+
+                if(EndTime < StartTime)
+                {
+                    endTime = value;
+                }
+
             }
         }
         [JsonIgnore]
@@ -56,8 +100,16 @@ namespace TutoringApp.Models
             get { return EndTime; }
             set
             {
-                EndTime = value;
+                EndTime = value.Add(new TimeSpan(0, -1 * value.Minutes, 0));
                 EndTicks = EndTime.Ticks;
+
+                if (EndTime < StartTime)
+                {
+                    EndTime = StartTime;
+                }
+
+
+                onPropertyChanged();
             }
         }
         private bool isUnavailable { get; set; } = false;
@@ -78,7 +130,10 @@ namespace TutoringApp.Models
                 onPropertyChanged(); 
             } 
         }
-
+        [JsonIgnore]
         public string dayString { get { return day.ToString(); } }
+        [JsonIgnore]
+        public string shortDayString { get { return day.ToString().Substring(0, 3); } }
+
     }
 }

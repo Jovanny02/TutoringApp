@@ -72,13 +72,8 @@ namespace TutoringApp.ViewModels
 
                 }
             }
-
-
-          
-
-
-
         }
+
         public bool MakePayment()
         {
             try

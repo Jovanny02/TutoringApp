@@ -7,7 +7,7 @@
              x:Class="TutoringApp.Views.UsernameRenew">
     <ContentPage.Content>
         <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand">
-            <Grid>
+            <Grid  VerticalOptions="FillAndExpand">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width=".5*" />
                     <ColumnDefinition Width="9*" />

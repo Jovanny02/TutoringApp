@@ -5,11 +5,12 @@
              xmlns:CustRend="clr-namespace:TutoringApp.Views.CustomRenders;assembly=TutoringApp"
              xmlns:c="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              mc:Ignorable="c"
              x:Class="TutoringApp.Views.SignUp">
     <ContentPage.Content>
         <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand">
-            <Grid x:Name="myGrid">
+            <Grid x:Name="myGrid" VerticalOptions="FillAndExpand">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width=".5*" />
                     <ColumnDefinition Width="9*" />
@@ -23,10 +24,11 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
                 <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Grid.Row="1" Grid.Column="1">
-                    <Label Text="Sign Up" TextColor="{StaticResource DefaultBlack}" 
+                    <Label Text="Sign Up" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="30" FontAttributes="Bold"   />
                 </StackLayout>
 
@@ -59,7 +61,7 @@
                     <Label Text="UFID" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="Enter Your UFID"  Text="{Binding UFID}" Keyboard="Numeric"/>
+                        <CustRend:CustomEntry Placeholder="Enter Your UFID (No Spaces)"  Text="{Binding UFID}" Keyboard="Numeric" MaxLength="8"/>
                     </Frame>
                 </StackLayout>
 
@@ -67,11 +69,34 @@
                     <Label Text="Course" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="Enter One Course You Want to Tutor For"  Text="{Binding Course}"/>
+                       <!-- <CustRend:CustomEntry Placeholder="Enter One Course You Want to Tutor For"  Text="{Binding Course}"/> -->
+                        <forms:AutoSuggestBox 
+                                x:Name="inputBox"
+                                Text="{Binding Course, Mode=TwoWay}"
+                                TextColor="{StaticResource DefaultBlack}"
+                                PlaceholderTextColor="Gray"                                
+                                PlaceholderText="Enter One Course Code You Want to Tutor For"
+                                TextChanged="AutoSuggestBox_TextChanged"
+                                SuggestionChosen="AutoSuggestBox_SuggestionChosen"
+                            />
+
+
                     </Frame>
                 </StackLayout>
 
-                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="7" Grid.Column="1">
+                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="7" Grid.Column="1" x:Name="ZoomlinkSection">
+                    <Label Text="Zoom Link" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Frame Style="{StaticResource EntryFrame}">
+                        <CustRend:CustomEntry Placeholder="UF Zoom Personal Meeting Room Link"  Text="{Binding zoomLink}"/>
+                    </Frame>
+                    
+                    
+                    
+                    
+                </StackLayout>
+                
+                <StackLayout VerticalOptions="Center"  Grid.Row="8" Grid.Column="1">
                     <Button Text="Sign Up" Style="{StaticResource HomeButtonStyle2}"
                             Margin="25,50,25,0" Command="{Binding SignUpCommand}" />
                 </StackLayout>

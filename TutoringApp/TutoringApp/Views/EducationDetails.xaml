@@ -9,7 +9,7 @@
              x:Class="TutoringApp.Views.EducationDetails" >
     <ContentPage.Content>
         <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand">
-            <Grid>
+            <Grid VerticalOptions="FillAndExpand">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width=".5*" />
                     <ColumnDefinition Width="9*" />
@@ -21,12 +21,13 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height=".2*"/>
                     <RowDefinition Height="1.5*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+
                 </Grid.RowDefinitions>
                 <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Grid.Row="1" Grid.Column="1">
-                    <Label Text="Education Information" TextColor="{StaticResource DefaultBlack}" 
+                    <Label Text="Education Information" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="30" FontAttributes="Bold"   />
                 </StackLayout>
 
@@ -55,7 +56,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="0.3*"/>
+                            <RowDefinition Height="0.5*"/>
                             <RowDefinition Height=".4*"/>
                             <RowDefinition Height=".6*"/>
                         </Grid.RowDefinitions>
@@ -80,18 +81,17 @@
                     </Grid>
                 </StackLayout>
 
-                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="5" Grid.Column="1">
-                    <Label Text="" TextColor="{StaticResource ErrorRed}" FontSize="Large" x:Name="errorLabel"
-                           HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
-                </StackLayout>
 
-                <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="6" Grid.Column="1">
+                <StackLayout VerticalOptions="Center"  Grid.Row="5" Grid.Column="1">
                     <Button Text="Save" Style="{StaticResource HomeButtonStyle2}"
                             Margin="25,50,25,0"  Clicked="Save_Clicked"/>
                 </StackLayout>
 
-                <Button Grid.Row="7" Grid.Column="1" Margin="50,0,50,0" Text="Delete" VerticalOptions="Start" HorizontalOptions="FillAndExpand" 
+                <StackLayout Grid.Row="6" Grid.Column="1"  Margin="50,0,50,0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                    <Button Text="Delete" VerticalOptions="Center" HorizontalOptions="FillAndExpand" 
                         Style="{StaticResource DeleteButtonStyle}" Clicked="delete_Clicked" x:Name="deleteButton"/>
+
+                </StackLayout>
 
 
             </Grid>

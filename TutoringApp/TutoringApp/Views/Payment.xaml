@@ -9,7 +9,7 @@
              x:Class="TutoringApp.Views.Payment">
     <ContentPage.Content>
         <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand" Margin="25,25,25,0">
-            <Grid>
+            <Grid VerticalOptions="FillAndExpand">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="7*" />
                     <ColumnDefinition Width="3*" />
@@ -23,7 +23,7 @@
                     <RowDefinition Height="3*"/>
                 </Grid.RowDefinitions>
                 <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand"  Grid.ColumnSpan="2">
-                    <Label Text="Payment Information" TextColor="{StaticResource DefaultBlack}" 
+                    <Label Text="Payment Information" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="30" FontAttributes="Bold"   />
                 </StackLayout>
 
@@ -55,8 +55,8 @@
 
                 </StackLayout>
 
-                <StackLayout VerticalOptions="Start"  Grid.Row="5" Grid.ColumnSpan="2">
-                    <Button Text="Make payment" Style="{StaticResource HomeButtonStyle2}"
+                <StackLayout VerticalOptions="Start"  Grid.Row="5" Grid.ColumnSpan="2" >
+                    <Button Text="Save Information" Style="{StaticResource HomeButtonStyle2}"
                              Clicked="Button_Clicked" />
                 </StackLayout>
 

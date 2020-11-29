@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using TutoringApp.Models;
+using TutoringApp.Services;
 namespace TutoringApp
 {
     public partial class App : Application
@@ -9,7 +10,10 @@ namespace TutoringApp
         public App()
         {
             InitializeComponent();
-            MainPage = new MainPage();
+            helperServices.setCourseList();
+            MainPage = new NavigationPage(new MainPage());
+
+            
         }
 
         protected override void OnStart()

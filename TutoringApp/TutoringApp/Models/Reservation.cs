@@ -2,13 +2,19 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace TutoringApp.Models
 {
-    public class Reservation
+    public class Reservation : INotifyPropertyChanged
     {
+
         [JsonIgnore]
-        public bool isSelected { get; set; } = false;
+        private bool IsSelected { get; set; } = false;
+
+        [JsonIgnore]
+        public bool isSelected { get { return IsSelected; } set { IsSelected = value; onPropertyChanged(); } } 
         public bool isCanceled { get; set; } = false;
 
         public DateTime fromDate { get; set; }
@@ -54,7 +60,12 @@ namespace TutoringApp.Models
             }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        protected void onPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
     }
 }

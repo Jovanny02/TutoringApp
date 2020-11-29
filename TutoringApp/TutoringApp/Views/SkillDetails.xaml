@@ -9,7 +9,7 @@
              x:Class="TutoringApp.Views.SkillDetails" >
     <ContentPage.Content>
         <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand">
-            <Grid>
+            <Grid VerticalOptions="FillAndExpand">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width=".5*" />
                     <ColumnDefinition Width="9*" />
@@ -22,9 +22,10 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="2*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
                 <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Margin="0,25,0,0" Grid.Column="1">
-                    <Label Text="Edit Course" TextColor="{StaticResource DefaultBlack}" x:Name="titleLabel"
+                    <Label Text="Edit Course" TextColor="{StaticResource DefaultBlue}" x:Name="titleLabel"
                            FontSize="30" FontAttributes="Bold"   />
                 </StackLayout>
 
@@ -32,7 +33,7 @@
                     <Label Text="Course Department" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame BorderColor="{StaticResource DefaultBlack}" VerticalOptions="Start" Padding="0">
-                        <Picker x:Name="skillSectionPicker" IsEnabled="False" SelectedItem="{Binding departmentTitle}" />
+                        <Picker x:Name="skillSectionPicker" IsEnabled="True" SelectedItem="{Binding departmentTitle}" SelectedIndexChanged="skillSectionPicker_SelectedIndexChanged"/>
                     </Frame>
                 </StackLayout>
 
@@ -40,7 +41,7 @@
                     <Label Text="Course Code" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="Enter Your Course"  Text="{Binding courseName}" x:Name="skillEntry"/>
+                        <Picker x:Name="CoursePicker" IsEnabled="True" SelectedItem="{Binding courseName}" SelectedIndex="0"/>
                     </Frame>
                 </StackLayout>
 

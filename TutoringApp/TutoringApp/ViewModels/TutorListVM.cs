@@ -50,16 +50,16 @@ namespace TutoringApp.ViewModels
         }
 
         //used to add more tutors to list to display on View
-        public void LoadTutors(object item)
+        public ICommand LoadTutorsCommand => new Command(() =>
         {
-            TutorInfo tutor = (TutorInfo)item;
+            // TutorInfo tutor = (TutorInfo)item;
 
-            if (tutor.displayPosition == TutorList.Count -1)
-            {
-                addTutors();
-                onPropertyChanged();
-            }
-        }
+            // if (tutor.displayPosition == TutorList.Count -1)
+            // {
+            addTutors();
+            onPropertyChanged(nameof(TutorList));
+            //  }
+        });
 
 
     }

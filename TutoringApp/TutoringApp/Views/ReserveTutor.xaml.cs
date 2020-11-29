@@ -19,13 +19,22 @@ namespace TutoringApp.Views
             InitializeComponent();
             reserveVM = new ReserveTutorVM(tutor);
             BindingContext = reserveVM;
-
+            reserveVM.Navigation = this.Navigation;
 
             double deviceHeightUnits = DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
             calendarStack.HeightRequest = deviceHeightUnits * .35;
-            reservationStack.HeightRequest = deviceHeightUnits * .5;
             submitButton.HeightRequest = deviceHeightUnits * .08;
 
+        }
+
+        private void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.CurrentSelection == null | e.CurrentSelection.Count < 1)
+                return;
+
+            reserveVM.handleTappedReservation(e.CurrentSelection[0]);
+
+            ((CollectionView)sender).SelectedItem = null;
         }
     }
 }

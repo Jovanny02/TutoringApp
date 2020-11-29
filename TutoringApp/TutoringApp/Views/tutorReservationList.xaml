@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="clr-namespace:TutoringApp.Views;assembly=TutoringApp"
+             xmlns:skiarate="clr-namespace:SkiaRate;assembly=TutoringApp" 
+             x:Class="TutoringApp.Views.tutorReservationList">
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="{StaticResource DefaultWhite}">
+                <StackLayout HorizontalOptions="FillAndExpand" Grid.Row="0" >
+
+                    <Label Text="Your Tutor Reservations" 
+                                        HorizontalOptions="Center"
+                                        TextColor="{StaticResource DefaultBlue}" 
+                                        FontSize="30" 
+                                        FontAttributes="Bold"   />
+                    <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Start" HeightRequest="2" Color="{StaticResource DefaultBlack}"/>
+                </StackLayout>
+
+
+            <StackLayout Grid.Row="1">
+                <CollectionView
+                        IsVisible="{Binding isTutorsVisible}"
+                        ItemsSource="{Binding tutorSessions}"
+                         SelectionMode="Single"
+                         SelectionChanged="Tutor_ItemTapped"
+                         >
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Padding="5,0,5,5" HeightRequest="95">
+
+                                <Grid Padding="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width=".5*"/>
+                                        <ColumnDefinition Width="3*" />
+                                        <ColumnDefinition Width="1.5*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="1.5*"/>
+                                        <RowDefinition Height="2*"/>
+                                        <RowDefinition Height=".1*"/>
+                                    </Grid.RowDefinitions>
+
+
+                                    <Image Source="{Binding studentPicture}" Grid.RowSpan="3" />
+
+                                    <Label Grid.Column="1" Text="{Binding studentName}" Grid.Row="0" 
+                                                            VerticalOptions="CenterAndExpand" HorizontalOptions="Start"
+                                                            TextColor="{StaticResource DefaultBlack}" FontAttributes="Bold" FontSize="Title"/>
+
+                                    <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalOptions="FillAndExpand">
+                                        <Label Text="{Binding formattedFromDate}" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}"  FontSize="18"/>
+                                        <BoxView HorizontalOptions="Center" VerticalOptions="Center" HeightRequest="1" Color="{StaticResource DefaultBlack}"/>
+                                        <Label Text="{Binding toDateString}" HorizontalOptions="Start" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}"  FontSize="18"/>
+
+                                    </StackLayout>
+                                    <Label Grid.Column="2" Text="{Binding statusMessage}" Grid.Row="0"  Grid.RowSpan="2" HorizontalTextAlignment="Center"
+                                            VerticalOptions="Start" HorizontalOptions="Center"
+                                            TextColor="{StaticResource DefaultBlue}" FontAttributes="Bold" FontSize="20"/>
+                                    <BoxView HorizontalOptions="FillAndExpand" Color="{StaticResource DefaultBlack}" Grid.Row="2" Grid.ColumnSpan="3"/>
+                                </Grid>
+
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Label Text="You have no reservations" IsVisible="{Binding isTutorsVisible, Converter={d:BooleanConverter}}" TextColor="{StaticResource DefaultBlue}" FontSize="Title"
+                       HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+            </StackLayout>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

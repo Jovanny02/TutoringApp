@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
-<d1:BaseContentPage  xmlns:d1="clr-namespace:TutoringApp.Views" xmlns="http://xamarin.com/schemas/2014/forms"
+<d1:BaseContentPage  
+        xmlns:d1="clr-namespace:TutoringApp.Views" xmlns="http://xamarin.com/schemas/2014/forms"
         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
         xmlns:d="clr-namespace:TutoringApp.Views;assembly=TutoringApp"
         xmlns:CustRend="clr-namespace:TutoringApp.Views.CustomRenders;assembly=TutoringApp"
@@ -23,18 +24,19 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2.5*" />
                                 <ColumnDefinition Width="5*" />
-                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="2.5*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
-                                <RowDefinition Height="1.1*"/>
+                                <RowDefinition Height="auto"/>
                                 <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
                             
 
                             <Frame  x:Name="tutorPicture" Padding="0" 
-                                    IsClippedToBounds="True" BorderColor="{StaticResource DefaultBlack}" HorizontalOptions="Start" Grid.RowSpan="3"
+                                    IsClippedToBounds="True" BorderColor="{StaticResource DefaultBlack}" HorizontalOptions="Start" Grid.RowSpan="4"
                                     VerticalOptions="CenterAndExpand">
                                 <Image Source="{Binding tutorInfo.pictureSrc}" HorizontalOptions="Center" VerticalOptions="Center"/>
                             </Frame>
@@ -42,14 +44,15 @@
                             <Label Text="{Binding tutorInfo.name}" HorizontalOptions="FillAndExpand" VerticalOptions="End" TextColor="{StaticResource DefaultBlack}"
                                 FontSize="Large" FontAttributes="Bold" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2"/>
 
-                            <Label Text="{Binding tutorInfo.shortBio}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" TextColor="{StaticResource DefaultBlack}"
-                                FontSize="Small" Grid.Column="1" Grid.Row="1" />
+                            <Label Text="{Binding tutorInfo.shortBio}" 
+                                   HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" TextColor="{StaticResource DefaultBlack}"
+                                FontSize="Subtitle" Grid.Column="1" Grid.Row="1" />
                             <Label Text="{Binding  tutorInfo.RequestedPay}" HorizontalOptions="CenterAndExpand" VerticalOptions="Start" TextColor="{StaticResource DefaultBlue}"
                                 FontSize="30" Grid.Column="2" Grid.Row="1" FontAttributes="Bold"/>
 
 
                             <skiarate:RatingView ColorOn="{StaticResource DefaultBlue}" Count="5" Grid.Column="1" Grid.Row="2" OutlineOnColor="{StaticResource DefaultBlack}"
-                                OutlineOffColor="{StaticResource DefaultBlack}" Value="{Binding tutorInfo.AverageRating}" isReadOnly="true" />
+                                OutlineOffColor="{StaticResource DefaultBlack}" Value="{Binding tutorInfo.AverageRating}" isReadOnly="true"  VerticalOptions="End"/>
 
                             <Label Text="{Binding tutorInfo.ratingLabel}" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="{StaticResource DefaultBlack}"
                                 FontSize="Title" Grid.Column="2" Grid.Row="2"/>
@@ -97,33 +100,34 @@
                                 <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" Grid.Row="1"/>
                             </Grid>
 
-                            <ListView ItemsSource="{Binding tutorInfo.EducationSections}"  SelectionMode="None"  RowHeight="80" HeightRequest="{Binding EducationListHeight}" VerticalOptions="StartAndExpand" >
-                                <ListView.ItemTemplate>
+                            <CollectionView ItemsSource="{Binding tutorInfo.EducationSections}"  
+                                            SelectionMode="None"  
+                                            HeightRequest="{Binding educationListHeight}" 
+                                            VerticalOptions="Start" >
+                                <CollectionView.ItemTemplate>
                                     <DataTemplate>
-                                        <ViewCell>
-                                            <StackLayout Padding="5,0,5,5">
+                                        <StackLayout Padding="5,0,5,5" HeightRequest="80">
 
-                                                <Grid Padding="5">
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="*"/>
-                                                        <RowDefinition Height="*"/>
-                                                        <RowDefinition Height="*"/>
-                                                    </Grid.RowDefinitions>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="2*"/>
-                                                        <ColumnDefinition Width="*" />
-                                                    </Grid.ColumnDefinitions>
+                                            <Grid Padding="5">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
 
-                                                    <Label Text="{Binding University}"  HorizontalOptions="Start" TextColor="{StaticResource DefaultBlack}" Grid.Row="0" FontAttributes="Bold"/>
-                                                    <Label Text="{Binding Major}" HorizontalOptions="Start" TextColor="{StaticResource DefaultBlack}" Grid.Row="1" />
-                                                    <Label Text="{Binding fullDate}" HorizontalOptions="Start" TextColor="{StaticResource DefaultBlack}" Grid.Row="2" />
+                                                <Label Text="{Binding University}"  HorizontalOptions="Start" TextColor="{StaticResource DefaultBlack}" Grid.Row="0" FontAttributes="Bold"/>
+                                                <Label Text="{Binding Major}" HorizontalOptions="Start" TextColor="{StaticResource DefaultBlack}" Grid.Row="1" />
+                                                <Label Text="{Binding fullDate}" HorizontalOptions="Start" TextColor="{StaticResource DefaultBlack}" Grid.Row="2" />
 
-                                                </Grid>
-                                            </StackLayout>
-                                        </ViewCell>
+                                            </Grid>
+                                        </StackLayout>
                                     </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
                         </StackLayout>
 
                         <!-- Courses Section-->
@@ -136,20 +140,20 @@
 
 
                             <!-- list for Courses-->
-                            <ListView ItemsSource="{Binding tutorInfo.Courses}" RowHeight="40" VerticalOptions="Start" SelectionMode="None"
-                                    SeparatorVisibility="None">
-                                <ListView.ItemTemplate>
+                            <CollectionView ItemsSource="{Binding tutorInfo.Courses}" 
+                                            HeightRequest="{Binding courseListHeight}"
+                                            
+                                            VerticalOptions="Start" >
+                                <CollectionView.ItemTemplate>
                                     <DataTemplate>
-                                        <ViewCell>
-                                            <StackLayout Padding="5">
+                                            <StackLayout HeightRequest="40" >
                                                 <Label Text="{Binding courseName}" TextColor="{StaticResource DefaultBlack}" HorizontalOptions="Start" FontSize="Medium"/>
                                             </StackLayout>
 
-                                        </ViewCell>
                                     </DataTemplate>
-                                </ListView.ItemTemplate>
+                                </CollectionView.ItemTemplate>
 
-                            </ListView>
+                            </CollectionView>
 
                         </StackLayout>
 
@@ -161,57 +165,79 @@
                                 TextColor="{StaticResource DefaultOrange}" FontSize="30" HeightRequest="45"/>
                             <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
 
-                            <ListView SelectionMode="None" ItemsSource="{Binding tutorInfo.ScheduleSections}" RowHeight="100" HeightRequest="705" VerticalOptions="StartAndExpand" >
-                                <ListView.ItemTemplate>
+                            <CollectionView SelectionMode="None" ItemsSource="{Binding tutorInfo.ScheduleSections}" HeightRequest="580" VerticalOptions="Start" >
+                                <CollectionView.ItemTemplate>
                                     <DataTemplate>
-                                        <ViewCell>
-                                            <StackLayout Margin="0,0,0,5">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width=".6*" />
-                                                        <ColumnDefinition Width="*" />
-                                                        <ColumnDefinition Width=".2*" />
-                                                        <ColumnDefinition Width="*" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height=".3*"/>
-                                                        <RowDefinition Height=".3*"/>
-                                                        <RowDefinition Height=".3*"/>
-                                                        <RowDefinition Height=".3*"/>
-                                                    </Grid.RowDefinitions>
+                                        <StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="FillAndExpand" >
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width=".6*" />
+                                                    <ColumnDefinition Width=".5*" />
+                                                    <ColumnDefinition Width=".4*" />
+                                                    <ColumnDefinition Width=".5*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions >
+                                                    <RowDefinition Height="20" />
+                                                    <RowDefinition Height="20"/>
+                                                    <RowDefinition Height="15"/>
+                                                </Grid.RowDefinitions>
 
-                                                    <Label Text="{Binding dayString}" TextColor="{StaticResource DefaultBlack}"  Grid.Row="1"
-                                                    FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"/>
+                                                <Label Text="{Binding shortDayString}" TextColor="{StaticResource DefaultBlack}" 
+                                                       Grid.Row="0" Grid.Column="0" LineBreakMode="WordWrap" Grid.RowSpan="3"
+                                                FontSize="30" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="Center"/>
 
-                                                    <Label Text="Start Time" TextColor="{StaticResource DefaultBlue}"  Grid.Column="1"
-                                                    FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                                                <Label Text="Start Time" TextColor="{StaticResource DefaultBlue}"  Grid.Column="1" Grid.Row="0" 
+                                                FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"
+                                                       IsVisible="{Binding IsUnavailable, Converter={d:BooleanConverter} }"/>
 
-                                                    <Frame Grid.Row="1" Grid.RowSpan="2" BorderColor="{StaticResource DefaultBlack}" VerticalOptions="Start" Padding="0" Grid.Column="1">
-                                                        <TimePicker Time="{Binding startTime}" IsEnabled="False"/>
-                                                    </Frame>
-
-                                                    <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Grid.Column="2" Grid.Row="1" Color="{StaticResource DefaultBlack}"/>
-
-                                                    <Label Text="End Time" TextColor="{StaticResource DefaultBlue}"  Grid.Column="3"
-                                                    FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
-
-                                                    <Frame Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" BorderColor="{StaticResource DefaultBlack}" VerticalOptions="Start" Padding="0">
-                                                        <TimePicker Time="{Binding endTime}" IsEnabled="False"/>
-                                                    </Frame>
-
-                                                    <CheckBox HorizontalOptions="End" Color="{StaticResource DefaultBlack}" Grid.Row="3" 
-                                                          VerticalOptions="FillAndExpand" IsChecked="{Binding IsUnavailable}" IsEnabled="False"/>
-                                                    <Label Text="Unavailable?" TextColor="{StaticResource DefaultBlack}" Grid.Row="3" Grid.Column="1"
-                                                        HorizontalOptions="Start" VerticalOptions="Start" />
-
-                                                </Grid>
+                                                <Label Text="{Binding startTimeString}" 
+                                                    Grid.Row="1" Grid.RowSpan="2"  Grid.Column="1"
+                                                    HorizontalOptions="Center"
+                                                    VerticalOptions="Center" 
+                                                    TextColor="{StaticResource DefaultBlack}"  
+                                                    FontSize="30"
+                                                    IsVisible="{Binding IsUnavailable, Converter={d:BooleanConverter} }"/>
 
 
-                                            </StackLayout>
-                                        </ViewCell>
+                                                <BoxView HorizontalOptions="FillAndExpand" 
+                                                         VerticalOptions="End" HeightRequest="1" 
+                                                         Grid.Column="2" Grid.Row="1" 
+                                                         Color="{StaticResource DefaultBlack}"
+                                                         IsVisible="{Binding IsUnavailable, Converter={d:BooleanConverter} }"/>
+
+                                                <Label Text="End Time" TextColor="{StaticResource DefaultBlue}"  Grid.Column="3" Grid.Row="0"
+                                                FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"
+                                                       IsVisible="{Binding IsUnavailable, Converter={d:BooleanConverter} }"/>
+
+                                                    
+                                                <Label Text="{Binding endTimeString}"
+                                                Grid.Row="1" Grid.Column="3" Grid.RowSpan="2"
+                                                HorizontalOptions="Center" 
+                                                VerticalOptions="Center" 
+                                                TextColor="{StaticResource DefaultBlack}"  
+                                                FontSize="30"
+                                                IsVisible="{Binding IsUnavailable, Converter={d:BooleanConverter} }" />
+                                             
+                                            <Label Text="Unavailable" 
+                                                   TextColor="{StaticResource DefaultOrange}" 
+                                                   Grid.Row="0" 
+                                                   Grid.RowSpan="3"
+                                                   Grid.Column="1"
+                                                   Grid.ColumnSpan="3"
+                                                   HorizontalOptions="CenterAndExpand" 
+                                                   VerticalOptions="Center"
+                                                    FontSize="30"
+                                                   IsVisible="{Binding IsUnavailable} "/>
+
+
+                                            </Grid>
+                                            <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" Margin="0,0,0,5"/>
+
+
+                                        </StackLayout>
                                     </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
 
                         </StackLayout>
 

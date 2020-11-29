@@ -31,6 +31,7 @@ namespace AppWebAPI.Models
         public string shortBio { get; set; }
         public string Biography { get; set; }
         public string pictureSource { get; set; }
+        public string zoomLink { get; set; }
     
         public virtual Cours Cours { get; set; }
         public virtual EducationSection EducationSection { get; set; }
