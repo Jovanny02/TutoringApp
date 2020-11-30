@@ -19,6 +19,9 @@ namespace AppWebAPI.Models
         {
             this.reservations = new HashSet<reservation>();
             this.reservations1 = new HashSet<reservation>();
+            this.Courses = new HashSet<Cours>();
+            this.EducationSections = new HashSet<EducationSection>();
+            this.userSchedules = new HashSet<userSchedule>();
         }
     
         public int UFID { get; set; }
@@ -33,12 +36,15 @@ namespace AppWebAPI.Models
         public string pictureSource { get; set; }
         public string zoomLink { get; set; }
     
-        public virtual Cours Cours { get; set; }
-        public virtual EducationSection EducationSection { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<reservation> reservations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<reservation> reservations1 { get; set; }
-        public virtual userSchedule userSchedule { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Cours> Courses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EducationSection> EducationSections { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<userSchedule> userSchedules { get; set; }
     }
 }

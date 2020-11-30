@@ -24,11 +24,6 @@ namespace TutoringApp.ViewModels
             //TODO create search call
             SearchQuery = query;
 
-            //TEMP FIX TO PREVENT CRASHING UNTIL APP IS HOOKED UP TO BACKEND
-            if (!App.Current.Properties.ContainsKey("CurrentUser"))//if a user is logged in
-            {
-                return;
-            }
             //navigate to search page
             Navigation.PushAsync(new TutorList(query));
 

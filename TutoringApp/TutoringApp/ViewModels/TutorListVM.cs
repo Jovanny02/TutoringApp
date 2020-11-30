@@ -7,44 +7,62 @@ using System.Text;
 using TutoringApp.Models;
 using TutoringApp.Views;
 using System.Text.Json;
+using TutoringApp.Services;
+using Acr.UserDialogs;
 
 namespace TutoringApp.ViewModels
 {
     class TutorListVM : BaseVM
     {
-        public TutorListVM()
+        public TutorListVM(string searchClass)
         {
-            TutorList = new ObservableCollection<TutorInfo>();
 
-            //adds inital items to list
-            addTutors();
+
+            PerformSearchCommand.Execute(searchClass);
         }
 
         private int numTutorsDisplayed { get; set; } = 0;
         private string searchQuery { get; set; }
-        public ICommand PerformSearchCommand => new Command<string>((query) =>
+        public ICommand PerformSearchCommand => new Command<string>(async (searchClass) =>
         {
-            searchQuery = query;
+            UserDialogs.Instance.ShowLoading("Searching For Tutors");
+            List<TutorInfo> tempList = await WebAPIServices.getTutors(searchClass);
+            UserDialogs.Instance.HideLoading();
+            if(tempList != null)
+            {
+                TutorList = new ObservableCollection<TutorInfo>(tempList);
+            }
+            else
+            {
+                TutorList = null;
+            }
+
+
+            //properties changed
+            onPropertyChanged(nameof(TutorList));
+            onPropertyChanged(nameof(isTextVisible));
         });
+
+        public bool isTextVisible { get { return (TutorList == null || TutorList.Count < 1); } } 
         public string SearchQuery
         {
             get { return searchQuery; }
             set { searchQuery = value; onPropertyChanged(); } //needed for binded Items to see changes appear on view
         }
 
-        public ObservableCollection<TutorInfo> TutorList { get; private set;} 
+        public ObservableCollection<TutorInfo> TutorList { get; private set;}
 
         //placeholder to add more tutors to list
         private void addTutors()
         {
 
-            for (int i = 0; i < 10; i++, numTutorsDisplayed++)
-            {
-                TutorInfo info = new TutorInfo();
-                info = JsonSerializer.Deserialize<TutorInfo>(App.Current.Properties["CurrentUser"] as string);
-                info.displayPosition = numTutorsDisplayed;
-                TutorList.Add(info);
-            }
+            //for (int i = 0; i < 10; i++, numTutorsDisplayed++)
+            //{
+            //    TutorInfo info = new TutorInfo();
+            //    info = JsonSerializer.Deserialize<TutorInfo>(App.Current.Properties["CurrentUser"] as string);
+            //    info.displayPosition = numTutorsDisplayed;
+            //    TutorList.Add(info);
+            //}
 
 
         }
@@ -56,8 +74,8 @@ namespace TutoringApp.ViewModels
 
             // if (tutor.displayPosition == TutorList.Count -1)
             // {
-            addTutors();
-            onPropertyChanged(nameof(TutorList));
+          //  addTutors();
+           // onPropertyChanged(nameof(TutorList));
             //  }
         });
 

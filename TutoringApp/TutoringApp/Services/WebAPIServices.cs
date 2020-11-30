@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 using TutoringApp.Models;
+using System.Net.Http.Headers;
 
 namespace TutoringApp.Services
 {
@@ -43,11 +44,91 @@ namespace TutoringApp.Services
             return false;
         }
 
-        public static async void signUpUser(User newUser)
+        public static async Task<bool> signUpUser(User newUser)
         {
-            //Use this refernce to make the post request using httpclient https://stackoverflow.com/questions/36625881/how-do-i-pass-an-object-to-httpclient-postasync-and-serialize-as-a-json-body
-            //or this reference https://stackoverflow.com/questions/19610883/sending-c-sharp-object-to-webapi-controller
+            string userString = JsonSerializer.Serialize(newUser);
+            try
+            { 
+
+                var stringContent = new StringContent(userString, UnicodeEncoding.UTF8, "application/json"); // use MediaTypeNames.Application.Json in Core 3.0+ and Standard 2.1+
+
+                #if (DEBUG)
+                var response = await httpClient.PostAsync(debugURLString + "Login/UserSignUp", stringContent);
+                #elif (!DEBUG)
+                var response = await httpClient.PostAsync(productionURLString + "Login/UserSignUp", stringContent);
+                #endif
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return false;
+                }
+            }          
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+
+            }
+
+            //add user to dictionary
+            App.Current.Properties.Add("CurrentUser", userString);
+            return true;
+
         }
+
+        public static async Task<bool> updateUser(string userString)
+        {
+            try
+            {
+                //  var buffer = System.Text.Encoding.UTF8.GetBytes(userString);
+                //  var byteContent = new ByteArrayContent(buffer);
+                // byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                //userString = Uri.EscapeDataString(userString);
+                var stringContent = new StringContent(userString, UnicodeEncoding.UTF8, "application/json"); // use MediaTypeNames.Application.Json in Core 3.0+ and Standard 2.1+
+                
+                #if (DEBUG)
+                var response = await httpClient.PostAsync(debugURLString + "values/updateUser" , stringContent);
+                #elif (!DEBUG)
+                var response = await httpClient.PostAsync(productionURLString + "values/updateUser" , stringContent);
+                #endif
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return false;
+                }
+            }          
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+
+            }
+            return true;
+        }
+
+        public static async Task<List<TutorInfo>> getTutors(string course)
+        {
+            try
+            {
+
+                #if (DEBUG)
+                string JSONResult = await httpClient.GetStringAsync(debugURLString + "values/getTutors?searchedCourse=" + course);
+                #elif (!DEBUG)
+                string JSONResult = await httpClient.GetStringAsync(productionURLString + "values/getTutors?searchedCourse=" + course);
+                #endif
+
+                List<TutorInfo> tutors = JsonSerializer.Deserialize<List<TutorInfo>>(JSONResult);
+
+                return tutors;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+
+            }
+        }
+
 
 
 

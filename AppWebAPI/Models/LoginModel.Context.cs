@@ -27,9 +27,9 @@ namespace AppWebAPI.Models
     
         public virtual DbSet<loginTest> loginTests { get; set; }
         public virtual DbSet<user> users { get; set; }
+        public virtual DbSet<reservation> reservations { get; set; }
         public virtual DbSet<Cours> Courses { get; set; }
         public virtual DbSet<EducationSection> EducationSections { get; set; }
-        public virtual DbSet<reservation> reservations { get; set; }
         public virtual DbSet<userSchedule> userSchedules { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using Acr.UserDialogs;
 using System.Text.RegularExpressions;
 using TutoringApp.Services;
+using TutoringApp.Models;
 
 namespace TutoringApp.ViewModels
 {
@@ -58,13 +59,84 @@ namespace TutoringApp.ViewModels
 
 
 
-            //TODO create sign up call using information in password, user, and email
+            User newUser = new User();
+            newUser.email = email;
+            newUser.password = password;
+            int tempUFID;
+            //try to parse UFID
+            if(Int32.TryParse(UFID, out tempUFID))
+            {
+                newUser.UFID = tempUFID;
+            }
+            else
+            {
+                UserDialogs.Instance.Alert("Sign Up Failed: Invalid UFID", null, null);
+                return;
+            }
+            newUser.name = Name;
+            newUser.requestedPay = 15;
+            newUser.isTutor = isTutor;
+            newUser.AverageRating = 0.0;
+            newUser.pictureSrc = "user.png";
+            if (isTutor)
+            {
+                newUser.Courses.Add(new Course { departmentTitle = findDepartment(Course), courseName = Course });
+                newUser.zoomLink = zoomLink;
+            }
 
+            newUser.ScheduleSections = new List<ScheduleTile>() {
+            new ScheduleTile { day = DayOfWeek.Monday, IsUnavailable=true, startTicks = 0, endTicks = 0},
+            new ScheduleTile { day = DayOfWeek.Tuesday, IsUnavailable=true, startTicks = 0, endTicks = 0 },
+            new ScheduleTile { day = DayOfWeek.Wednesday, IsUnavailable=true, startTicks = 0, endTicks = 0 },
+            new ScheduleTile { day = DayOfWeek.Thursday, IsUnavailable=true, startTicks = 0, endTicks = 0 },
+            new ScheduleTile { day = DayOfWeek.Friday, IsUnavailable=true, startTicks = 0, endTicks = 0 },
+            new ScheduleTile { day = DayOfWeek.Saturday, IsUnavailable=true, startTicks = 0, endTicks = 0 },
+            new ScheduleTile { day = DayOfWeek.Sunday, IsUnavailable=true, startTicks = 0, endTicks = 0 }
+            };
+
+
+            try
+            {
+                UserDialogs.Instance.ShowLoading("Attempting Sign Up");
+                bool didCreate = await WebAPIServices.signUpUser(newUser);
+                UserDialogs.Instance.HideLoading();
+                if (!didCreate)
+                {
+                    UserDialogs.Instance.Alert("Sign Up Failed: Server error, please try again", null, null);
+                    return;
+                }
+
+            }
+            catch( Exception e)
+            {
+                UserDialogs.Instance.HideLoading();
+                UserDialogs.Instance.Alert("Sign Up Failed: " + e.Message, null, null);
+                return;
+            }
+
+
+
+            UserDialogs.Instance.Alert("Signed In Successfully! ", null, null);
             //pop to root
             await Navigation.PopToRootAsync();
 
 
         });
+
+        private string findDepartment(string findCourse)
+        {
+            foreach(var departmentSection in helperServices.CourseList)
+            {
+                foreach(var course in departmentSection.courses)
+                {
+                    if (findCourse == course)
+                        return departmentSection.departmentName;
+                }
+
+            }
+
+            return "";
+        } 
 
 
         private bool IsDigitsOnly(string str)

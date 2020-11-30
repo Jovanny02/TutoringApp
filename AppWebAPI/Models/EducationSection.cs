@@ -17,8 +17,8 @@ namespace AppWebAPI.Models
         public int UFID { get; set; }
         public string Major { get; set; }
         public string University { get; set; }
-        public Nullable<int> fromYear { get; set; }
-        public Nullable<int> toYear { get; set; }
+        public int fromYear { get; set; }
+        public int toYear { get; set; }
     
         public virtual user user { get; set; }
     }
