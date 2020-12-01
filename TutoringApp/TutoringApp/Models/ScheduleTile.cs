@@ -26,7 +26,7 @@ namespace TutoringApp.Models
         //use number of ticks for assignment of time since timespan cannot be deserialized due to no set methods on properties
 
         private long StartTicks { get; set; }
-        public long EndTicks { get; set; }
+        private long EndTicks { get; set; }
 
         public long startTicks { get { return StartTicks; } 
             set { StartTime = TimeSpan.FromTicks(value); StartTicks = value; } }

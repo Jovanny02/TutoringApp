@@ -128,7 +128,7 @@ namespace TutoringApp.ViewModels
             zoomLink = profileUser.zoomLink;
         }
 
-        private void saveUser()
+        private async System.Threading.Tasks.Task saveUserAsync()
         {
            // IsBioReadOnly = true;
             IsBioEditing = false;
@@ -172,8 +172,30 @@ namespace TutoringApp.ViewModels
             profileUser.isTutor = isTutor;
             profileUser.zoomLink = zoomLink.Trim();
 
+            bool didSave = false;
             string userString = JsonSerializer.Serialize(profileUser);
             //update current user in properties and save 
+            try
+            {
+                UserDialogs.Instance.ShowLoading("Saving");
+                didSave =  await WebAPIServices.updateUser(userString);
+                UserDialogs.Instance.HideLoading();
+
+            }
+            catch (Exception e)
+            {
+                UserDialogs.Instance.HideLoading();
+                UserDialogs.Instance.Alert("Saved Failed", null, null);
+                Console.WriteLine(e.Message);
+                return;
+            }
+
+            if (!didSave)
+            {
+                UserDialogs.Instance.Alert("Saved Failed", null, null);
+                return;
+            }
+
             if (App.Current.Properties.ContainsKey("CurrentUser"))
                 App.Current.Properties["CurrentUser"] = userString;
             else
@@ -191,8 +213,8 @@ namespace TutoringApp.ViewModels
             IsBioEditing = !IsBioEditing;
         });
 
-        public ICommand saveUserCommand => new Command(() => {
-            saveUser();
+        public ICommand saveUserCommand => new Command(async () => {
+            await saveUserAsync();
         });
 
 

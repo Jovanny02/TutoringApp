@@ -6,8 +6,6 @@ namespace TutoringApp.Models
 {
     public class TutorInfo : User
     {
-
-        public int displayPosition { get; set; }
         public string ratingLabel { get { return string.Format("{0:0.0}", Math.Truncate(AverageRating * 10) / 10); } }
 
         public string RequestedPay

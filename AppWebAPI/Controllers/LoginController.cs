@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Web.Http;
 using TutoringApp.Models;
 using System.Text;
@@ -13,65 +12,74 @@ using System.Text.Json;
 namespace AppWebAPI.Controllers
 {
     public class LoginController : ApiController
-
     {
-
-
-
-        TutoringAppDBEntities db = new TutoringAppDBEntities();
-
-
+        TutoringAppDBEntities db = new TutoringAppDBEntities();  
+         
         [HttpPost]
-       // [Route("api/Login?username={username}&password={password}")]
-        [ActionName("XAMARIN_REG")]
+        [Route("api/Login/UserSignUp")]
+        [ActionName("XAMARIN_Sign_Up")]
         // POST: api/Login  
-        public HttpResponseMessage Xamarin_reg(string username, string password)
+        public async System.Threading.Tasks.Task<HttpResponseMessage> UserSignUp()
         {
-            TutoringApp.Models.User appUser = new TutoringApp.Models.User();
-
-            user signup = new user();
-            signup.fullName= username;
-            signup.Password = password;
-            signup.Email = appUser.email;
-            signup.UFID = appUser.UFID;     
-            
-            
-           
-
-            Cours coursesSignUp = new Cours();
-
-
-            coursesSignUp.courseName = appUser.Courses[0].courseName;
-            coursesSignUp.departmentTitle = appUser.Courses[0].departmentTitle;
-            coursesSignUp.UFID = appUser.UFID;
-            
-
-            db.users.Add(signup);
-            db.Courses.Add(coursesSignUp);
-            db.SaveChanges();
-            return Request.CreateResponse(HttpStatusCode.Accepted, "Successfully Created");
-        }
-
-
-        [HttpGet]
-        //[Route("api/Login?username={username}&password={password}")]
-        [ActionName("XAMARIN_Login")]
-        // GET: api/Login/5  
-        public HttpResponseMessage Xamarin_login (string username, string password)
-        {
-            var login = db.users.Where(x => x.fullName == username && x.Password == password).FirstOrDefault();
-            if (login == null)
+            try
             {
-               return Request.CreateResponse(HttpStatusCode.Unauthorized, "Please Enter valid UserName and Password");
-            }
-            return Request.CreateResponse(HttpStatusCode.Accepted, "Success");
-        }
+                HttpContent requestContent = Request.Content;
+                string jsonContent = await requestContent.ReadAsStringAsync();
+                TutoringApp.Models.User newUser = JsonSerializer.Deserialize<TutoringApp.Models.User>(jsonContent);
+                //add User
+                db.users.Add(new user
+                {
+                    pictureSource = newUser.pictureSrc,
+                    Email = newUser.email,
+                    UFID = newUser.UFID,
+                    averageRating = 0.0,
+                    fullName = newUser.name,
+                    zoomLink = newUser.zoomLink,
+                    Password = newUser.password,
+                    isTutor = newUser.isTutor,
+                    requestedPay = newUser.requestedPay
+                    
+                });
+                // add users course
+                if (newUser.isTutor && newUser.Courses.Count != 0)
+                {
+                    db.Courses.Add(new Cours
+                    {
+                        UFID = newUser.UFID,
+                        departmentTitle = newUser.Courses[0].departmentTitle,
+                        courseName = newUser.Courses[0].courseName
+                    });
+                }
+                db.SaveChanges();
+                //get user  and then add all of their schedule
+                var newDBUser = db.users.Where(x => x.UFID == newUser.UFID).FirstOrDefault();
+                foreach(var schedule in newUser.ScheduleSections)
+                {
+                    db.userSchedules.Add(new userSchedule
+                    {
+                        UFID = newUser.UFID,
+                        day =  schedule.day.ToString(),
+                        endTicks = schedule.endTicks,
+                        startTicks = schedule.startTicks,
+                        isUnavailable = schedule.IsUnavailable,
+                        user = newDBUser
+                    });
+                }
+              
 
+                db.SaveChanges();
+                return Request.CreateResponse(HttpStatusCode.Accepted, "Successfully Created");
+            }                       
+            catch(Exception e)
+            {
+                return Request.CreateResponse(HttpStatusCode.ExpectationFailed, e.Message);
+            }
+
+        }
 
         [HttpGet]
         //[Route("api/Login?UFID={UFID}&password={password}")]
         [ActionName("XAMARIN_Login")]
-        // GET: api/Login/5  
         public HttpResponseMessage UserLogin(int UFID, string password)
         {
 
@@ -152,6 +160,4 @@ namespace AppWebAPI.Controllers
 
 
     }
-    
 }
-

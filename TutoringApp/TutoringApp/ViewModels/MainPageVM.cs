@@ -34,15 +34,30 @@ namespace TutoringApp.ViewModels
                 User currUser = JsonSerializer.Deserialize<User>(App.Current.Properties["CurrentUser"] as string);
                 //get index of first space so the first name can be substringed
                 int index = currUser.name.IndexOf(' ');
-                //TODO add logic to get their picture uri
-                if(currUser.pictureSrc != pictureSrc || UserMessage != currUser.name.Substring(0, index))
+                
+                if(index != -1)
                 {
-                    pictureSrc = currUser.pictureSrc;
-                    UserMessage = currUser.name.Substring(0, index);
-                    onPropertyChanged(nameof(userMessage));
-                    onPropertyChanged(nameof(pictureSrc));
-                }
+                    if(currUser.pictureSrc != pictureSrc || UserMessage != currUser.name.Substring(0, index))
+                    {
+                        pictureSrc = currUser.pictureSrc;
+                        UserMessage = currUser.name.Substring(0, index);
 
+                        onPropertyChanged(nameof(userMessage));
+                        onPropertyChanged(nameof(pictureSrc));
+                    }
+                }
+                else
+                {
+                    if (currUser.pictureSrc != pictureSrc || UserMessage != currUser.name)
+                    {
+                        pictureSrc = currUser.pictureSrc;
+                        UserMessage = currUser.name;
+
+
+                        onPropertyChanged(nameof(userMessage));
+                        onPropertyChanged(nameof(pictureSrc));
+                    }
+                }
                 return true;
             }
             else

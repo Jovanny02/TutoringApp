@@ -18,8 +18,7 @@ namespace TutoringApp.Views
         TutorListVM pageVM;
         public TutorList(string searchParam)
         {
-            pageVM = new TutorListVM();
-            pageVM.SearchQuery = searchParam;
+            pageVM = new TutorListVM(searchParam);
             BindingContext = pageVM;
             InitializeComponent();
 

@@ -29,9 +29,7 @@ namespace TutoringApp.Services
             foreach(var courses in CourseList)
             {
                 departmentTitles.Add(courses.departmentName);
-
-                allCourses.AddRange(courses.courses);
-                
+                allCourses.AddRange(courses.courses);              
             }
 
 

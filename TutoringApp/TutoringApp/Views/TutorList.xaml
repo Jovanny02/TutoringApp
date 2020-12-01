@@ -45,15 +45,17 @@
 
                 </StackLayout>
                 <StackLayout BackgroundColor="{StaticResource DefaultWhite}" Grid.Row="1">
+
+                    <!--                                 RemainingItemsThreshold="1"
+                                RemainingItemsThresholdReachedCommand="{Binding LoadTutorsCommand}"
+                    -->     
                     
                     <CollectionView BackgroundColor="{StaticResource DefaultWhite}"
                                 ItemsSource="{Binding TutorList}"                      
                                 Grid.Row="1"   
-                                RemainingItemsThreshold="1"
-                                RemainingItemsThresholdReachedCommand="{Binding LoadTutorsCommand}"
                                 SelectionMode="Single"
                                 SelectionChanged="TutorSelected"
-                                    x:Name="ListedTutors"
+                                x:Name="ListedTutors"
                                   >
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
@@ -61,8 +63,8 @@
 
                                     <Grid Padding="5">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="7*" />
+                                            <ColumnDefinition Width="1.5*"/>
+                                            <ColumnDefinition Width="6*" />
                                             <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
@@ -93,6 +95,14 @@
                         </CollectionView>
 
                 </StackLayout>
+
+                <Label Text="No Tutors Available" 
+                       IsVisible="{Binding isTextVisible}" 
+                       TextColor="{StaticResource DefaultBlack}" 
+                       FontSize="Title"
+                       Grid.Row="1"
+                       HorizontalOptions="CenterAndExpand" 
+                       VerticalOptions="CenterAndExpand"/>
 
 
             </Grid>
