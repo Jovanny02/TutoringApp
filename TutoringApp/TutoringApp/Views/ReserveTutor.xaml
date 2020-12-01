@@ -129,7 +129,7 @@
             <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Color="{StaticResource DefaultBlack}"/>
 
             <StackLayout x:Name="reservationStack" VerticalOptions="FillAndExpand">
-                <Label Text="{Binding listText}" IsVisible="{Binding isListVisible, Converter={d:BooleanConverter}}" TextColor="{StaticResource DefaultBlack}" FontSize="Subtitle"
+                <Label Text="{Binding listText}" IsVisible="{Binding isListVisible, Converter={d:BooleanConverter}}" TextColor="{StaticResource DefaultBlack}" FontSize="Title"
                        HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
                 <CollectionView ItemsSource="{Binding reservationList}" 
                                 SelectionMode="Single" 
