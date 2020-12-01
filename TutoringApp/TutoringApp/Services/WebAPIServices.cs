@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using TutoringApp.Models;
 using System.Net.Http.Headers;
+using System.Net;
 
 namespace TutoringApp.Services
 {
@@ -128,6 +129,65 @@ namespace TutoringApp.Services
 
             }
         }
+        //getTutorReservations?tutorUFID={tutorUFID}
+        public static async Task<List<Reservation>> getTutorReservations(int tutorUFID)
+        {
+            try
+            {
+
+                #if (DEBUG)
+                string JSONResult = await httpClient.GetStringAsync(debugURLString + "values/getTutorReservations?tutorUFID=" + tutorUFID);
+                #elif (!DEBUG)
+                string JSONResult = await httpClient.GetStringAsync(productionURLString + "values/getTutors?searchedCourse=" + course);
+                #endif
+
+                List<Reservation> tutorsReservations = JsonSerializer.Deserialize<List<Reservation>>(JSONResult);
+
+                return tutorsReservations;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+
+            }
+        }
+
+        public static async Task<string> setReservations(List<Reservation> reservationList)
+        {
+            string reservationsString = JsonSerializer.Serialize(reservationList);
+            try
+            { 
+                var stringContent = new StringContent(reservationsString, UnicodeEncoding.UTF8, "application/json"); // use MediaTypeNames.Application.Json in Core 3.0+ and Standard 2.1+
+
+                #if (DEBUG)
+                var response = await httpClient.PostAsync(debugURLString + "values/setReservations", stringContent);
+                #elif (!DEBUG)
+                var response = await httpClient.PostAsync(productionURLString + "values/setReservations", stringContent);
+                #endif
+
+                //"Tutor and student are the same"
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    HttpContent requestContent = response.Content;
+                    string jsonContent = await requestContent.ReadAsStringAsync();
+
+                    return jsonContent;
+                }
+            }          
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return "An error occured, please try again";
+
+            }
+
+            //added reservations successfully
+            return "success";
+
+        }
+
 
 
 

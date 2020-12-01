@@ -10,12 +10,12 @@
         <EntityTypeShape EntityType="TutoringAppDBModel.reservation" Width="1.5" PointX="5.625" PointY="9.75" />
         <AssociationConnector Association="TutoringAppDBModel.FK__reservati__stude__02084FDA" />
         <AssociationConnector Association="TutoringAppDBModel.FK__reservati__tutor__01142BA1" />
-        <EntityTypeShape EntityType="TutoringAppDBModel.Cours" Width="1.5" PointX="0.5" PointY="8.625" />
-        <AssociationConnector Association="TutoringAppDBModel.FK__Courses__UFID__00200768" />
-        <EntityTypeShape EntityType="TutoringAppDBModel.EducationSection" Width="1.5" PointX="5.625" PointY="13.25" />
-        <EntityTypeShape EntityType="TutoringAppDBModel.userSchedule" Width="1.5" PointX="5.625" PointY="4.375" />
+        <EntityTypeShape EntityType="TutoringAppDBModel.EducationSection" Width="1.5" PointX="2.75" PointY="12.125" />
+        <EntityTypeShape EntityType="TutoringAppDBModel.userSchedule" Width="1.5" PointX="5.625" PointY="4.375" IsExpanded="true" />
         <AssociationConnector Association="TutoringAppDBModel.FK__EducationS__UFID__7E37BEF6" />
         <AssociationConnector Association="TutoringAppDBModel.FK__userSchedu__UFID__7F2BE32F" />
+        <EntityTypeShape EntityType="TutoringAppDBModel.Cours" Width="1.5" PointX="5.625" PointY="1" />
+        <AssociationConnector Association="TutoringAppDBModel.FK__Courses__UFID__00200768" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

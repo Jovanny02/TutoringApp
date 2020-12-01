@@ -107,9 +107,66 @@ namespace AppWebAPI.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.ExpectationFailed, e.Message);
             }
-
-
         }
+
+        /*
+         * get a tutor's reservations
+         * 
+         */
+        [HttpGet]
+        [Route("api/values/getTutorReservations")]
+        public HttpResponseMessage getTutorReservations(string tutorUFID)
+        {
+            try
+            {
+                int UFID; 
+                    
+                bool didParseUFID = Int32.TryParse(tutorUFID,out UFID);
+
+                if (!didParseUFID)
+                {
+                    return Request.CreateResponse(HttpStatusCode.ExpectationFailed, "Could not parse tutor UFID");
+                }
+
+                var tutorReservations = (
+                                   from r in db.reservations
+                                   where r.tutorUFID == UFID
+                                   && r.fromDateTime > DateTime.Now
+                                   && r.isCancelled == false
+                                   select r).ToList();
+
+                List<TutoringApp.Models.Reservation> reservations = new List<TutoringApp.Models.Reservation>();
+
+                //user tutor = eligibleTutorUFIDs[0].user;
+                if (tutorReservations == null || tutorReservations.Count < 1)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, reservations);
+                }
+                else
+                {
+                    foreach (var reservation in tutorReservations)
+                    {
+                        reservations.Add(new Reservation
+                        {
+                            fromDate = reservation.fromDateTime,
+                            toDate = reservation.toDateTime,
+                            tutorUFID = reservation.tutorUFID,
+                            studentUFID = reservation.studentUFID,
+                            isCanceled = (bool)reservation.isCancelled                        
+                        });
+                    }              
+                    return Request.CreateResponse(HttpStatusCode.OK, reservations);
+                }
+
+            }
+            catch (Exception e)
+            {
+                return Request.CreateResponse(HttpStatusCode.ExpectationFailed, e.Message);
+            }
+        }
+
+
+
 
 
         [HttpPost]
@@ -203,7 +260,79 @@ namespace AppWebAPI.Controllers
 
 
         }
-        
+
+        /*
+         * Set Reservation Request
+         * 
+         */
+        [HttpPost]
+        [Route("api/values/setReservations")]
+        public async System.Threading.Tasks.Task<HttpResponseMessage> setReservations()
+        {
+            //ar request = HttpContext.Current.Request;
+            try
+            {
+                HttpContent requestContent = Request.Content;
+                string jsonContent = await requestContent.ReadAsStringAsync();
+                List<TutoringApp.Models.Reservation> reservationList = JsonSerializer.Deserialize<List<TutoringApp.Models.Reservation>>(jsonContent);
+
+
+                if(reservationList == null || reservationList.Count < 1)
+                {
+                    return Request.CreateResponse(HttpStatusCode.ExpectationFailed, "No Reservations to reserve");
+                }
+
+                //USER1 corresponds to TutorUFID
+                //USER correseponds to StudentUFID
+
+                int tutorUFID = reservationList[0].tutorUFID;
+                int studentUFID = reservationList[0].studentUFID;
+
+                var tutor = db.users.Where(x => x.UFID == tutorUFID).FirstOrDefault();
+                var student = db.users.Where(x => x.UFID == studentUFID).FirstOrDefault();
+
+                if (tutor == null || student == null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.ExpectationFailed, "Student or tutor not found");
+                }
+
+                if (reservationList[0].tutorUFID == reservationList[0].studentUFID)
+                {
+                    return Request.CreateResponse(HttpStatusCode.Forbidden, "Tutor and student are the same");
+                }
+
+                //Add list of reservations
+                foreach (var reservation in reservationList)
+                {
+                    db.reservations.Add(new reservation { 
+                        studentUFID = reservation.studentUFID,
+                        tutorUFID = reservation.tutorUFID,
+                        fromDateTime = reservation.fromDate,
+                        toDateTime = reservation.toDate,
+                        isCancelled = false,
+                        isCompleted = false,
+                        user1 = (user)tutor,
+                        user = (user)student
+                        }
+                    );
+
+                }
+
+
+                db.SaveChanges();
+                return Request.CreateResponse(HttpStatusCode.Accepted, "Saved Succesfully!");       
+            }
+            catch (Exception e)
+            {
+                return Request.CreateResponse(HttpStatusCode.ExpectationFailed, e.Message);
+            }
+
+
+        }
+
+
+
+
 
     }
 }

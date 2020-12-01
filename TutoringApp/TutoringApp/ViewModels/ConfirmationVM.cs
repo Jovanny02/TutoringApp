@@ -101,8 +101,15 @@ namespace TutoringApp.ViewModels
 
                 //Make API call to store reservation into database
                 UserDialogs.Instance.ShowLoading("Saving Reservation");
-                await Task.Delay(TimeSpan.FromSeconds(2));
+                string reservationResult = await WebAPIServices.setReservations(reservations);
                 UserDialogs.Instance.HideLoading();
+
+                if (reservationResult != "success")
+                {
+                    UserDialogs.Instance.Alert(reservationResult, null, null);
+                    return;
+                }
+
 
 
             }

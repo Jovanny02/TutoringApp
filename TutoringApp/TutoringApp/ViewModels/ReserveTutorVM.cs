@@ -7,6 +7,8 @@ using Xamarin.Forms;
 using System.Collections.ObjectModel;
 using Acr.UserDialogs;
 using TutoringApp.Views;
+using TutoringApp.Services;
+using System.Text.Json;
 
 namespace TutoringApp.ViewModels
 {
@@ -16,11 +18,16 @@ namespace TutoringApp.ViewModels
         {
             this.tutor = (TutorInfo)tutor;
             minDate = DateTime.Today.AddDays(-1 * DateTime.Today.Day + 1);
-            currentDay = DateTime.Now.AddDays(-1);
+            currentDay = DateTime.Now;
             lastDay = DateTime.Now.AddDays(21);
             MonthYear = DateTime.Now;
             listText = "Select a day to see available sessions";
             isListVisible = false;
+
+            UserDialogs.Instance.ShowLoading("Loading Tutor Schedule");
+            getTutorsReservationsCommand.Execute(this.tutor.UFID);
+            UserDialogs.Instance.HideLoading();
+
         }
         public TutorInfo tutor { get; set; }
 
@@ -43,6 +50,21 @@ namespace TutoringApp.ViewModels
             get { return IsListVisible; }
             set { IsListVisible = value; onPropertyChanged(); }
         }
+
+        private List<Reservation> tutorsReservations = new List<Reservation>(); // list of tutor's reservations
+
+        private ICommand getTutorsReservationsCommand => new Command<int>(async (UFID) =>
+        {
+            try
+            {
+                tutorsReservations = await WebAPIServices.getTutorReservations(UFID);
+            }
+            catch(Exception e)
+            {
+                UserDialogs.Instance.HideLoading();
+            }
+        });
+
 
         public void handleTappedReservation(object selectedReservation)
         {
@@ -86,17 +108,45 @@ namespace TutoringApp.ViewModels
                 return;
             }
 
-
+            //get starting hours
             int startingHour = tutor.ScheduleSections[index].startTime.Hours;
             int endingHour = tutor.ScheduleSections[index].endTime.Hours;
+            
+            //if the user selects the current date, only show session available starting after the current hour
+            if(selectedDate.Date == DateTime.Now.Date && startingHour < DateTime.Now.Hour + 1)
+            {
+                startingHour = DateTime.Now.Hour + 1;
+            }
+
+
+            //get current user to use in creation of reservations
+            User currentUser = new User();
+            if (App.Current.Properties.ContainsKey("CurrentUser"))
+            {
+                currentUser = JsonSerializer.Deserialize<User>(App.Current.Properties["CurrentUser"] as string);
+            }
+            else
+            {
+                Navigation.PopAsync();
+                return;
+            }
+
+
             //assign the set of schedule for each day
-            while((startingHour < endingHour) && !tutor.ScheduleSections[index].IsUnavailable)
+            while ((startingHour < endingHour) && !tutor.ScheduleSections[index].IsUnavailable)
             {
                 //set dateTime as selected date plus the hours
                 DateTime tempStartDateTime = selectedDate;
                 tempStartDateTime = tempStartDateTime.AddHours(startingHour);
                 DateTime tempEndDateTime = selectedDate;
                 tempEndDateTime = tempEndDateTime.AddHours(startingHour + 1);
+
+                
+                if(isSectionOccupied(tempStartDateTime, tempEndDateTime))
+                {
+                    startingHour++;
+                    continue;
+                }
 
 
                 reservationList.Add(new Reservation {
@@ -105,7 +155,7 @@ namespace TutoringApp.ViewModels
                 fromDate = tempStartDateTime,
                 toDate = tempEndDateTime,
                 tutorUFID = tutor.UFID,
-                studentUFID = 12345678    //need to add check to get current user UFID
+                studentUFID = currentUser.UFID    
                 });
 
                 startingHour++;
@@ -124,6 +174,21 @@ namespace TutoringApp.ViewModels
 
             onPropertyChanged(nameof(reservationList));
         });
+
+
+        private bool isSectionOccupied(DateTime fromTime, DateTime toTime)
+        {
+            if (tutorsReservations == null || tutorsReservations.Count < 1)
+                return false;
+
+            foreach(var reservation in tutorsReservations)
+            {
+                if (reservation.fromDate == fromTime && reservation.toDate == toTime)
+                    return true;
+            }
+
+            return false;
+        }
 
 
         public ICommand SwipeLeftCommand => new Command(() => { MonthYear = MonthYear.AddMonths(1); });

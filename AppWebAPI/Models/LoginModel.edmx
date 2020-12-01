@@ -37,8 +37,6 @@
           <Property Name="password" Type="varchar" MaxLength="50" />
           <Property Name="email" Type="varchar" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'TutoringAppDB.dbo.reservations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="reservations">
           <Key>
             <PropertyRef Name="tutorUFID" />
@@ -145,19 +143,9 @@ warning 6002: The table/view 'TutoringAppDB.dbo.reservations' does not have a pr
           <EntitySet Name="Courses" EntityType="Self.Courses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EducationSections" EntityType="Self.EducationSections" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="loginTest" EntityType="Self.loginTest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="reservations" EntityType="Self.reservations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="userSchedules" EntityType="Self.userSchedules" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="reservations" EntityType="Self.reservations" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [reservations].[tutorUFID] AS [tutorUFID], 
-    [reservations].[studentUFID] AS [studentUFID], 
-    [reservations].[fromDateTime] AS [fromDateTime], 
-    [reservations].[toDateTime] AS [toDateTime], 
-    [reservations].[isCancelled] AS [isCancelled], 
-    [reservations].[tutorRating] AS [tutorRating], 
-    [reservations].[isCompleted] AS [isCompleted]
-    FROM [dbo].[reservations] AS [reservations]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK__Courses__UFID__00200768" Association="Self.FK__Courses__UFID__00200768">
             <End Role="users" EntitySet="users" />
             <End Role="Courses" EntitySet="Courses" />
@@ -195,11 +183,6 @@ warning 6002: The table/view 'TutoringAppDB.dbo.reservations' does not have a pr
             <End Role="user" EntitySet="users" />
             <End Role="reservation" EntitySet="reservations" />
           </AssociationSet>
-          <EntitySet Name="Courses" EntityType="TutoringAppDBModel.Cours" />
-          <AssociationSet Name="FK__Courses__UFID__00200768" Association="TutoringAppDBModel.FK__Courses__UFID__00200768">
-            <End Role="user" EntitySet="users" />
-            <End Role="Cours" EntitySet="Courses" />
-          </AssociationSet>
           <EntitySet Name="EducationSections" EntityType="TutoringAppDBModel.EducationSection" />
           <EntitySet Name="userSchedules" EntityType="TutoringAppDBModel.userSchedule" />
           <AssociationSet Name="FK__EducationS__UFID__7E37BEF6" Association="TutoringAppDBModel.FK__EducationS__UFID__7E37BEF6">
@@ -209,6 +192,11 @@ warning 6002: The table/view 'TutoringAppDB.dbo.reservations' does not have a pr
           <AssociationSet Name="FK__userSchedu__UFID__7F2BE32F" Association="TutoringAppDBModel.FK__userSchedu__UFID__7F2BE32F">
             <End Role="user" EntitySet="users" />
             <End Role="userSchedule" EntitySet="userSchedules" />
+          </AssociationSet>
+          <EntitySet Name="Courses" EntityType="TutoringAppDBModel.Cours" />
+          <AssociationSet Name="FK__Courses__UFID__00200768" Association="TutoringAppDBModel.FK__Courses__UFID__00200768">
+            <End Role="user" EntitySet="users" />
+            <End Role="Cours" EntitySet="Courses" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="loginTest">
@@ -236,9 +224,9 @@ warning 6002: The table/view 'TutoringAppDB.dbo.reservations' does not have a pr
           <NavigationProperty Name="reservations" Relationship="TutoringAppDBModel.FK__reservati__stude__02084FDA" FromRole="user" ToRole="reservation" />
           <NavigationProperty Name="reservations1" Relationship="TutoringAppDBModel.FK__reservati__tutor__01142BA1" FromRole="user" ToRole="reservation" />
           <Property Name="zoomLink" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Courses" Relationship="TutoringAppDBModel.FK__Courses__UFID__00200768" FromRole="user" ToRole="Cours" />
           <NavigationProperty Name="EducationSections" Relationship="TutoringAppDBModel.FK__EducationS__UFID__7E37BEF6" FromRole="user" ToRole="EducationSection" />
           <NavigationProperty Name="userSchedules" Relationship="TutoringAppDBModel.FK__userSchedu__UFID__7F2BE32F" FromRole="user" ToRole="userSchedule" />
+          <NavigationProperty Name="Courses" Relationship="TutoringAppDBModel.FK__Courses__UFID__00200768" FromRole="user" ToRole="Cours" />
         </EntityType>
         <EntityType Name="reservation">
           <Key>
@@ -278,29 +266,6 @@ warning 6002: The table/view 'TutoringAppDB.dbo.reservations' does not have a pr
             </Principal>
             <Dependent Role="reservation">
               <PropertyRef Name="tutorUFID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Cours">
-          <Key>
-            <PropertyRef Name="UFID" />
-            <PropertyRef Name="departmentTitle" />
-            <PropertyRef Name="courseName" />
-          </Key>
-          <Property Name="UFID" Type="Int32" Nullable="false" />
-          <Property Name="departmentTitle" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="courseName" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="user" Relationship="TutoringAppDBModel.FK__Courses__UFID__00200768" FromRole="Cours" ToRole="user" />
-        </EntityType>
-        <Association Name="FK__Courses__UFID__00200768">
-          <End Type="TutoringAppDBModel.user" Role="user" Multiplicity="1" />
-          <End Type="TutoringAppDBModel.Cours" Role="Cours" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="user">
-              <PropertyRef Name="UFID" />
-            </Principal>
-            <Dependent Role="Cours">
-              <PropertyRef Name="UFID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -355,6 +320,29 @@ warning 6002: The table/view 'TutoringAppDB.dbo.reservations' does not have a pr
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Cours">
+          <Key>
+            <PropertyRef Name="UFID" />
+            <PropertyRef Name="departmentTitle" />
+            <PropertyRef Name="courseName" />
+          </Key>
+          <Property Name="UFID" Type="Int32" Nullable="false" />
+          <Property Name="departmentTitle" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="courseName" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="user" Relationship="TutoringAppDBModel.FK__Courses__UFID__00200768" FromRole="Cours" ToRole="user" />
+        </EntityType>
+        <Association Name="FK__Courses__UFID__00200768">
+          <End Type="TutoringAppDBModel.user" Role="user" Multiplicity="1" />
+          <End Type="TutoringAppDBModel.Cours" Role="Cours" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="UFID" />
+            </Principal>
+            <Dependent Role="Cours">
+              <PropertyRef Name="UFID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -400,15 +388,6 @@ warning 6002: The table/view 'TutoringAppDB.dbo.reservations' does not have a pr
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Courses">
-            <EntityTypeMapping TypeName="TutoringAppDBModel.Cours">
-              <MappingFragment StoreEntitySet="Courses">
-                <ScalarProperty Name="courseName" ColumnName="courseName" />
-                <ScalarProperty Name="departmentTitle" ColumnName="departmentTitle" />
-                <ScalarProperty Name="UFID" ColumnName="UFID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="EducationSections">
             <EntityTypeMapping TypeName="TutoringAppDBModel.EducationSection">
               <MappingFragment StoreEntitySet="EducationSections">
@@ -427,6 +406,15 @@ warning 6002: The table/view 'TutoringAppDB.dbo.reservations' does not have a pr
                 <ScalarProperty Name="endTicks" ColumnName="endTicks" />
                 <ScalarProperty Name="startTicks" ColumnName="startTicks" />
                 <ScalarProperty Name="day" ColumnName="day" />
+                <ScalarProperty Name="UFID" ColumnName="UFID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="TutoringAppDBModel.Cours">
+              <MappingFragment StoreEntitySet="Courses">
+                <ScalarProperty Name="courseName" ColumnName="courseName" />
+                <ScalarProperty Name="departmentTitle" ColumnName="departmentTitle" />
                 <ScalarProperty Name="UFID" ColumnName="UFID" />
               </MappingFragment>
             </EntityTypeMapping>
