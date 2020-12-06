@@ -13,18 +13,19 @@ namespace TutoringApp.Services
     {
         public async Task<bool> LogininSucess(string Username, string Password, string Email)
         {
-            var client = new HttpClient();
-            var model = new User
-            {
-                email = Email,
-                Username = Username,
-                Password = Password
-            };
-            var json = JsonConvert.SerializeObject(model);
-            HttpContent content = new StringContent(json);
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            var response = await client.PostAsync("https://appwebapi20200912230223.azurewebsites.net", content);
-            return response.IsSuccessStatusCode;
+            /* var client = new HttpClient();
+             var model = new User
+             {
+                 email = Email,
+                 Username = Username,
+                 Password = Password
+             };
+             var json = JsonConvert.SerializeObject(model);
+             HttpContent content = new StringContent(json);
+             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+             var response = await client.PostAsync("https://appwebapi20200912230223.azurewebsites.net", content);
+             return response.IsSuccessStatusCode; */
+            return false;
         }
     }
 }
