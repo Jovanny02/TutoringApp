@@ -6,6 +6,8 @@ using TutoringApp.Models;
 using TutoringApp.Views;
 using System.Windows.Input;
 using Xamarin.Forms;
+using TutoringApp.Services;
+using System.Text.Json;
 using Acr.UserDialogs;
 //using System.Text.Json;
 using System.Threading.Tasks;
@@ -17,44 +19,44 @@ namespace TutoringApp.ViewModels
 
         public tutorReservationListVM()
         {
-            //TODO Add API call to get  reservations for current user
-            
-            tutorSessions.Add(new ReservationTile
-            {
-                tutorName = "Test Tutor ",
-                studentName = "Test Student ",
-                zoomLink = "https://zoom.us/",
-                fromDate = DateTime.Now.AddHours(-4),
-                toDate = DateTime.Now.AddHours(-3),
-                tutorUFID = 12345678,
-                studentUFID = 87654321,
-                isCompleted = true
-            });
+            User currentTutor = new User();
 
-
-            for (int i = 0; i < 9; i++)
-            {
-                tutorSessions.Add(new ReservationTile
-                {
-                    tutorName = "Test Tutor " + i,
-                    studentName = "Test Student " + i,
-                    zoomLink = "https://zoom.us/",
-                    fromDate = DateTime.Now.AddHours(i - 3),
-                    toDate = DateTime.Now.AddHours(i - 2),
-                    tutorUFID = 12345678,
-                    studentUFID = 87654321
-                });
-
-            }
-
+            PerformReservationCommand.Execute(currentTutor);
             onPropertyChanged(nameof(isTutorsVisible));
         }
 
+        public ICommand PerformReservationCommand => new Command<User>(async (currentTutor) =>
+        {
+
+            currentTutor = JsonSerializer.Deserialize<User>(App.Current.Properties["CurrentUser"] as string);
+            List<ReservationTile> tutorReservation = await WebAPIServices.getStudentReservations(currentTutor.UFID);
+            if (tutorReservation != null)
+            {
+                tutorSessions = new ObservableCollection<ReservationTile>(tutorReservation);
+            }
+            else
+            {
+                tutorSessions = null;
+            }
+
+            //properties changed
+            onPropertyChanged(nameof(tutorSessions));
+            onPropertyChanged(nameof(isTutorsVisible));
+        });
+
+
+
         public ObservableCollection<ReservationTile> tutorSessions { get; set; } = new ObservableCollection<ReservationTile>();
 
-        public bool isTutorsVisible { get { return (tutorSessions.Count > 0); } }
+        public bool isTutorsVisible { 
+            get {
+                if (tutorSessions == null)
+                    return false;
 
-        public bool isTutorTextVisible { get { return !isTutorsVisible; } }
+
+                return (tutorSessions.Count > 0); 
+            } 
+        }
 
         public ICommand tutorReservationCommand => new Command<object>((selectedItem) =>
         {
