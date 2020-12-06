@@ -27,6 +27,10 @@ namespace TutoringApp.Services
                      if (Newtoken != null)
                      {
                          isTransactionSucess = MakePayment(Newtoken, paymentInfo);
+                         if (isTransactionSucess == true)
+                         {
+                             CreateTransfer(paymentInfo);
+                         }
                      }
                      else
                      {
@@ -102,8 +106,55 @@ namespace TutoringApp.Services
             }
         }
 
+        public static bool CreateTransfer(PaymentInformation paymentInfo)
+        {
+            try
+            {
+                StripeConfiguration.SetApiKey(privateKey);
+                var options = new TransferCreateOptions
+                {
+                    Amount = (long)(paymentInfo.paymentAmount * 100),
+                    Currency = "USD",
+                    Description="transfer sucess",
+                    Destination = "acct_1HvQREEanA2W90kZ"
+                };
+                var service = new TransferService();
+                Transfer TransferId = service.Create(options);
+                return true;
+
+            }
+
+           catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw ex;
+            }
+      }
+
+
+      /*  public static bool ReceiveTransfer(string TransferID)
+
+        {
+            try
+            {
+                var service = new TransferService();
+                service.Get(TransferID);
+                return true;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw ex;
+            }
+        }
+      */
 
 
 
-    }
-}
+
+
+     }
+
+
+ }
+
