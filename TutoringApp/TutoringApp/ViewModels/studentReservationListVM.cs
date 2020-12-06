@@ -18,7 +18,10 @@ namespace TutoringApp.ViewModels
     {
         public studentReservationListVM() {
             User student = new User();
+            UserDialogs.Instance.ShowLoading();
             PerformReservationCommand.Execute(student);
+            UserDialogs.Instance.HideLoading();
+
         }
         //TODO Add API call to get  reservations for current user
         public ICommand PerformReservationCommand => new Command<User>(async (student) =>
@@ -88,11 +91,17 @@ namespace TutoringApp.ViewModels
 
                 //TODO ADD API CALL TO SUBMIT RATING
                 UserDialogs.Instance.ShowLoading("Submitting Review");
-                await Task.Delay(TimeSpan.FromSeconds(2));
+                bool didComplete = await WebAPIServices.submitTutorRating(studentReserve[indexOfReservation]);            
                 UserDialogs.Instance.HideLoading();
+
+                if (!didComplete)
+                {
+                    UserDialogs.Instance.Alert("Save Failed. Please Try Again", null, null);
+                    return;
+                }
+
+
                 UserDialogs.Instance.Alert("Review Saved Successfully!", null, null);
-
-
                 //update reservation on users end immediately
                 studentReserve[indexOfReservation].isCompleted = true;
                 onPropertyChanged(nameof(studentReserve));
@@ -100,6 +109,7 @@ namespace TutoringApp.ViewModels
             }
             catch (Exception e)
             {
+                UserDialogs.Instance.HideLoading();
                 UserDialogs.Instance.Alert("Error submitting rating", null, null);
                 Console.WriteLine(e.Message);
             }

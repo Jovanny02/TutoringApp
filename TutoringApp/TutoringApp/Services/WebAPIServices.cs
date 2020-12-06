@@ -176,6 +176,32 @@ namespace TutoringApp.Services
             }
         }
 
+
+        public static async Task<List<ReservationTile>> getTutorReservationTiles(int tutorUFID)
+        {
+            try
+            {
+                #if (DEBUG)
+                string JSONResult = await httpClient.GetStringAsync(debugURLString + "values/getTutorReservationTiles?tutorUFID=" + tutorUFID);
+                #elif (!DEBUG)
+                string JSONResult = await httpClient.GetStringAsync(productionURLString +"values/getTutorReservationTiles?tutorUFID=" + tutorUFID );
+                #endif
+
+                List<ReservationTile> studentReservations = JsonSerializer.Deserialize<List<ReservationTile>>(JSONResult);
+
+                return studentReservations;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+
+            }
+        }
+
+
+
+
         public static async Task<string> setReservations(List<Reservation> reservationList)
         {
             string reservationsString = JsonSerializer.Serialize(reservationList);
@@ -212,7 +238,40 @@ namespace TutoringApp.Services
         }
 
 
+        public static async Task<bool> submitTutorRating(ReservationTile reservation)
+        {
+            string reservationString = JsonSerializer.Serialize(reservation);
 
+            try
+            {
+                var stringContent = new StringContent(reservationString, UnicodeEncoding.UTF8, "application/json"); // use MediaTypeNames.Application.Json in Core 3.0+ and Standard 2.1+
+
+                #if (DEBUG)
+                var response = await httpClient.PutAsync(debugURLString + "values/submitRating", stringContent);
+                #elif (!DEBUG)
+                var response = await httpClient.PostAsync(productionURLString + "values/submitRating", stringContent);
+                #endif
+
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    HttpContent requestContent = response.Content;
+                    string jsonContent = await requestContent.ReadAsStringAsync();
+                    Console.WriteLine(jsonContent);
+                    return false;
+                }
+
+
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+
+            }
+        }
 
 
     }

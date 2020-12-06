@@ -8,13 +8,37 @@ using System.Web.Http;
 using TutoringApp.Models;
 using System.Text;
 using System.Text.Json;
+using System.Security.Cryptography;
 
 namespace AppWebAPI.Controllers
 {
     public class LoginController : ApiController
     {
-        TutoringAppDBEntities db = new TutoringAppDBEntities();  
-         
+        TutoringAppDBEntities db = new TutoringAppDBEntities();
+        /*
+         * Helper Functions
+         */
+        byte[] GenerateSalt(int length)
+        {
+            var bytes = new byte[length];
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                rng.GetBytes(bytes);
+            }
+            return bytes;
+        }
+
+        byte[] GenerateHash(string password, byte[] salt, int iterations, int length)
+        {
+            using (var deriveBytes = new Rfc2898DeriveBytes(password, salt, iterations))
+            {
+                return deriveBytes.GetBytes(length);
+            }
+        }
+
+
+
+
         [HttpPost]
         [Route("api/Login/UserSignUp")]
         [ActionName("XAMARIN_Sign_Up")]
@@ -26,6 +50,18 @@ namespace AppWebAPI.Controllers
                 HttpContent requestContent = Request.Content;
                 string jsonContent = await requestContent.ReadAsStringAsync();
                 TutoringApp.Models.User newUser = JsonSerializer.Deserialize<TutoringApp.Models.User>(jsonContent);
+
+                //generate salt 
+                byte[] salt1 = GenerateSalt(8);
+                //generate Hash
+               // byte[] passwordBytes = new System.Text.UTF8Encoding(false).GetBytes(newUser.password); //Encoding.ASCII.GetBytes(newUser.password);
+                byte[] hash = GenerateHash(newUser.password, salt1, 1000, 28);
+                //new System.Text.UTF8Encoding(false).GetBytes(data1);
+                //set user password equal to the hash
+                newUser.password = Convert.ToBase64String(hash);
+                string salt = Convert.ToBase64String(salt1);
+
+
                 //add User
                 db.users.Add(new user
                 {
@@ -37,9 +73,9 @@ namespace AppWebAPI.Controllers
                     zoomLink = newUser.zoomLink,
                     Password = newUser.password,
                     isTutor = newUser.isTutor,
-                    requestedPay = newUser.requestedPay
-                    
-                });
+                    requestedPay = newUser.requestedPay,
+                    salt = salt
+                }); ;
                 // add users course
                 if (newUser.isTutor && newUser.Courses.Count != 0)
                 {
@@ -83,21 +119,28 @@ namespace AppWebAPI.Controllers
         public HttpResponseMessage UserLogin(int UFID, string password)
         {
 
-          /*  var data = (from Users in db.users
-                        join userSchedules in db.userSchedules
-                        on Users.UFID equals userSchedules.UFID
-                        where Users.UFID == UFID && Users.Password == password
-                        select Users
-                        ) ;
-            */
-
-            var user = db.users.Where(x => x.UFID == UFID && x.Password == password).FirstOrDefault();
+            var user = db.users.Where(x => x.UFID == UFID).FirstOrDefault();
             if (user == null)
             {
                 return Request.CreateResponse(HttpStatusCode.Unauthorized, "Please Enter valid UserName and Password");
             }
             else
             {
+                //generate salt 
+                byte[] salt1 = Convert.FromBase64String(user.salt);
+                //generate Hash
+              //  byte[] passwordBytes = Encoding.ASCII.GetBytes(password);
+                byte[] hash = GenerateHash(password, salt1, 1000, 28);
+
+                //set user password equal to the hash
+                string testPass = Convert.ToBase64String(hash);
+
+                if(testPass != user.Password)
+                {
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized, "Please Enter valid UserName and Password");
+                }
+
+
                 //parse User into an appUser
                 TutoringApp.Models.User appUser = new TutoringApp.Models.User();
                 appUser.AverageRating = (double)user.averageRating;

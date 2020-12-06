@@ -67,6 +67,7 @@
           <Property Name="Biography" Type="varchar" MaxLength="600" />
           <Property Name="pictureSource" Type="varchar" MaxLength="255" />
           <Property Name="zoomLink" Type="varchar" MaxLength="255" />
+          <Property Name="salt" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="userSchedules">
           <Key>
@@ -227,6 +228,7 @@
           <NavigationProperty Name="EducationSections" Relationship="TutoringAppDBModel.FK__EducationS__UFID__7E37BEF6" FromRole="user" ToRole="EducationSection" />
           <NavigationProperty Name="userSchedules" Relationship="TutoringAppDBModel.FK__userSchedu__UFID__7F2BE32F" FromRole="user" ToRole="userSchedule" />
           <NavigationProperty Name="Courses" Relationship="TutoringAppDBModel.FK__Courses__UFID__00200768" FromRole="user" ToRole="Cours" />
+          <Property Name="salt" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="reservation">
           <Key>
@@ -361,6 +363,7 @@
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="TutoringAppDBModel.user">
               <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="salt" ColumnName="salt" />
                 <ScalarProperty Name="zoomLink" ColumnName="zoomLink" />
                 <ScalarProperty Name="pictureSource" ColumnName="pictureSource" />
                 <ScalarProperty Name="Biography" ColumnName="Biography" />

@@ -21,7 +21,11 @@ namespace TutoringApp.ViewModels
         {
             User currentTutor = new User();
 
+            UserDialogs.Instance.ShowLoading();
             PerformReservationCommand.Execute(currentTutor);
+            UserDialogs.Instance.HideLoading();
+
+
             onPropertyChanged(nameof(isTutorsVisible));
         }
 
@@ -29,7 +33,7 @@ namespace TutoringApp.ViewModels
         {
 
             currentTutor = JsonSerializer.Deserialize<User>(App.Current.Properties["CurrentUser"] as string);
-            List<ReservationTile> tutorReservation = await WebAPIServices.getStudentReservations(currentTutor.UFID);
+            List<ReservationTile> tutorReservation = await WebAPIServices.getTutorReservationTiles(currentTutor.UFID);
             if (tutorReservation != null)
             {
                 tutorSessions = new ObservableCollection<ReservationTile>(tutorReservation);

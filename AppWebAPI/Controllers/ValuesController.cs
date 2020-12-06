@@ -9,6 +9,7 @@ using AppWebAPI.Models;
 using System.Web;
 using System.Text.Json;
 
+
 namespace AppWebAPI.Controllers
 {
     public class ValuesController : ApiController
@@ -165,6 +166,82 @@ namespace AppWebAPI.Controllers
             }
         }
 
+
+        /*
+        * get a Tutor's ReservationTiles
+        * 
+        */
+
+
+        [HttpGet]
+        [Route("api/values/getTutorReservationTiles")]
+        public HttpResponseMessage getTutorReservationTiles(string tutorUFID)
+        {
+            try
+            {
+                int UFID;
+
+                bool didParseUFID = Int32.TryParse(tutorUFID, out UFID);
+
+                if (!didParseUFID)
+                {
+                    return Request.CreateResponse(HttpStatusCode.ExpectationFailed, "Could not parse tutor UFID");
+                }
+
+                var StudentReservations = (
+                                 from r in db.reservations
+                                 where r.tutorUFID == UFID
+                                 && r.isCancelled == false
+                                 orderby r.toDateTime descending
+                                 select r).ToList();
+                List<TutoringApp.Models.ReservationTile> reservations = new List<TutoringApp.Models.ReservationTile>();
+
+                if (StudentReservations == null || StudentReservations.Count < 1)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, reservations);
+                }
+
+                else
+                {
+
+                    foreach (var reservation in StudentReservations)
+                    {
+                        reservations.Add(new ReservationTile
+                        {
+                            //user1=tutor    user=student
+                            fromDate = reservation.fromDateTime,
+                            toDate = reservation.toDateTime,
+                            tutorUFID = reservation.tutorUFID,
+                            studentUFID = reservation.studentUFID,
+                            isCanceled = (bool)reservation.isCancelled,
+                            isCompleted = (bool)reservation.isCompleted,
+                            tutorName = reservation.user1.fullName,
+                            studentName = reservation.user.fullName,
+                            studentPicture = reservation.user.pictureSource,
+                            zoomLink = reservation.user1.zoomLink,
+
+                        });
+
+                    }
+
+                    return Request.CreateResponse(HttpStatusCode.OK, reservations);
+
+                }
+
+            }
+
+            catch (Exception e)
+            {
+                return Request.CreateResponse(HttpStatusCode.ExpectationFailed, e.Message);
+            }
+
+        }
+
+
+
+
+
+
         /*
         * get a student's reservations
         * 
@@ -188,8 +265,8 @@ namespace AppWebAPI.Controllers
                 var StudentReservations = (
                                  from r in db.reservations
                                  where r.studentUFID == UFID
-                                 && r.fromDateTime > DateTime.Now
                                  && r.isCancelled == false
+                                 orderby r.toDateTime descending
                                  select r).ToList();
                 List<TutoringApp.Models.ReservationTile> reservations = new List<TutoringApp.Models.ReservationTile>();
 
@@ -203,6 +280,11 @@ namespace AppWebAPI.Controllers
 
                     foreach (var reservation in StudentReservations)
                     {
+                        if(!((bool)reservation.isCompleted) && (double)reservation.tutorRating == 0.0)
+                        {
+                            reservation.tutorRating = 2.5;
+                        }
+
                         reservations.Add(new ReservationTile
                         {
                             //user 1 tutor user student
@@ -211,7 +293,8 @@ namespace AppWebAPI.Controllers
                             tutorUFID = reservation.tutorUFID,
                             studentUFID = reservation.studentUFID,
                             isCanceled = (bool)reservation.isCancelled,
-                            tutorName= reservation.user1.fullName,
+                            isCompleted = (bool)reservation.isCompleted,
+                            tutorName = reservation.user1.fullName,
                             studentName= reservation.user.fullName,
                             tutorPicture= reservation.user1.pictureSource,
                             zoomLink= reservation.user1.zoomLink,
@@ -399,7 +482,43 @@ namespace AppWebAPI.Controllers
 
         }
 
+        [HttpPut]
+        [Route("api/values/submitRating")]
+        public async System.Threading.Tasks.Task<HttpResponseMessage> submitRating()
+        {
+            try
+            {
+                HttpContent requestContent = Request.Content;
+                string jsonContent = await requestContent.ReadAsStringAsync();
+                TutoringApp.Models.ReservationTile selectedReservation = JsonSerializer.Deserialize<TutoringApp.Models.ReservationTile>(jsonContent);
+                if (selectedReservation == null )
+                {
+                    return Request.CreateResponse(HttpStatusCode.ExpectationFailed, "No selected Reservation");
+                }
 
+                var reservation = db.reservations.Where(x => 
+                x.studentUFID == selectedReservation.studentUFID &&
+                x.tutorUFID == selectedReservation.tutorUFID &&
+                x.toDateTime == selectedReservation.toDate &&
+                x.fromDateTime == selectedReservation.fromDate
+                ).FirstOrDefault();
+
+                //submit the rating and mark it as completed
+                reservation.tutorRating = Math.Truncate(100 * selectedReservation.rating) / 100;
+                reservation.isCompleted = true;
+
+
+
+                db.SaveChanges();
+                return Request.CreateResponse(HttpStatusCode.Accepted, "Saved Succesfully!");
+            }
+            catch (Exception e)
+            {
+                return Request.CreateResponse(HttpStatusCode.ExpectationFailed, e.Message);
+            }
+
+
+        }
 
 
 

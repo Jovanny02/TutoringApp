@@ -16,15 +16,12 @@ namespace TutoringApp.Models
         public string zoomLink { get; set; }
 
         private double Rating { get; set; } = 0.0;
-        [JsonIgnore]
         public double rating { get { return Rating; }
             set { 
                 Rating = value; 
                 onPropertyChanged(); } }
 
         private bool IsCompleted { get; set; } = false;
-        [JsonIgnore]
-
         public bool isCompleted { get { return IsCompleted; } set { IsCompleted = value; onPropertyChanged(); onPropertyChanged(nameof(statusMessage));  } } 
 
         [JsonIgnore]
