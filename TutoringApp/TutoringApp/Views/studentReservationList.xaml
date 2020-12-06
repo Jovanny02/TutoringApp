@@ -20,7 +20,7 @@
             <StackLayout Grid.Row="1">
                 <CollectionView
                         IsVisible="{Binding isStudentsVisible}"
-                        ItemsSource="{Binding studentSessions}"
+                        ItemsSource="{Binding studentReserve}"
                          SelectionMode="Single"
                          SelectionChanged="Student_ItemTapped"
                          >

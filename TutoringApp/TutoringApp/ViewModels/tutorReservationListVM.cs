@@ -18,7 +18,7 @@ namespace TutoringApp.ViewModels
         public tutorReservationListVM()
         {
             //TODO Add API call to get  reservations for current user
-
+            
             tutorSessions.Add(new ReservationTile
             {
                 tutorName = "Test Tutor ",
