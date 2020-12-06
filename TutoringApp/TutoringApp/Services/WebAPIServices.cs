@@ -153,6 +153,29 @@ namespace TutoringApp.Services
             }
         }
 
+        public static async Task<List<ReservationTile>> getStudentReservations(int studentUFID)
+        {
+            try
+            {
+
+                #if (DEBUG)
+                string JSONResult = await httpClient.GetStringAsync(debugURLString + "values/getStudentReservations?studentUFID=" + studentUFID);
+                #elif (!DEBUG)
+                string JSONResult = await httpClient.GetStringAsync(productionURLString +"values/getStudentReservations?studentUFID=" + studentUFID );
+                #endif
+
+                List<ReservationTile> studentReservations = JsonSerializer.Deserialize<List<ReservationTile>>(JSONResult);
+
+                return studentReservations;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+
+            }
+        }
+
         public static async Task<string> setReservations(List<Reservation> reservationList)
         {
             string reservationsString = JsonSerializer.Serialize(reservationList);

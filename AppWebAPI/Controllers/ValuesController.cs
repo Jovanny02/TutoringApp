@@ -165,7 +165,75 @@ namespace AppWebAPI.Controllers
             }
         }
 
+        /*
+        * get a student's reservations
+        * 
+        */
 
+        [HttpGet]
+        [Route("api/values/getStudentReservations")]
+        public HttpResponseMessage getStudentReservations(string studentUFID)
+        {
+            try
+            {
+                int UFID;
+
+                bool didParseUFID = Int32.TryParse(studentUFID, out UFID);
+
+                if (!didParseUFID)
+                {
+                    return Request.CreateResponse(HttpStatusCode.ExpectationFailed, "Could not parse tutor UFID");
+                }
+
+                var StudentReservations = (
+                                 from r in db.reservations
+                                 where r.studentUFID == UFID
+                                 && r.fromDateTime > DateTime.Now
+                                 && r.isCancelled == false
+                                 select r).ToList();
+                List<TutoringApp.Models.ReservationTile> reservations = new List<TutoringApp.Models.ReservationTile>();
+
+                if (StudentReservations == null || StudentReservations.Count < 1)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, reservations);
+                }
+
+                else
+                {
+
+                    foreach (var reservation in StudentReservations)
+                    {
+                        reservations.Add(new ReservationTile
+                        {
+                            //user 1 tutor user student
+                            fromDate = reservation.fromDateTime,
+                            toDate = reservation.toDateTime,
+                            tutorUFID = reservation.tutorUFID,
+                            studentUFID = reservation.studentUFID,
+                            isCanceled = (bool)reservation.isCancelled,
+                            tutorName= reservation.user1.fullName,
+                            studentName= reservation.user.fullName,
+                            tutorPicture= reservation.user1.pictureSource,
+                            zoomLink= reservation.user1.zoomLink,
+                            rating= (double)reservation.tutorRating
+
+                          
+                        });
+
+                    }
+
+                    return Request.CreateResponse(HttpStatusCode.OK, reservations);
+
+                }
+
+            }
+
+            catch (Exception e)
+            {
+                return Request.CreateResponse(HttpStatusCode.ExpectationFailed, e.Message);
+            }
+
+        }
 
 
 
