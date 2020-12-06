@@ -309,6 +309,7 @@ namespace AppWebAPI.Controllers
                         tutorUFID = reservation.tutorUFID,
                         fromDateTime = reservation.fromDate,
                         toDateTime = reservation.toDate,
+                        tutorRating = 0.0,
                         isCancelled = false,
                         isCompleted = false,
                         user1 = (user)tutor,
