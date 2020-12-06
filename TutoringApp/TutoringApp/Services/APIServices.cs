@@ -46,12 +46,7 @@ namespace TutoringApp.Services
 
         }
 
-        public   async Task<User> Getvalue(string ufid)
-        {
-            var check = await _restClient.GetAsync(ufid);
-            return check;
-
-        }
+       
     }
 }
     

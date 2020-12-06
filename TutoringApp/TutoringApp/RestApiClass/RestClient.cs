@@ -47,18 +47,7 @@ namespace TutoringApp.RestApiClass
             return response.IsSuccessStatusCode;
             
         }
-        public async Task<User> GetAsync(string id)
-        {
-            var client = new HttpClient();
-            User value = null;
-           
-            HttpResponseMessage response = await client.GetAsync(GetwebURL+"/{"+id+"}");
-            if (response.IsSuccessStatusCode)
-            {
-                value = await response.Content.ReadAsAsync<User>();
-            }
-            return value;
-        }
+        
 
     }
 }
