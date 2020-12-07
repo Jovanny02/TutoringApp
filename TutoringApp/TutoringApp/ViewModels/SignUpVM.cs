@@ -97,7 +97,20 @@ namespace TutoringApp.ViewModels
 
             try
             {
+                //TRY TO CREATE CONNECTED STRIPE ACCOUNT
                 UserDialogs.Instance.ShowLoading("Attempting Sign Up");
+                string accountID = StripePaymentService.makeAccount();
+                if (String.IsNullOrEmpty(accountID))
+                {
+                    UserDialogs.Instance.HideLoading();
+                    UserDialogs.Instance.Alert("Sign Up Failed: Stripe error, please try again", null, null);
+                    return;
+                }
+
+                newUser.stripeAccountID = accountID;
+
+
+                //TRY TO SIGN UP USER
                 bool didCreate = await WebAPIServices.signUpUser(newUser);
                 UserDialogs.Instance.HideLoading();
                 if (!didCreate)

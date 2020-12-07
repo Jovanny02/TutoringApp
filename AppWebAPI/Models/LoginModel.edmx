@@ -51,6 +51,7 @@
           <Property Name="isCancelled" Type="bit" />
           <Property Name="tutorRating" Type="float" />
           <Property Name="isCompleted" Type="bit" />
+          <Property Name="reservationPrice" Type="float" />
         </EntityType>
         <EntityType Name="users">
           <Key>
@@ -67,6 +68,8 @@
           <Property Name="Biography" Type="varchar" MaxLength="600" />
           <Property Name="pictureSource" Type="varchar" MaxLength="255" />
           <Property Name="zoomLink" Type="varchar" MaxLength="255" />
+          <Property Name="salt" Type="varchar" MaxLength="255" />
+          <Property Name="stripeAccountID" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="userSchedules">
           <Key>
@@ -227,6 +230,8 @@
           <NavigationProperty Name="EducationSections" Relationship="TutoringAppDBModel.FK__EducationS__UFID__7E37BEF6" FromRole="user" ToRole="EducationSection" />
           <NavigationProperty Name="userSchedules" Relationship="TutoringAppDBModel.FK__userSchedu__UFID__7F2BE32F" FromRole="user" ToRole="userSchedule" />
           <NavigationProperty Name="Courses" Relationship="TutoringAppDBModel.FK__Courses__UFID__00200768" FromRole="user" ToRole="Cours" />
+          <Property Name="salt" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="stripeAccountID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="reservation">
           <Key>
@@ -244,6 +249,7 @@
           <NavigationProperty Name="user" Relationship="TutoringAppDBModel.FK__reservati__stude__02084FDA" FromRole="reservation" ToRole="user" />
           <NavigationProperty Name="user1" Relationship="TutoringAppDBModel.FK__reservati__tutor__01142BA1" FromRole="reservation" ToRole="user" />
           <Property Name="isCompleted" Type="Boolean" />
+          <Property Name="reservationPrice" Type="Double" />
         </EntityType>
         <Association Name="FK__reservati__stude__02084FDA">
           <End Type="TutoringAppDBModel.user" Role="user" Multiplicity="1" />
@@ -361,6 +367,8 @@
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="TutoringAppDBModel.user">
               <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="stripeAccountID" ColumnName="stripeAccountID" />
+                <ScalarProperty Name="salt" ColumnName="salt" />
                 <ScalarProperty Name="zoomLink" ColumnName="zoomLink" />
                 <ScalarProperty Name="pictureSource" ColumnName="pictureSource" />
                 <ScalarProperty Name="Biography" ColumnName="Biography" />
@@ -378,6 +386,7 @@
           <EntitySetMapping Name="reservations">
             <EntityTypeMapping TypeName="TutoringAppDBModel.reservation">
               <MappingFragment StoreEntitySet="reservations">
+                <ScalarProperty Name="reservationPrice" ColumnName="reservationPrice" />
                 <ScalarProperty Name="isCompleted" ColumnName="isCompleted" />
                 <ScalarProperty Name="tutorRating" ColumnName="tutorRating" />
                 <ScalarProperty Name="isCancelled" ColumnName="isCancelled" />
