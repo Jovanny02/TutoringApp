@@ -192,7 +192,7 @@ namespace AppWebAPI.Controllers
                                  from r in db.reservations
                                  where r.tutorUFID == UFID
                                  && r.isCancelled == false
-                                 orderby r.toDateTime descending
+                                 orderby r.toDateTime ascending
                                  select r).ToList();
                 List<TutoringApp.Models.ReservationTile> reservations = new List<TutoringApp.Models.ReservationTile>();
 
@@ -219,7 +219,8 @@ namespace AppWebAPI.Controllers
                             studentName = reservation.user.fullName,
                             studentPicture = reservation.user.pictureSource,
                             zoomLink = reservation.user1.zoomLink,
-
+                            reservationPrice = (double)reservation.reservationPrice,
+                            paymentReceived = (bool)reservation.paymentReceived
                         });
 
                     }
@@ -266,7 +267,7 @@ namespace AppWebAPI.Controllers
                                  from r in db.reservations
                                  where r.studentUFID == UFID
                                  && r.isCancelled == false
-                                 orderby r.toDateTime descending
+                                 orderby r.toDateTime ascending
                                  select r).ToList();
                 List<TutoringApp.Models.ReservationTile> reservations = new List<TutoringApp.Models.ReservationTile>();
 
@@ -342,7 +343,7 @@ namespace AppWebAPI.Controllers
                     user.shortBio = updateUser.shortBio;
                     user.Biography = updateUser.Biography;
                     user.zoomLink = updateUser.zoomLink;
-
+                    user.stripeAccountID = updateUser.stripeAccountID;
                     //delete courses of User 
                     db.Courses.RemoveRange(db.Courses.Where(x => x.UFID == updateUser.UFID));
                     //Add courses
@@ -465,7 +466,8 @@ namespace AppWebAPI.Controllers
                         isCompleted = false,
                         user1 = (user)tutor,
                         user = (user)student,
-                        reservationPrice = reservation.reservationPrice
+                        reservationPrice = reservation.reservationPrice,
+                        paymentReceived = false
                         }
                     );
 
@@ -521,7 +523,40 @@ namespace AppWebAPI.Controllers
 
         }
 
+        [HttpPut]
+        [Route("api/values/setPaymentReceived")]
+        public async System.Threading.Tasks.Task<HttpResponseMessage> setPaymentReceived()
+        {
+            try
+            {
+                HttpContent requestContent = Request.Content;
+                string jsonContent = await requestContent.ReadAsStringAsync();
+                TutoringApp.Models.ReservationTile selectedReservation = JsonSerializer.Deserialize<TutoringApp.Models.ReservationTile>(jsonContent);
+                if (selectedReservation == null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.ExpectationFailed, "No selected Reservation");
+                }
 
+                var reservation = db.reservations.Where(x =>
+                x.studentUFID == selectedReservation.studentUFID &&
+                x.tutorUFID == selectedReservation.tutorUFID &&
+                x.toDateTime == selectedReservation.toDate &&
+                x.fromDateTime == selectedReservation.fromDate
+                ).FirstOrDefault();
+
+                //submit the rating and mark it as completed
+                reservation.paymentReceived = true;
+
+                db.SaveChanges();
+                return Request.CreateResponse(HttpStatusCode.Accepted, "Saved Succesfully!");
+            }
+            catch (Exception e)
+            {
+                return Request.CreateResponse(HttpStatusCode.ExpectationFailed, e.Message);
+            }
+
+
+        }
 
     }
 }

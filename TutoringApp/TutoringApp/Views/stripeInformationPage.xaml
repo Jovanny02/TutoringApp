@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:CustRend="clr-namespace:TutoringApp.Views.CustomRenders;assembly=TutoringApp"
+             x:Class="TutoringApp.Views.stripeInformationPage">
+    <ContentPage.Content>
+        <ScrollView>
+        <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand" Margin="25,25,25,25">
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" >
+                    <Label Text="Payment Information" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="30" FontAttributes="Bold"   />
+                </StackLayout>
+
+                <StackLayout VerticalOptions="StartAndExpand" >
+                    <Label Text="Date of Birth" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Frame Style="{StaticResource EntryFrame}">
+                        <DatePicker MinimumDate="01/01/1900"
+                                    MaximumDate="{Binding dobDateTime}"
+                                    Date="{Binding dobDateTime}" />
+                    </Frame>
+                </StackLayout>
+
+
+                <StackLayout VerticalOptions="StartAndExpand">
+                    <Label Text="Your City" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Frame Style="{StaticResource EntryFrame}">
+                        <CustRend:CustomEntry Placeholder="Enter Your Card City" Text="{Binding address.City}"/>
+                    </Frame>
+                </StackLayout>
+
+                <StackLayout VerticalOptions="StartAndExpand">
+                    <Label Text="Your State" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Frame Style="{StaticResource EntryFrame}">
+                        <CustRend:CustomEntry Placeholder="Enter Your Full State Name" IsPassword="False" Text="{Binding address.State}"/>
+                    </Frame>
+                </StackLayout>
+
+                <StackLayout VerticalOptions="StartAndExpand" >
+                    <Label Text="Your Address" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Frame Style="{StaticResource EntryFrame}">
+                        <CustRend:CustomEntry Placeholder="Enter Your Address"  Text="{Binding address.Line1}" />
+                    </Frame>
+                </StackLayout>
+
+                <StackLayout VerticalOptions="StartAndExpand" >
+                    <Label Text="Your Zip Code" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Frame Style="{StaticResource EntryFrame}">
+                        <CustRend:CustomEntry Placeholder="Enter Your Zip Code"  Text="{Binding address.PostalCode}" MaxLength="6" Keyboard="Numeric" />
+                    </Frame>
+                </StackLayout>
+
+                <StackLayout VerticalOptions="StartAndExpand" >
+                    <Label Text="Your Phone Number" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Frame Style="{StaticResource EntryFrame}">
+                        <CustRend:CustomEntry Placeholder="Enter Your Phone Number (only digits)"  Text="{Binding phoneNumber}" MaxLength="10" Keyboard="Numeric" />
+                    </Frame>
+                </StackLayout>
+                
+                <StackLayout VerticalOptions="StartAndExpand"  >
+                    <Label Text="Your Last Four SSN Digits" TextColor="{StaticResource DefaultBlue}" 
+                           FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Frame Style="{StaticResource EntryFrame}">
+                        <CustRend:CustomEntry Placeholder="Enter The Last 4 Digits of Your SSN (only digits)" IsPassword="True" Text="{Binding lastFourSSN}" MaxLength="4" Keyboard="Numeric" />
+                    </Frame>
+                </StackLayout>
+
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  Margin="0,15,0,0">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Card_Tapped" />
+                    </StackLayout.GestureRecognizers>
+
+                    <Frame Padding="20" Visual="Material" BackgroundColor="{StaticResource BorderColor}" CornerRadius="5" >
+                        <Grid ColumnSpacing="30" RowSpacing="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="20"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label 
+                           FontAttributes="Bold"
+                           LineBreakMode="TailTruncation"
+                           FontSize="Title"
+                           TextColor="{StaticResource DefaultBlack}"
+                           Grid.Row="1"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Card Number: "
+                                        TextColor="{StaticResource DefaultBlack}"
+                                        FontAttributes="Bold"
+                                        FontSize="22">
+                                        </Span>
+                                        <Span
+                                         x:Name="cardNumberSpan"                                           
+                                        TextColor="{StaticResource DefaultBlack}"
+                                        Text="{Binding cardInfo.CardNumber}"
+                                        FontSize="20"/>
+
+                                    </FormattedString>
+                                </Label.FormattedText>
+
+                            </Label>
+
+
+                            <Label 
+                           Margin="0,20,0,0"
+                           FontSize="Title"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource DefaultBlack}"
+                           Grid.Row="3"
+                           Grid.Column="0">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Expiration: "
+                                        TextColor="{StaticResource DefaultBlack}"
+                                        FontAttributes="Bold"
+                                        FontSize="22">
+                                        </Span>
+                                        <Span
+                                        x:Name="expirationSpan"                                            
+                                        TextColor="{StaticResource DefaultBlack}"
+                                        Text="{Binding cardInfo.ExpiryDate}"
+                                        FontSize="20"/>
+
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+
+                            <Label 
+                            FontAttributes="Bold"
+                            Margin="0,20,0,0"
+                            FontSize="Title"
+                            TextColor="{StaticResource DefaultBlack}"
+                            Grid.Row="3"
+                            Grid.Column="1">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="CVV: "
+                                        TextColor="{StaticResource DefaultBlack}"
+                                        FontAttributes="Bold"
+                                        FontSize="22">
+                                        </Span>
+                                        <Span
+                                        x:Name="CVVSpan"
+                                        TextColor="{StaticResource DefaultBlack}"
+                                        Text="{Binding cardInfo.SecurityCode}"
+                                        FontSize="20"/>
+
+                                    </FormattedString>
+                                </Label.FormattedText>
+
+                            </Label>
+                        </Grid>
+                    </Frame>
+                </StackLayout>
+
+                <StackLayout VerticalOptions="Center"  Margin="0,15,0,25">
+                    <Button Text="Save Info" Style="{StaticResource HomeButtonStyle2}"
+                             Clicked="Save_Clicked" />
+                </StackLayout>
+        </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

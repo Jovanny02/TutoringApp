@@ -9,7 +9,7 @@
              mc:Ignorable="c"
              x:Class="TutoringApp.Views.SignUp">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand">
+            <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand" >
             <Grid x:Name="myGrid" VerticalOptions="FillAndExpand">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width=".5*" />
@@ -18,6 +18,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.3*"/>
+                    <RowDefinition Height=".5*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -25,7 +26,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1.5*"/>
                 </Grid.RowDefinitions>
                 <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Grid.Row="1" Grid.Column="1">
                     <Label Text="Sign Up" TextColor="{StaticResource DefaultBlue}" 
@@ -42,10 +43,10 @@
 
 
                 <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="3" Grid.Column="1">
-                    <Label Text="Name" TextColor="{StaticResource DefaultBlue}" 
+                    <Label Text="First and Last Name" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="Enter Your Full Name" Text="{Binding Name}"/>
+                        <CustRend:CustomEntry Placeholder="Enter Your First and Last Name" Text="{Binding Name}"/>
                     </Frame>
                 </StackLayout>
 
@@ -56,7 +57,7 @@
                         <CustRend:CustomEntry Placeholder="Enter Your Password" IsPassword="True" Text="{Binding password}"/>
                     </Frame>
                 </StackLayout>
-                
+
                 <StackLayout VerticalOptions="StartAndExpand"  Grid.Row="5" Grid.Column="1" >
                     <Label Text="UFID" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
@@ -69,7 +70,7 @@
                     <Label Text="Course" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
-                       <!-- <CustRend:CustomEntry Placeholder="Enter One Course You Want to Tutor For"  Text="{Binding Course}"/> -->
+                        <!-- <CustRend:CustomEntry Placeholder="Enter One Course You Want to Tutor For"  Text="{Binding Course}"/> -->
                         <forms:AutoSuggestBox 
                                 x:Name="inputBox"
                                 Text="{Binding Course, Mode=TwoWay}"
@@ -79,8 +80,6 @@
                                 TextChanged="AutoSuggestBox_TextChanged"
                                 SuggestionChosen="AutoSuggestBox_SuggestionChosen"
                             />
-
-
                     </Frame>
                 </StackLayout>
 
@@ -90,18 +89,26 @@
                     <Frame Style="{StaticResource EntryFrame}">
                         <CustRend:CustomEntry Placeholder="UF Zoom Personal Meeting Room Link"  Text="{Binding zoomLink}"/>
                     </Frame>
-                    
-                    
-                    
-                    
                 </StackLayout>
-                
-                <StackLayout VerticalOptions="Center"  Grid.Row="8" Grid.Column="1">
+
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Row="8" Grid.Column="1" Margin="0,10,0,0" x:Name="payInfoSection">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding payInfoCommand}" />
+                    </StackLayout.GestureRecognizers>
+                    <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
+                    <Label Text="{Binding paymentLabel}" TextColor="{StaticResource DefaultBlue}" 
+                               FontSize="Title" FontAttributes="Bold" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+
+                    <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
+                </StackLayout>
+
+                <StackLayout VerticalOptions="Center"  Grid.Row="9" Grid.Column="1">
                     <Button Text="Sign Up" Style="{StaticResource HomeButtonStyle2}"
-                            Margin="25,50,25,0" Command="{Binding SignUpCommand}" />
+                            Margin="25,10,25,0" Command="{Binding SignUpCommand}" />
                 </StackLayout>
 
             </Grid>
         </StackLayout>
     </ContentPage.Content>
 </d:BaseContentPage>
+

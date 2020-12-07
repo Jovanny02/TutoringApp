@@ -145,7 +145,7 @@ namespace AppWebAPI.Controllers
 
                 //parse User into an appUser
                 TutoringApp.Models.User appUser = new TutoringApp.Models.User();
-                appUser.AverageRating = (double)user.averageRating;
+                appUser.AverageRating = (user.averageRating == null) ? 0.0 : (double)user.averageRating;
                 appUser.Biography = user.Biography;
                 appUser.email = user.Email;
                 appUser.isTutor = (bool)user.isTutor;

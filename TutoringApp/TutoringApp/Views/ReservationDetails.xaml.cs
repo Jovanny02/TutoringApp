@@ -20,7 +20,7 @@ namespace TutoringApp.Views
 
             double pictureSize = (DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density) * (.18); 
             double radius = pictureSize / 2;
-
+            isStudent = isStudentReservation;
             //if it is a student reservation, show the tutor's information
             if (isStudentReservation)
             {
@@ -30,7 +30,7 @@ namespace TutoringApp.Views
                 tutorName.IsVisible = true;
                 tutorPicture.IsVisible = true;
 
-                if (labelText == "Completed")
+                if (labelText == "Completed" || labelText == "Payment Received")
                 {
                     statusLabel.Text = "Session Completed";
                     submitRating.IsVisible = true;
@@ -63,9 +63,16 @@ namespace TutoringApp.Views
                 studentName.IsVisible = true;
                 studentPicture.IsVisible = true;
 
-                if (labelText == "Completed")
+                if (labelText == "Payment Received")
                 {
                     statusLabel.Text = "Session Completed";
+                }
+                else if (labelText == "Completed")
+                {
+                    statusLabel.Text = "Accept Payment Now!";
+                    submitButton.IsVisible = true;
+                    submitButton.Text = "Initiate Payment";
+
                 }
                 else if(labelText == "In Progress")
                 {
@@ -93,6 +100,8 @@ namespace TutoringApp.Views
 
         public ICommand submitRatingCommand;
 
+        public ICommand initiatePayment;
+
         private bool IsValidUri(string uri)
         {
             try
@@ -105,7 +114,7 @@ namespace TutoringApp.Views
                 return false;
             }
         }
-
+        private bool isStudent { get; set; }
         async private void zoomLink_Tapped(object sender, EventArgs e)
         {
             string zoomLink = zoomLinkLabel.Text;
@@ -131,12 +140,16 @@ namespace TutoringApp.Views
 
         private void submitButton_Clicked(object sender, EventArgs e)
         {
-            double value = submitRating.Value;
 
-            Console.WriteLine(value);
-
-            //run submit command on ReservationListVM
-            submitRatingCommand.Execute(this.BindingContext);
+            if (isStudent)
+            {
+                //run submit command on ReservationListVM
+                submitRatingCommand.Execute(this.BindingContext);
+            }
+            else
+            {
+                initiatePayment.Execute(this.BindingContext);
+            }
         }
     }
 

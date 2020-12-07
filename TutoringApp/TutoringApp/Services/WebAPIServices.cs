@@ -138,7 +138,7 @@ namespace TutoringApp.Services
                 #if (DEBUG)
                 string JSONResult = await httpClient.GetStringAsync(debugURLString + "values/getTutorReservations?tutorUFID=" + tutorUFID);
                 #elif (!DEBUG)
-                string JSONResult = await httpClient.GetStringAsync(productionURLString + "values/getTutors?searchedCourse=" + course);
+                string JSONResult = await httpClient.GetStringAsync(productionURLString + "values/getTutorReservations?tutorUFID=" + tutorUFID);
                 #endif
 
                 List<Reservation> tutorsReservations = JsonSerializer.Deserialize<List<Reservation>>(JSONResult);
@@ -272,6 +272,43 @@ namespace TutoringApp.Services
 
             }
         }
+
+        public static async Task<bool> setPaymentReceived(ReservationTile reservation)
+        {
+            string reservationString = JsonSerializer.Serialize(reservation);
+
+            try
+            {
+                var stringContent = new StringContent(reservationString, UnicodeEncoding.UTF8, "application/json"); // use MediaTypeNames.Application.Json in Core 3.0+ and Standard 2.1+
+
+                #if (DEBUG)
+                var response = await httpClient.PutAsync(debugURLString + "values/setPaymentReceived", stringContent);
+                #elif (!DEBUG)
+                var response = await httpClient.PostAsync(productionURLString + "values/setPaymentReceived", stringContent);
+                #endif
+
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    HttpContent requestContent = response.Content;
+                    string jsonContent = await requestContent.ReadAsStringAsync();
+                    Console.WriteLine(jsonContent);
+                    return false;
+                }
+
+
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+
+            }
+        }
+
+
 
 
     }

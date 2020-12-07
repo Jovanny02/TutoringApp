@@ -24,19 +24,18 @@ namespace TutoringApp.ViewModels
         public ProfileVM()
         {
             //check if a current User exists
-            if (!App.Current.Properties.ContainsKey("CurrentUser"))
-            {
-            #if (DEBUG)
-                initTestUser();
-            #endif
-            }
-                
+            /* if (!App.Current.Properties.ContainsKey("CurrentUser"))
+             {
+             #if (DEBUG)
+                 initTestUser();
+             #endif
+             }
+                */
 
             getUserInfo();
 
-           // IsHeaderEdited = false;
         }
-
+        /*
         private void initTestUser()
         {          
 
@@ -88,11 +87,11 @@ namespace TutoringApp.ViewModels
             string userString = JsonSerializer.Serialize(profileUser);
             App.Current.Properties.Add("CurrentUser", userString);
         }
-
+        */
         private void getUserInfo()
         {
             profileUser = JsonSerializer.Deserialize<User>(App.Current.Properties["CurrentUser"] as string);
-            
+
 
             //education sections
             EducationListHeight = profileUser.EducationSections.Count() * EducationHeight;
@@ -100,12 +99,8 @@ namespace TutoringApp.ViewModels
             //skills sections
             Courses = new ObservableCollection<Course>(profileUser.Courses);
             CourseListHeight = 0;
-            //determine skills height
-            //  for (int i = 0; i < Courses.Count; i++)
-            // {
-            //SkillListHeight += (CourseHeight + Skills[i].skills.Count()*CourseHeight); 
+
             CourseListHeight += Courses.Count() * CourseHeight;
-          //  }
             //init biography
             Biography = profileUser.Biography;
 
@@ -125,42 +120,44 @@ namespace TutoringApp.ViewModels
 
             isTutor = profileUser.isTutor;
 
-            zoomLink = profileUser.zoomLink;
+            zoomLink = (!String.IsNullOrEmpty(profileUser.zoomLink)) ? profileUser.zoomLink : String.Empty;
+
+            //re check visibility of recieve payment section
+            onPropertyChanged(nameof(isRecievePaymentVisible));
         }
 
         private async System.Threading.Tasks.Task saveUserAsync()
         {
-           // IsBioReadOnly = true;
+            // IsBioReadOnly = true;
             IsBioEditing = false;
 
             //Pre save checks
-
-            if(name == null || name == String.Empty)
+            if (String.IsNullOrEmpty(name) || name.Trim().IndexOf(' ') == -1)
             {
-                UserDialogs.Instance.Alert("Save Failed: Name cannot be empty", null, null);
+                UserDialogs.Instance.Alert("Save Failed: Please Enter First and Last Name", null, null);
                 return;
             }
-            else if(isTutor && 
-                (ZoomLink == null || 
-                ZoomLink == string.Empty || 
+            else if (isTutor &&
+                (ZoomLink == null ||
+                ZoomLink == string.Empty ||
                 !Uri.IsWellFormedUriString(ZoomLink, UriKind.Absolute) ||
-                !ZoomLink.Contains("https://ufl.zoom.us") )){ //TODO add more extensive checks for zoom link
+                !ZoomLink.Contains("https://ufl.zoom.us"))) { //TODO add more extensive checks for zoom link
                 UserDialogs.Instance.Alert("Save Failed: Invalid zoom link", null, null);
                 return;
             }
-            else if(isTutor && requestedPay < 1)
+            else if (isTutor && requestedPay < 1)
             {
                 UserDialogs.Instance.Alert("Save Failed: Requested pay must be greater than $1", null, null);
                 return;
             }
-            else if (isTutor && (Courses == null || Courses.Count < 1) )
+            else if (isTutor && (Courses == null || Courses.Count < 1))
             {
                 UserDialogs.Instance.Alert("Save Failed: You must have at least one course", null, null);
                 return;
             }
 
-
-
+            try
+            {
             //save all user properties
             profileUser.EducationSections = EducationSections.ToList<EducationSection>();
             profileUser.Courses = Courses.ToList<Course>();
@@ -170,7 +167,32 @@ namespace TutoringApp.ViewModels
             profileUser.name = name;
             profileUser.shortBio = shortBio;
             profileUser.isTutor = isTutor;
-            profileUser.zoomLink = zoomLink.Trim();
+            profileUser.zoomLink = "";
+                profileUser.zoomLink = zoomLink.Trim();
+
+
+            }
+            catch (Exception e)
+            {
+                UserDialogs.Instance.Alert("Save Failed: Receive Payment Set Up Failure", null, null);
+                Console.WriteLine(e.Message);
+                return;
+
+            }
+
+            //TRY TO CREATE CONNECTED ACCOUNT IF IT IS NULL IN PROFILE USER
+            if (isTutor && String.IsNullOrEmpty(profileUser.stripeAccountID))
+            {
+                UserDialogs.Instance.ShowLoading("Saving");
+                string accountID = StripePaymentService.makeAccount(profileUser, stripeInfo);
+                if (String.IsNullOrEmpty(accountID))
+                {
+                    UserDialogs.Instance.HideLoading();
+                    UserDialogs.Instance.Alert("Save Failed: Incorrect Receive Payment Information!", null, null);
+                    return;
+                }
+                profileUser.stripeAccountID = accountID;
+            }
 
             bool didSave = false;
             string userString = JsonSerializer.Serialize(profileUser);
@@ -178,7 +200,7 @@ namespace TutoringApp.ViewModels
             try
             {
                 UserDialogs.Instance.ShowLoading("Saving");
-                didSave =  await WebAPIServices.updateUser(userString);
+                didSave = await WebAPIServices.updateUser(userString);
                 UserDialogs.Instance.HideLoading();
 
             }
@@ -204,6 +226,8 @@ namespace TutoringApp.ViewModels
             //TODO: Add a services call that saves object in database
             App.Current.SavePropertiesAsync();
             UserDialogs.Instance.Alert("Saved Successfully!", null, null);
+
+            onPropertyChanged(nameof(isRecievePaymentVisible));
 
         }
 
@@ -253,7 +277,7 @@ namespace TutoringApp.ViewModels
             EducationSections = new ObservableCollection<EducationSection>(tempSections);
 
             //reset keys for all Education Sections
-            for(int kk = 0; kk < EducationSections.Count; kk++)
+            for (int kk = 0; kk < EducationSections.Count; kk++)
             {
                 EducationSections[kk].key = kk;
             }
@@ -311,36 +335,36 @@ namespace TutoringApp.ViewModels
 
         public ICommand saveCourseCommand => new Command(() =>
         {
-        if (isEditingCourse)
-        {
+            if (isEditingCourse)
+            {
                 //employee => employee.LastName.Equals(somename, StringComparison.Ordinal)
-            //int index = profileUser.Courses.IndexOf(oldCourse);
-            int index = profileUser.Courses.FindIndex(listCourse => listCourse.courseName.Equals(oldCourse.courseName) && listCourse.departmentTitle.Equals(oldCourse.departmentTitle));
-            if (profileUser.Courses.FindIndex(listCourse => listCourse.courseName.Equals(newCourse.courseName) && listCourse.departmentTitle.Equals(newCourse.departmentTitle)) > -1)
-            {
-                UserDialogs.Instance.Alert("Course Already Exist", null, null);
-                return;
-            }
-            if (index < 0)
-            {
-                Console.WriteLine("ERROR incorrect index");
-                return;
-            }
+                //int index = profileUser.Courses.IndexOf(oldCourse);
+                int index = profileUser.Courses.FindIndex(listCourse => listCourse.courseName.Equals(oldCourse.courseName) && listCourse.departmentTitle.Equals(oldCourse.departmentTitle));
+                if (profileUser.Courses.FindIndex(listCourse => listCourse.courseName.Equals(newCourse.courseName) && listCourse.departmentTitle.Equals(newCourse.departmentTitle)) > -1)
+                {
+                    UserDialogs.Instance.Alert("Course Already Exist", null, null);
+                    return;
+                }
+                if (index < 0)
+                {
+                    Console.WriteLine("ERROR incorrect index");
+                    return;
+                }
 
-            profileUser.Courses[index] = new Course
-            {
-                departmentTitle = newCourse.departmentTitle,
-                courseName = newCourse.courseName
-            };
+                profileUser.Courses[index] = new Course
+                {
+                    departmentTitle = newCourse.departmentTitle,
+                    courseName = newCourse.courseName
+                };
 
-            profileUser.Courses.Sort(delegate (Course c1, Course c2) { return c1.courseName.CompareTo(c2.courseName); });
-            Courses = new ObservableCollection<Course>(profileUser.Courses);
+                profileUser.Courses.Sort(delegate (Course c1, Course c2) { return c1.courseName.CompareTo(c2.courseName); });
+                Courses = new ObservableCollection<Course>(profileUser.Courses);
 
-            onPropertyChanged(nameof(Courses));
+                onPropertyChanged(nameof(Courses));
 
-            //clear new object 
-            newCourse = null;
-            oldCourse = null;                
+                //clear new object 
+                newCourse = null;
+                oldCourse = null;
             }
             else
             {
@@ -374,7 +398,7 @@ namespace TutoringApp.ViewModels
         public ICommand addCourseCommand => new Command(() =>
         {
             SkillDetails skillDetails = new SkillDetails(true);
-            newCourse = new Course("","");
+            newCourse = new Course("", "");
             skillDetails.BindingContext = newCourse;
             skillDetails.saveCommand = saveCourseCommand;
             skillDetails.initSelectedIndex();
@@ -388,58 +412,186 @@ namespace TutoringApp.ViewModels
             //int index = Courses.FindIndex(listCourse => listCourse.courseName.Equals(oldCourse.courseName) && listCourse.departmentTitle.Equals(oldCourse.departmentTitle));
             int temp = Courses.IndexOf(oldCourse);
             Courses.Remove(oldCourse);
-           // Courses.RemoveAt(index);
+            // Courses.RemoveAt(index);
             CourseListHeight -= CourseHeight;
             //clear newCourse
             newCourse = null;
             //saveUser();
             Navigation.PopAsync();
         });
-        public ICommand selectPictureCommand  => new Command(async () =>
-        {
-            try
-            {        
-                Stream stream = await DependencyService.Get<IPhotoPickerService>().GetImageStreamAsync();
-                if (stream != null)
-                {
-                    //note could add service call Web API to delete previous picture
+        public ICommand selectPictureCommand => new Command(async () =>
+       {
+           try
+           {
+               Stream stream = await DependencyService.Get<IPhotoPickerService>().GetImageStreamAsync();
+               if (stream != null)
+               {
+                   //note could add service call Web API to delete previous picture
 
 
-                    ImageUploadParams uploadParams = new ImageUploadParams()
-                    {
-                        File = new FileDescription("test.png", stream),
-                     //   PublicId = "Users/" + profileUser.UFID.ToString(),
-                        UploadPreset = "rzvpyvwl",
-                        Unsigned = true
-                    };
+                   ImageUploadParams uploadParams = new ImageUploadParams()
+                   {
+                       File = new FileDescription("test.png", stream),
+                       //   PublicId = "Users/" + profileUser.UFID.ToString(),
+                       UploadPreset = "rzvpyvwl",
+                       Unsigned = true
+                   };
 
-                    Account account = new Account("gatoraid"); 
-                    Cloudinary cloudinary = new Cloudinary(account);
+                   Account account = new Account("gatoraid");
+                   Cloudinary cloudinary = new Cloudinary(account);
 
-                    ImageUploadResult uploadResult = cloudinary.Upload(uploadParams);
+                   ImageUploadResult uploadResult = cloudinary.Upload(uploadParams);
 
-                    //Set a default height as 800 pixels (width will be 800 since aspect ratio is 1:1) so that image will fit in all areas and will just be shrunk to fit
-                    profileUser.pictureSrc = uploadResult.Url.ToString().Replace("upload/", "upload/h_800,ar_1:1,c_fill,g_auto,r_max/").Replace("http", "https");
-                     
-                    pictureSrc = profileUser.pictureSrc;
-                    //saveUser();
-                }
+                   //Set a default height as 800 pixels (width will be 800 since aspect ratio is 1:1) so that image will fit in all areas and will just be shrunk to fit
+                   profileUser.pictureSrc = uploadResult.Url.ToString().Replace("upload/", "upload/h_800,ar_1:1,c_fill,g_auto,r_max/").Replace("http", "https");
+
+                   pictureSrc = profileUser.pictureSrc;
+                   //saveUser();
+               }
 
 
-            }
-            catch(Exception e)
+           }
+           catch (Exception e)
+           {
+
+               Console.WriteLine(e.Message);
+           }
+
+       });
+        #endregion
+
+        #region  TutorPaymentRegion
+
+        stripeInformationPage stripePage;
+        public ICommand payInfoCommand => new Command(() => {
+            stripePage = new stripeInformationPage();
+            stripePage.BindingContext = new stripeAccountInfo();
+            stripePage.tapCardCommand = this.tapCardCommand;
+            stripePage.saveStripeCommand = saveStripeInfo;
+            Navigation.PushAsync(stripePage);
+        });
+
+        /*
+         * Card commands
+         * 
+         */
+        public ICommand tapCardCommand => new Command(() => {
+            Payment cardPage = new Payment();
+            cardPage.BindingContext = new PaymentInformation(); ;
+            cardPage.saveCommand = saveCardCommand;
+            Navigation.PushAsync(cardPage);
+
+        });
+
+        public ICommand saveCardCommand => new Command((object tempInformation) => {
+
+            PaymentInformation tempPayInfo = (PaymentInformation)tempInformation;
+            bool isValid = isCardValid(tempPayInfo);
+
+            if (!isValid)
             {
-
-                Console.WriteLine(e.Message);
+                return;
             }
 
+            stripeInfo.cardInfo = tempPayInfo;
+            stripePage.updateCardView(stripeInfo.cardInfo.CardNumber, stripeInfo.cardInfo.ExpiryDate, stripeInfo.cardInfo.SecurityCode);
+
+            Navigation.PopAsync();
+        });
+
+        private bool isCardValid(PaymentInformation card)
+        {
+            if (card.CardNumber.Length < 13 || card.CardNumber.Contains("."))
+            {
+                UserDialogs.Instance.Alert("Incorrect card number", null, "OK");
+                return false;
+            }
+            else if (card.SecurityCode.Length != 3 || card.SecurityCode.Contains("."))
+            {
+                UserDialogs.Instance.Alert("Incorrect security code", null, "OK");
+                return false;
+            }
+            else if (card.ExpiryDate.Length != 5 || card.ExpiryDate.Contains("."))
+            {
+                UserDialogs.Instance.Alert("Incorrect expiration month or year", null, "OK");
+                return false;
+            }
+            else if (card.CardName.Length == 0)
+            {
+                UserDialogs.Instance.Alert("Name cannot be empty", null, "OK");
+                return false;
+            }
+
+
+            return true;
+        }
+
+
+        public ICommand saveStripeInfo => new Command((object stripeInfo) => {
+
+            stripeAccountInfo tempStripe = (stripeAccountInfo)stripeInfo;
+
+            paymentLabel = "Tap to set up payment!";
+
+
+            if (String.IsNullOrWhiteSpace(tempStripe.lastFourSSN) || tempStripe.lastFourSSN.Contains("."))
+            {
+                UserDialogs.Instance.Alert("Incorrect SSN Format", null, "OK");
+                return;
+            }
+            if (String.IsNullOrWhiteSpace(tempStripe.phoneNumber) || tempStripe.phoneNumber.Contains("."))
+            {
+                UserDialogs.Instance.Alert("Incorrect Phone Number Format", null, "OK");
+                return;
+            }
+            if (String.IsNullOrWhiteSpace(tempStripe.address.City) ||
+            String.IsNullOrWhiteSpace(tempStripe.address.State) ||
+            String.IsNullOrWhiteSpace(tempStripe.address.Line1) ||
+            String.IsNullOrWhiteSpace(tempStripe.address.PostalCode)
+            )
+            {
+                UserDialogs.Instance.Alert("Incorrect Address Format", null, "OK");
+                return;
+            }
+            else if (tempStripe.dobDateTime == null)
+            {
+                UserDialogs.Instance.Alert("Incorrect Date of Birth", null, "OK");
+                return;
+            }
+            else if (!isCardValid(this.stripeInfo.cardInfo))
+            {
+                return;
+            }
+
+
+            if (tempStripe != null)
+            {
+                paymentLabel = "Payment ready to be saved!";
+            }
+
+            tempStripe.cardInfo = this.stripeInfo.cardInfo;
+
+            this.stripeInfo = tempStripe;
+            Navigation.PopAsync();
         });
 
         #endregion
 
+
         #region properties
         private const int CourseHeight = 40;
         private const int EducationHeight = 80;
+
+
+
+        private string PaymentLabel { get; set; } = "Tap to set up payment!";
+        public string paymentLabel { get { return PaymentLabel; } set { PaymentLabel = value; onPropertyChanged(); } }
+        public stripeAccountInfo stripeInfo { get; set; } = new stripeAccountInfo();
+
+        public bool isRecievePaymentVisible {get { return String.IsNullOrEmpty(profileUser.stripeAccountID) && isTutor; } }
+
+
+
 
         public User profileUser = new User();
 
@@ -490,7 +642,7 @@ namespace TutoringApp.ViewModels
         public string pictureSrc { get { return PictureSrc; } set { PictureSrc = value; onPropertyChanged(); } } 
         public string Biography { get; set; }
         private bool IsTutor { get; set; } 
-        public bool isTutor { get { return IsTutor; } set { IsTutor = value; onPropertyChanged(); } }
+        public bool isTutor { get { return IsTutor; } set { IsTutor = value; onPropertyChanged(); onPropertyChanged(nameof(isRecievePaymentVisible)); } }
 
         private string ZoomLink { get; set; } = "";
         public string zoomLink { get { return ZoomLink; } set { ZoomLink = value; onPropertyChanged(); } }

@@ -6,16 +6,16 @@
     <edmx:Diagrams>
       <Diagram DiagramId="0a304186222c4448844dc5523d32446a" Name="Diagram1" >
         <EntityTypeShape EntityType="TutoringAppDBModel.loginTest" Width="1.5" PointX="1.5" PointY="0.625" />
-        <EntityTypeShape EntityType="TutoringAppDBModel.user" Width="1.5" PointX="3.375" PointY="4.875" />
         <EntityTypeShape EntityType="TutoringAppDBModel.reservation" Width="1.5" PointX="5.625" PointY="9.75" />
-        <AssociationConnector Association="TutoringAppDBModel.FK__reservati__stude__02084FDA" />
-        <AssociationConnector Association="TutoringAppDBModel.FK__reservati__tutor__01142BA1" />
         <EntityTypeShape EntityType="TutoringAppDBModel.EducationSection" Width="1.5" PointX="2.75" PointY="12.125" />
         <EntityTypeShape EntityType="TutoringAppDBModel.userSchedule" Width="1.5" PointX="5.625" PointY="4.375" IsExpanded="true" />
-        <AssociationConnector Association="TutoringAppDBModel.FK__EducationS__UFID__7E37BEF6" />
-        <AssociationConnector Association="TutoringAppDBModel.FK__userSchedu__UFID__7F2BE32F" />
         <EntityTypeShape EntityType="TutoringAppDBModel.Cours" Width="1.5" PointX="5.625" PointY="1" />
+        <EntityTypeShape EntityType="TutoringAppDBModel.user" Width="1.5" PointX="0.75" PointY="5.375" />
         <AssociationConnector Association="TutoringAppDBModel.FK__Courses__UFID__00200768" />
+        <AssociationConnector Association="TutoringAppDBModel.FK__EducationS__UFID__7E37BEF6" />
+        <AssociationConnector Association="TutoringAppDBModel.FK__reservati__stude__02084FDA" />
+        <AssociationConnector Association="TutoringAppDBModel.FK__reservati__tutor__01142BA1" />
+        <AssociationConnector Association="TutoringAppDBModel.FK__userSchedu__UFID__7F2BE32F" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

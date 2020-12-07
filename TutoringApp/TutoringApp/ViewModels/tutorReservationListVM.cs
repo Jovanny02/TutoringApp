@@ -67,10 +67,58 @@ namespace TutoringApp.ViewModels
             int selectedItemIndex = tutorSessions.IndexOf((ReservationTile)selectedItem);
 
             ReservationDetails reservationDetails = new ReservationDetails(false, false, tutorSessions[selectedItemIndex].statusMessage);
+            reservationDetails.initiatePayment = initiatePaymentCommand;
             reservationDetails.BindingContext = tutorSessions[selectedItemIndex];
             Navigation.PushAsync(reservationDetails);
 
         });
+
+
+        public ICommand initiatePaymentCommand => new Command(async (object selectedReservation) =>
+        {
+            try
+            {
+                int indexOfReservation = tutorSessions.IndexOf((ReservationTile)selectedReservation);
+                User currTutor = JsonSerializer.Deserialize<User>(App.Current.Properties["CurrentUser"] as string);
+
+
+                //TODO ADD API CALL TO INITIATE PAYMENT
+                UserDialogs.Instance.ShowLoading("Initiaing Payment");
+                bool didComplete = StripePaymentService.CreateTransfer(tutorSessions[indexOfReservation].reservationPrice, currTutor.stripeAccountID);
+                UserDialogs.Instance.HideLoading();
+
+                if (!didComplete)
+                {
+                    UserDialogs.Instance.Alert("Get Payment Failed. Please Try Again", null, null);
+                    return;
+                }
+
+                //UPDATE STATUS IN DB
+
+                bool didSave = await WebAPIServices.setPaymentReceived(tutorSessions[indexOfReservation]);
+
+                if (!didSave)
+                {
+                    UserDialogs.Instance.Alert("Get Payment Failed. Please Try Again", null, null);
+                    return;
+                }
+
+                UserDialogs.Instance.Alert("Review Saved Successfully!", null, null);
+                //update reservation on users end immediately
+                tutorSessions[indexOfReservation].paymentReceived = true;
+                onPropertyChanged(nameof(tutorSessions));
+                await Navigation.PopAsync();
+            }
+            catch (Exception e)
+            {
+                UserDialogs.Instance.HideLoading();
+                UserDialogs.Instance.Alert("Error getting payment", null, null);
+                Console.WriteLine(e.Message);
+            }
+
+        });
+
+
 
     }
 }
