@@ -18,6 +18,7 @@ namespace TutoringApp.Models
         public string name { get; set; }
         public string email { get; set; }
         public string password { get; set; }
+        public string stripeAccountID { get; set; }
 
         public List<EducationSection> EducationSections { get; set; } = new List<EducationSection>();
         public List<ScheduleTile> ScheduleSections { get; set; } = new List<ScheduleTile>();

@@ -36,6 +36,7 @@ namespace AppWebAPI.Models
         public string pictureSource { get; set; }
         public string zoomLink { get; set; }
         public string salt { get; set; }
+        public string stripeAccountID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<reservation> reservations { get; set; }

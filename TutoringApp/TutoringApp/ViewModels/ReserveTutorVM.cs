@@ -155,7 +155,8 @@ namespace TutoringApp.ViewModels
                 fromDate = tempStartDateTime,
                 toDate = tempEndDateTime,
                 tutorUFID = tutor.UFID,
-                studentUFID = currentUser.UFID    
+                studentUFID = currentUser.UFID,
+                reservationPrice = tutor.requestedPay
                 });
 
                 startingHour++;
