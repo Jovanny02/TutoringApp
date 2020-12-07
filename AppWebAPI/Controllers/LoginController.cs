@@ -37,7 +37,8 @@ namespace AppWebAPI.Controllers
                     zoomLink = newUser.zoomLink,
                     Password = newUser.password,
                     isTutor = newUser.isTutor,
-                    requestedPay = newUser.requestedPay
+                    requestedPay = newUser.requestedPay,
+                    stripeAccountID = newUser.stripeAccountID
                     
                 });
                 // add users course
@@ -111,6 +112,8 @@ namespace AppWebAPI.Controllers
                 appUser.shortBio = user.shortBio;
                 appUser.zoomLink = user.zoomLink;
                 appUser.UFID = user.UFID;
+                appUser.stripeAccountID = user.stripeAccountID;
+
 
                 //get additional information
                 var schedules = db.userSchedules.AsNoTracking().Where(x => x.UFID == user.UFID).ToList();

@@ -21,6 +21,7 @@ namespace AppWebAPI.Models
         public Nullable<bool> isCancelled { get; set; }
         public Nullable<double> tutorRating { get; set; }
         public Nullable<bool> isCompleted { get; set; }
+        public Nullable<double> reservationPrice { get; set; }
     
         public virtual user user { get; set; }
         public virtual user user1 { get; set; }

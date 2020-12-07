@@ -53,9 +53,9 @@ namespace AppWebAPI.Controllers
                         tempTutor.zoomLink = tutor.zoomLink;
                         tempTutor.UFID = tutor.UFID;
                         tempTutor.email = tutor.Email;
-
+                        tempTutor.stripeAccountID = tutor.stripeAccountID;
                         //get schedules for each tutor
-                        foreach(var schedule in tutor.userSchedules)
+                        foreach (var schedule in tutor.userSchedules)
                         {
                             tempTutor.ScheduleSections.Add(new ScheduleTile
                             {
@@ -380,7 +380,8 @@ namespace AppWebAPI.Controllers
                         isCancelled = false,
                         isCompleted = false,
                         user1 = (user)tutor,
-                        user = (user)student
+                        user = (user)student,
+                        reservationPrice = reservation.reservationPrice
                         }
                     );
 

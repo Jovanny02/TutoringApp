@@ -95,7 +95,7 @@ namespace TutoringApp.ViewModels
             {            
                 //Process payment
                 UserDialogs.Instance.ShowLoading("Processing Payment");
-                await StripePaymentService.PaymentAsync(payInfo);
+                await StripePaymentService.PaymentAsync(payInfo, tutor.stripeAccountID);
                 UserDialogs.Instance.HideLoading();
 
 

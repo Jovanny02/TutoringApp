@@ -21,6 +21,8 @@ namespace TutoringApp.Models
         public DateTime toDate { get; set; }
         public int studentUFID { get; set; }
         public int tutorUFID { get; set; }
+        public double reservationPrice { get; set; }
+
 
         [JsonIgnore]
         public string fromDateString
