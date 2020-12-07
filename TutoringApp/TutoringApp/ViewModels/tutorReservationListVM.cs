@@ -6,6 +6,8 @@ using TutoringApp.Models;
 using TutoringApp.Views;
 using System.Windows.Input;
 using Xamarin.Forms;
+using TutoringApp.Services;
+using System.Text.Json;
 using Acr.UserDialogs;
 //using System.Text.Json;
 using System.Threading.Tasks;
@@ -17,54 +19,106 @@ namespace TutoringApp.ViewModels
 
         public tutorReservationListVM()
         {
-            //TODO Add API call to get  reservations for current user
-            
-            tutorSessions.Add(new ReservationTile
-            {
-                tutorName = "Test Tutor ",
-                studentName = "Test Student ",
-                zoomLink = "https://zoom.us/",
-                fromDate = DateTime.Now.AddHours(-4),
-                toDate = DateTime.Now.AddHours(-3),
-                tutorUFID = 12345678,
-                studentUFID = 87654321,
-                isCompleted = true
-            });
+            User currentTutor = new User();
 
+            UserDialogs.Instance.ShowLoading();
+            PerformReservationCommand.Execute(currentTutor);
+            UserDialogs.Instance.HideLoading();
 
-            for (int i = 0; i < 9; i++)
-            {
-                tutorSessions.Add(new ReservationTile
-                {
-                    tutorName = "Test Tutor " + i,
-                    studentName = "Test Student " + i,
-                    zoomLink = "https://zoom.us/",
-                    fromDate = DateTime.Now.AddHours(i - 3),
-                    toDate = DateTime.Now.AddHours(i - 2),
-                    tutorUFID = 12345678,
-                    studentUFID = 87654321
-                });
-
-            }
 
             onPropertyChanged(nameof(isTutorsVisible));
         }
 
+        public ICommand PerformReservationCommand => new Command<User>(async (currentTutor) =>
+        {
+
+            currentTutor = JsonSerializer.Deserialize<User>(App.Current.Properties["CurrentUser"] as string);
+            List<ReservationTile> tutorReservation = await WebAPIServices.getTutorReservationTiles(currentTutor.UFID);
+            if (tutorReservation != null)
+            {
+                tutorSessions = new ObservableCollection<ReservationTile>(tutorReservation);
+            }
+            else
+            {
+                tutorSessions = null;
+            }
+
+            //properties changed
+            onPropertyChanged(nameof(tutorSessions));
+            onPropertyChanged(nameof(isTutorsVisible));
+        });
+
+
+
         public ObservableCollection<ReservationTile> tutorSessions { get; set; } = new ObservableCollection<ReservationTile>();
 
-        public bool isTutorsVisible { get { return (tutorSessions.Count > 0); } }
+        public bool isTutorsVisible { 
+            get {
+                if (tutorSessions == null)
+                    return false;
 
-        public bool isTutorTextVisible { get { return !isTutorsVisible; } }
+
+                return (tutorSessions.Count > 0); 
+            } 
+        }
 
         public ICommand tutorReservationCommand => new Command<object>((selectedItem) =>
         {
             int selectedItemIndex = tutorSessions.IndexOf((ReservationTile)selectedItem);
 
             ReservationDetails reservationDetails = new ReservationDetails(false, false, tutorSessions[selectedItemIndex].statusMessage);
+            reservationDetails.initiatePayment = initiatePaymentCommand;
             reservationDetails.BindingContext = tutorSessions[selectedItemIndex];
             Navigation.PushAsync(reservationDetails);
 
         });
+
+
+        public ICommand initiatePaymentCommand => new Command(async (object selectedReservation) =>
+        {
+            try
+            {
+                int indexOfReservation = tutorSessions.IndexOf((ReservationTile)selectedReservation);
+                User currTutor = JsonSerializer.Deserialize<User>(App.Current.Properties["CurrentUser"] as string);
+
+
+                //TODO ADD API CALL TO INITIATE PAYMENT
+                UserDialogs.Instance.ShowLoading("Initiaing Payment");
+                bool didComplete = StripePaymentService.CreateTransfer(tutorSessions[indexOfReservation].reservationPrice, currTutor.stripeAccountID);
+                UserDialogs.Instance.HideLoading();
+
+                if (!didComplete)
+                {
+                    UserDialogs.Instance.Alert("Get Payment Failed. Please Try Again", null, null);
+                    return;
+                }
+
+                //UPDATE STATUS IN DB
+
+                bool didSave = await WebAPIServices.setPaymentReceived(tutorSessions[indexOfReservation]);
+
+                if (!didSave)
+                {
+                    UserDialogs.Instance.Alert("Get Payment Failed. Please Try Again", null, null);
+                    return;
+                }
+
+                UserDialogs.Instance.Alert("Review Saved Successfully!", null, null);
+                //update reservation on users end immediately
+                tutorSessions[indexOfReservation].paymentReceived = true;
+                onPropertyChanged(nameof(tutorSessions));
+                await Navigation.PopAsync();
+            }
+            catch (Exception e)
+            {
+                UserDialogs.Instance.HideLoading();
+                UserDialogs.Instance.Alert("Error getting payment", null, null);
+                Console.WriteLine(e.Message);
+            }
+
+        });
+
+
 
     }
 }

@@ -22,5 +22,6 @@ namespace TutoringApp.Views
             confirmVM.Navigation = this.Navigation;
             this.BindingContext = confirmVM;
         }
+
     }
 }

@@ -8,7 +8,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="c"
              xmlns:skiarate="clr-namespace:SkiaRate;assembly=TutoringApp" 
-             x:Class="TutoringApp.Views.Profile">
+             x:Class="TutoringApp.Views.Profile"  BackgroundColor="{StaticResource DefaultWhite}">
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
@@ -108,7 +108,7 @@
 
 
                             <Label Text="Biography" HorizontalOptions="Start"  VerticalOptions="Start" FontAttributes="Bold"
-                                   TextColor="{StaticResource DefaultOrange}" FontSize="30" Grid.Column="0"/>
+                                   TextColor="{StaticResource DefaultOrange}" FontSize="27" Grid.Column="0"/>
                             <Label Text="Editing..." HorizontalOptions="Start"  VerticalOptions="End" 
                                    TextColor="{StaticResource DefaultBlack}" FontSize="Medium" Grid.Column="1" IsVisible="{Binding IsBioEditing}"/>
                             <ImageButton Source="edit.png" Grid.Column="2" HorizontalOptions="EndAndExpand" Command="{Binding editBioCommand}"
@@ -126,7 +126,7 @@
                     <StackLayout Orientation="Horizontal">
 
                             <Label Text="Enable Tutor View" HorizontalOptions="Start"  VerticalOptions="Start" FontAttributes="Bold"
-                                   TextColor="{StaticResource DefaultOrange}" FontSize="30"/>
+                                   TextColor="{StaticResource DefaultOrange}" FontSize="27"/>
                         
                             <CheckBox HorizontalOptions="StartAndExpand" 
                                   Color="{StaticResource DefaultBlue}" 
@@ -156,7 +156,7 @@
 
 
                                 <Label Text="Education" HorizontalOptions="Start"  VerticalOptions="Start" FontAttributes="Bold"
-                                       TextColor="{StaticResource DefaultOrange}" FontSize="30" Grid.Column="0"/>
+                                       TextColor="{StaticResource DefaultOrange}" FontSize="27" Grid.Column="0"/>
                                 <ImageButton Source="plus.png" Grid.Column="1" HorizontalOptions="EndAndExpand" Command="{Binding addEducationCommand}"
                                              VerticalOptions="CenterAndExpand" BackgroundColor="{StaticResource DefaultWhite}"/>
                                 <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}"  Grid.ColumnSpan="2" Grid.Row="1"/>
@@ -204,35 +204,34 @@
 
 
                                     <Label Text="Requested Hourly Pay:" HorizontalOptions="Start"  VerticalOptions="Center" FontAttributes="Bold"
-                                       TextColor="{StaticResource DefaultOrange}" FontSize="30" HeightRequest="45"/>
+                                       TextColor="{StaticResource DefaultOrange}" FontSize="27" />
 
-                                    <Entry Text="{Binding RequestedPay}" Keyboard="Numeric" HorizontalOptions="FillAndExpand" Grid.Column="1"
-                                           VerticalOptions="Start" FontSize="30" TextColor="{StaticResource DefaultBlack}"/>
+                                    <Entry Text="{Binding RequestedPay}" Keyboard="Numeric" HorizontalOptions="End" Grid.Column="1"
+                                           VerticalOptions="Start" FontSize="27" TextColor="{StaticResource DefaultBlack}"/>
                                 </Grid>
                             </StackLayout>
                             <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
 
-                                <StackLayout Orientation="Horizontal">
+                            <StackLayout IsVisible="{Binding isRecievePaymentVisible}">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding payInfoCommand}" />
+                                </StackLayout.GestureRecognizers>
+                                    <Label Text="{Binding paymentLabel}" HorizontalOptions="CenterAndExpand"  VerticalOptions="Center" FontAttributes="Bold" LineBreakMode="WordWrap"
+                                    TextColor="{StaticResource DefaultOrange}" FontSize="27" />
+                                    <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
 
-                                        <Label Text="Zoom Link:" HorizontalOptions="StartAndExpand"  VerticalOptions="Center" FontAttributes="Bold" LineBreakMode="WordWrap"
-                                       TextColor="{StaticResource DefaultOrange}" FontSize="30" HeightRequest="45" x:Name="ZoomLabel"/>
-
-
-
-                                    <Editor Text="{Binding zoomLink}" HorizontalOptions="End"  x:Name="ZoomEditor"
-                                           FontSize="Medium" TextColor="{StaticResource DefaultBlack}" MaxLength="150" AutoSize="TextChanges"/>
-                                </StackLayout>
-                                <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
+                            </StackLayout>
 
 
-                        </StackLayout>
+
+                            </StackLayout>
 
 
                             <!-- Schedule Section-->
                         <StackLayout  Margin="0,10,0,0">
 
                             <Label Text="Schedule" HorizontalOptions="Start"  VerticalOptions="Start" FontAttributes="Bold"
-                                       TextColor="{StaticResource DefaultOrange}" FontSize="30" HeightRequest="45"/>
+                                       TextColor="{StaticResource DefaultOrange}" FontSize="27" HeightRequest="45"/>
                             <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
 
                             <CollectionView ItemsSource="{Binding ScheduleSections}" HeightRequest="705" VerticalOptions="StartAndExpand" Margin="0,0,0,5">
@@ -256,7 +255,7 @@
 
                                                 <Label Text="{Binding shortDayString}" TextColor="{StaticResource DefaultBlack}" 
                                                        Grid.Row="0" Grid.Column="0" LineBreakMode="WordWrap" Grid.RowSpan="3"
-                                                    FontSize="30" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                                    FontSize="27" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="Center"/>
                                             
                                             <!--    <Label Text="{Binding dayString}" TextColor="{StaticResource DefaultBlack}"  Grid.Row="1"
                                                     FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"/>
@@ -296,45 +295,22 @@
                         <StackLayout  Margin="0,10,0,0">
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="Courses" HorizontalOptions="Start"  VerticalOptions="Start" FontAttributes="Bold"
-                                       TextColor="{StaticResource DefaultOrange}" FontSize="30" HeightRequest="45"/>
+                                       TextColor="{StaticResource DefaultOrange}" FontSize="27" HeightRequest="45"/>
                                 <ImageButton Source="plus.png" HorizontalOptions="EndAndExpand" HeightRequest="45" Command="{Binding addCourseCommand}"
                                         VerticalOptions="CenterAndExpand" BackgroundColor="{StaticResource DefaultWhite}"/>
                             </StackLayout>
                             <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
                         
                         
-                            <!-- list for skills -->
+                            <!-- list for Courses -->
                             <ListView ItemsSource="{Binding Courses}" RowHeight="40" HeightRequest="{Binding CourseListHeight}" VerticalOptions="Start"  x:Name="skillsList"
                                       IsGroupingEnabled="False" ItemTapped="CourseList_ItemTapped" SeparatorVisibility="None">
-                                <!--        <ListView.GroupHeaderTemplate>
-                                    <DataTemplate>
-                                        <ViewCell >
-                                            <StackLayout BackgroundColor="{StaticResource BorderColor}" Padding="5">
-                                                <Label Text="{Binding SectionTitle}"  TextColor="Black" HorizontalOptions="Start" FontSize="Medium" FontAttributes="Bold"/>
-                                            </StackLayout>
-                                        </ViewCell>
-                                    </DataTemplate>
-                                </ListView.GroupHeaderTemplate>
-                                -->
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>
                                             <StackLayout Padding="5">
                                                 <Label Text="{Binding courseName}" TextColor="{StaticResource DefaultBlack}" HorizontalOptions="Start" FontSize="Medium"/>
                                             </StackLayout>  
-                                            <!--   <ListView ItemsSource="{Binding skills}" RowHeight="40" HeightRequest="200" VerticalOptions="StartAndExpand" HorizontalOptions="CenterAndExpand"  x:Name="ski"
-                                             SeparatorVisibility="None" BackgroundColor="Aqua">
-                                                <ListView.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <ViewCell>
-                                                            <StackLayout Padding="5">
-                                                                <Label Text="{Binding skillName}" TextColor="{StaticResource DefaultBlack}" HorizontalOptions="Start" FontSize="Medium"/>
-                                                            </StackLayout>
-
-                                                        </ViewCell>
-                                                    </DataTemplate>
-                                                </ListView.ItemTemplate>
-                                            </ListView>-->
                                         </ViewCell>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
@@ -343,8 +319,24 @@
 
                         </StackLayout>
 
-                            
-                    </StackLayout>
+
+
+                        <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand">
+
+                            <Label Text="Zoom Link:" HorizontalOptions="StartAndExpand"  VerticalOptions="Center" FontAttributes="Bold" LineBreakMode="WordWrap"
+                                    TextColor="{StaticResource DefaultOrange}" FontSize="27" x:Name="ZoomLabel"/>
+
+                            <Editor Text="{Binding zoomLink}" HorizontalOptions="End"  x:Name="ZoomEditor" Placeholder="Enter a UF zoom link"
+                                        FontSize="Medium" TextColor="{StaticResource DefaultBlack}" MaxLength="150" AutoSize="TextChanges"/>
+                            <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="1" Color="{StaticResource DefaultBlack}" />
+
+                        </StackLayout>
+
+
+
+
+
+                        </StackLayout>
 
                     
                             

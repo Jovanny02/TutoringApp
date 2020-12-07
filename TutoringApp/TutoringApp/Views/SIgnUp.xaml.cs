@@ -25,6 +25,8 @@ namespace TutoringApp.Views
 
             CourseSection.IsVisible = this.isTutor;
             ZoomlinkSection.IsVisible = this.isTutor;
+            payInfoSection.IsVisible = this.isTutor;
+
             inputBox.ItemsSource = helperServices.allCourses;
         }
 

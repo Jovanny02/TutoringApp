@@ -28,10 +28,10 @@ namespace TutoringApp.Services
                      if (Newtoken != null)
                      {
                          isTransactionSucess = MakePayment(Newtoken, paymentInfo);
-                         if (isTransactionSucess == true)
-                         {
-                             CreateTransfer(paymentInfo, stripeAccountID);
-                         }
+                        // if (isTransactionSucess == true)
+                         //{
+                         //    CreateTransfer(paymentInfo, stripeAccountID);
+                        // }
                      }
                      else
                      {
@@ -107,14 +107,17 @@ namespace TutoringApp.Services
             }
         }
 
-        public static bool CreateTransfer(PaymentInformation paymentInfo, string stripeAccountID)
+        public static bool CreateTransfer(double paymentAmount, string stripeAccountID)
         {
+            //Convert to cents, find percentage after percent fee and standard 30 cent fee
+            paymentAmount = ((paymentAmount * 100) * .971) - 30; //payout amount AFTER stripe fee
+
             try
             {
                 StripeConfiguration.ApiKey = privateKey;
                 var options = new TransferCreateOptions
                 {
-                    Amount = (long)(paymentInfo.paymentAmount * 100),
+                    Amount = (long)(paymentAmount),
                     Currency = "USD",
                     Description="transfer sucess",
                     Destination = stripeAccountID
@@ -150,10 +153,10 @@ namespace TutoringApp.Services
           }
         */
 
-        public static string makeAccount()
+        public static string makeAccount(User currUser, stripeAccountInfo accountInfo)
         {
             StripeConfiguration.ApiKey = privateKey;
-
+            int nameIndex = currUser.name.IndexOf(' ');
             try
             {
                 var options = new AccountCreateOptions
@@ -173,23 +176,24 @@ namespace TutoringApp.Services
                     },
                     ExternalAccount = new AccountCardOptions
                     {
-                        Cvc = "123",
+                        Cvc = accountInfo.cardInfo.SecurityCode,
                         Currency = "usd",
-                        Name = "Kareem Test",
-                        Number = "4000056655665556",
-                        ExpMonth = 12,
-                        ExpYear = 2021
+                        Name = accountInfo.cardInfo.CardName,
+                        Number = accountInfo.cardInfo.CardNumber,
+                        ExpMonth = accountInfo.cardInfo.ExpMonth,
+                        ExpYear = accountInfo.cardInfo.ExpYear
                     },
                     BusinessType = "individual",
                     Individual = new AccountIndividualOptions
                     {
-                        FirstName = "Fuck",
-                        LastName = "This",
-                        Dob = new DobOptions {Day = 1, Month = 1, Year=1901 },
-                        SsnLast4 = "0000",
-                        Phone = "0000000000",
-                        Address = new AddressOptions { City = "gainesville", Country = "US", Line1 = "4000 sw 37 blvd", PostalCode = "32608", State = "Florida" },
-                        Email = "testemail@gmail.com",
+                        FirstName = currUser.name.Substring(0, nameIndex),
+                        LastName = currUser.name.Substring(nameIndex + 1, (currUser.name.Length - (nameIndex + 1))),
+                        Dob = accountInfo.dob,
+                        SsnLast4 = accountInfo.lastFourSSN,
+                        Phone = accountInfo.phoneNumber,
+                        Address = new AddressOptions { City = accountInfo.address.City, 
+                            Country = "US", Line1 = accountInfo.address.Line1, PostalCode = accountInfo.address.PostalCode, State = accountInfo.address.State},
+                        Email = currUser.email
                     },
                     TosAcceptance = new AccountTosAcceptanceOptions
                     {

@@ -146,7 +146,7 @@
                                         FontAttributes="Bold"
                                         FontSize="22">
                                         </Span>
-                                        <Span 
+                                        <Span
                                         TextColor="{StaticResource DefaultBlack}"
                                         Text="{Binding payInfo.SecurityCode}"
                                         FontSize="20"/>

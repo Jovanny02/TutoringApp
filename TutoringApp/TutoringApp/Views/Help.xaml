@@ -35,7 +35,7 @@
                             FontSize="20">
                                 <Span.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding ClickCommand}"
-                                            CommandParameter="https://www.youtube.com/watch?v=5uPoDNEn3I0" />
+                                            CommandParameter="https://www.youtube.com/watch?v=7Jkl8cqyeBI" />
                                 </Span.GestureRecognizers>
                             </Span>
 

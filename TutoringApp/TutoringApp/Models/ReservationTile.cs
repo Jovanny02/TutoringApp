@@ -16,16 +16,17 @@ namespace TutoringApp.Models
         public string zoomLink { get; set; }
 
         private double Rating { get; set; } = 0.0;
-        [JsonIgnore]
         public double rating { get { return Rating; }
             set { 
                 Rating = value; 
                 onPropertyChanged(); } }
 
         private bool IsCompleted { get; set; } = false;
-        [JsonIgnore]
+        public bool isCompleted { get { return IsCompleted; } set { IsCompleted = value; onPropertyChanged(); onPropertyChanged(nameof(statusMessage));  } }
 
-        public bool isCompleted { get { return IsCompleted; } set { IsCompleted = value; onPropertyChanged(); onPropertyChanged(nameof(statusMessage));  } } 
+        private bool PaymentReceived { get; set; } = false;
+
+        public bool paymentReceived { get { return PaymentReceived; } set { PaymentReceived = value; onPropertyChanged(); onPropertyChanged(nameof(statusMessage)); } }
 
         [JsonIgnore]
         public string formattedFromDate { get { return (fromDate.ToString("MMM d: ") + fromDateString); } }
@@ -35,7 +36,11 @@ namespace TutoringApp.Models
         {
             get
             {
-                if (isCompleted)
+                if (PaymentReceived)
+                {
+                    return "Payment Received";
+                }
+                else if (isCompleted)
                 {
                     return "Completed";
                 }

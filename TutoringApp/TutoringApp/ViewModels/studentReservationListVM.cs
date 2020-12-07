@@ -18,7 +18,10 @@ namespace TutoringApp.ViewModels
     {
         public studentReservationListVM() {
             User student = new User();
+            UserDialogs.Instance.ShowLoading();
             PerformReservationCommand.Execute(student);
+            UserDialogs.Instance.HideLoading();
+
         }
         //TODO Add API call to get  reservations for current user
         public ICommand PerformReservationCommand => new Command<User>(async (student) =>
@@ -34,33 +37,6 @@ namespace TutoringApp.ViewModels
             {
                 studentReserve = null;
             }
-            /* studentSessions.Add(new ReservationTile
-             {
-                 tutorName = "hello",
-                 studentName = "Test Student ",
-                 zoomLink = "https://zoom.us/",
-                 fromDate = DateTime.Now.AddHours(-4),
-                 toDate = DateTime.Now.AddHours(-3),
-                 tutorUFID = 12345678,
-                 studentUFID = 87654321,
-                 isCompleted = true
-             });
-
-             for (int i = 0; i < 5; i++)
-             {
-                 studentSessions.Add(new ReservationTile
-                 {
-                     tutorName = "Test Tutor " + i,
-                     studentName = "Test Student " + i,
-                     zoomLink = "https://zoom.us/",
-                     fromDate = DateTime.Now.AddHours(i - 3),
-                     toDate = DateTime.Now.AddHours(i - 2),
-                     tutorUFID = 12345678,
-                     studentUFID = 87654321
-                 });
-
-             }
-            */
 
             //properties changed
             onPropertyChanged(nameof(studentReserve));
@@ -82,7 +58,6 @@ namespace TutoringApp.ViewModels
                 {
                     return false;
                 }
-
                 else
                 {
                     return studentReserve.Count > 0;
@@ -116,11 +91,17 @@ namespace TutoringApp.ViewModels
 
                 //TODO ADD API CALL TO SUBMIT RATING
                 UserDialogs.Instance.ShowLoading("Submitting Review");
-                await Task.Delay(TimeSpan.FromSeconds(2));
+                bool didComplete = await WebAPIServices.submitTutorRating(studentReserve[indexOfReservation]);            
                 UserDialogs.Instance.HideLoading();
+
+                if (!didComplete)
+                {
+                    UserDialogs.Instance.Alert("Save Failed. Please Try Again", null, null);
+                    return;
+                }
+
+
                 UserDialogs.Instance.Alert("Review Saved Successfully!", null, null);
-
-
                 //update reservation on users end immediately
                 studentReserve[indexOfReservation].isCompleted = true;
                 onPropertyChanged(nameof(studentReserve));
@@ -128,6 +109,7 @@ namespace TutoringApp.ViewModels
             }
             catch (Exception e)
             {
+                UserDialogs.Instance.HideLoading();
                 UserDialogs.Instance.Alert("Error submitting rating", null, null);
                 Console.WriteLine(e.Message);
             }

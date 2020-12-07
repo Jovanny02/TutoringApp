@@ -52,6 +52,7 @@
           <Property Name="tutorRating" Type="float" />
           <Property Name="isCompleted" Type="bit" />
           <Property Name="reservationPrice" Type="float" />
+          <Property Name="paymentReceived" Type="bit" />
         </EntityType>
         <EntityType Name="users">
           <Key>
@@ -176,8 +177,19 @@
       <Schema Namespace="TutoringAppDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="TutoringAppDBEntities" annotation:LazyLoadingEnabled="true" >
           <EntitySet Name="loginTests" EntityType="TutoringAppDBModel.loginTest" />
-          <EntitySet Name="users" EntityType="TutoringAppDBModel.user" />
           <EntitySet Name="reservations" EntityType="TutoringAppDBModel.reservation" />
+          <EntitySet Name="EducationSections" EntityType="TutoringAppDBModel.EducationSection" />
+          <EntitySet Name="userSchedules" EntityType="TutoringAppDBModel.userSchedule" />
+          <EntitySet Name="Courses" EntityType="TutoringAppDBModel.Cours" />
+          <EntitySet Name="users" EntityType="TutoringAppDBModel.user" />
+          <AssociationSet Name="FK__Courses__UFID__00200768" Association="TutoringAppDBModel.FK__Courses__UFID__00200768">
+            <End Role="user" EntitySet="users" />
+            <End Role="Cours" EntitySet="Courses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EducationS__UFID__7E37BEF6" Association="TutoringAppDBModel.FK__EducationS__UFID__7E37BEF6">
+            <End Role="user" EntitySet="users" />
+            <End Role="EducationSection" EntitySet="EducationSections" />
+          </AssociationSet>
           <AssociationSet Name="FK__reservati__stude__02084FDA" Association="TutoringAppDBModel.FK__reservati__stude__02084FDA">
             <End Role="user" EntitySet="users" />
             <End Role="reservation" EntitySet="reservations" />
@@ -186,20 +198,9 @@
             <End Role="user" EntitySet="users" />
             <End Role="reservation" EntitySet="reservations" />
           </AssociationSet>
-          <EntitySet Name="EducationSections" EntityType="TutoringAppDBModel.EducationSection" />
-          <EntitySet Name="userSchedules" EntityType="TutoringAppDBModel.userSchedule" />
-          <AssociationSet Name="FK__EducationS__UFID__7E37BEF6" Association="TutoringAppDBModel.FK__EducationS__UFID__7E37BEF6">
-            <End Role="user" EntitySet="users" />
-            <End Role="EducationSection" EntitySet="EducationSections" />
-          </AssociationSet>
           <AssociationSet Name="FK__userSchedu__UFID__7F2BE32F" Association="TutoringAppDBModel.FK__userSchedu__UFID__7F2BE32F">
             <End Role="user" EntitySet="users" />
             <End Role="userSchedule" EntitySet="userSchedules" />
-          </AssociationSet>
-          <EntitySet Name="Courses" EntityType="TutoringAppDBModel.Cours" />
-          <AssociationSet Name="FK__Courses__UFID__00200768" Association="TutoringAppDBModel.FK__Courses__UFID__00200768">
-            <End Role="user" EntitySet="users" />
-            <End Role="Cours" EntitySet="Courses" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="loginTest">
@@ -209,29 +210,6 @@
           <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="user">
-          <Key>
-            <PropertyRef Name="UFID" />
-          </Key>
-          <Property Name="UFID" Type="Int32" Nullable="false" />
-          <Property Name="fullName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="requestedPay" Type="Double" />
-          <Property Name="isTutor" Type="Boolean" />
-          <Property Name="averageRating" Type="Double" />
-          <Property Name="shortBio" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Biography" Type="String" MaxLength="600" FixedLength="false" Unicode="false" />
-          <Property Name="pictureSource" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="reservations" Relationship="TutoringAppDBModel.FK__reservati__stude__02084FDA" FromRole="user" ToRole="reservation" />
-          <NavigationProperty Name="reservations1" Relationship="TutoringAppDBModel.FK__reservati__tutor__01142BA1" FromRole="user" ToRole="reservation" />
-          <Property Name="zoomLink" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="EducationSections" Relationship="TutoringAppDBModel.FK__EducationS__UFID__7E37BEF6" FromRole="user" ToRole="EducationSection" />
-          <NavigationProperty Name="userSchedules" Relationship="TutoringAppDBModel.FK__userSchedu__UFID__7F2BE32F" FromRole="user" ToRole="userSchedule" />
-          <NavigationProperty Name="Courses" Relationship="TutoringAppDBModel.FK__Courses__UFID__00200768" FromRole="user" ToRole="Cours" />
-          <Property Name="salt" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="stripeAccountID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="reservation">
           <Key>
@@ -246,35 +224,12 @@
           <Property Name="toDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="isCancelled" Type="Boolean" />
           <Property Name="tutorRating" Type="Double" />
-          <NavigationProperty Name="user" Relationship="TutoringAppDBModel.FK__reservati__stude__02084FDA" FromRole="reservation" ToRole="user" />
-          <NavigationProperty Name="user1" Relationship="TutoringAppDBModel.FK__reservati__tutor__01142BA1" FromRole="reservation" ToRole="user" />
           <Property Name="isCompleted" Type="Boolean" />
           <Property Name="reservationPrice" Type="Double" />
+          <NavigationProperty Name="user" Relationship="TutoringAppDBModel.FK__reservati__stude__02084FDA" FromRole="reservation" ToRole="user" />
+          <NavigationProperty Name="user1" Relationship="TutoringAppDBModel.FK__reservati__tutor__01142BA1" FromRole="reservation" ToRole="user" />
+          <Property Name="paymentReceived" Type="Boolean" />
         </EntityType>
-        <Association Name="FK__reservati__stude__02084FDA">
-          <End Type="TutoringAppDBModel.user" Role="user" Multiplicity="1" />
-          <End Type="TutoringAppDBModel.reservation" Role="reservation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="user">
-              <PropertyRef Name="UFID" />
-            </Principal>
-            <Dependent Role="reservation">
-              <PropertyRef Name="studentUFID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__reservati__tutor__01142BA1">
-          <End Type="TutoringAppDBModel.user" Role="user" Multiplicity="1" />
-          <End Type="TutoringAppDBModel.reservation" Role="reservation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="user">
-              <PropertyRef Name="UFID" />
-            </Principal>
-            <Dependent Role="reservation">
-              <PropertyRef Name="tutorUFID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="EducationSection">
           <Key>
             <PropertyRef Name="UFID" />
@@ -302,6 +257,52 @@
           <Property Name="isUnavailable" Type="Boolean" />
           <NavigationProperty Name="user" Relationship="TutoringAppDBModel.FK__userSchedu__UFID__7F2BE32F" FromRole="userSchedule" ToRole="user" />
         </EntityType>
+        <EntityType Name="Cours">
+          <Key>
+            <PropertyRef Name="UFID" />
+            <PropertyRef Name="departmentTitle" />
+            <PropertyRef Name="courseName" />
+          </Key>
+          <Property Name="UFID" Type="Int32" Nullable="false" />
+          <Property Name="departmentTitle" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="courseName" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="user" Relationship="TutoringAppDBModel.FK__Courses__UFID__00200768" FromRole="Cours" ToRole="user" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="UFID" />
+          </Key>
+          <Property Name="UFID" Type="Int32" Nullable="false" />
+          <Property Name="fullName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="requestedPay" Type="Double" />
+          <Property Name="isTutor" Type="Boolean" />
+          <Property Name="averageRating" Type="Double" />
+          <Property Name="shortBio" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Biography" Type="String" MaxLength="600" FixedLength="false" Unicode="false" />
+          <Property Name="pictureSource" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="zoomLink" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="salt" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="stripeAccountID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Courses" Relationship="TutoringAppDBModel.FK__Courses__UFID__00200768" FromRole="user" ToRole="Cours" />
+          <NavigationProperty Name="EducationSections" Relationship="TutoringAppDBModel.FK__EducationS__UFID__7E37BEF6" FromRole="user" ToRole="EducationSection" />
+          <NavigationProperty Name="reservations" Relationship="TutoringAppDBModel.FK__reservati__stude__02084FDA" FromRole="user" ToRole="reservation" />
+          <NavigationProperty Name="reservations1" Relationship="TutoringAppDBModel.FK__reservati__tutor__01142BA1" FromRole="user" ToRole="reservation" />
+          <NavigationProperty Name="userSchedules" Relationship="TutoringAppDBModel.FK__userSchedu__UFID__7F2BE32F" FromRole="user" ToRole="userSchedule" />
+        </EntityType>
+        <Association Name="FK__Courses__UFID__00200768">
+          <End Type="TutoringAppDBModel.user" Role="user" Multiplicity="1" />
+          <End Type="TutoringAppDBModel.Cours" Role="Cours" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="UFID" />
+            </Principal>
+            <Dependent Role="Cours">
+              <PropertyRef Name="UFID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__EducationS__UFID__7E37BEF6">
           <End Type="TutoringAppDBModel.user" Role="user" Multiplicity="1" />
           <End Type="TutoringAppDBModel.EducationSection" Role="EducationSection" Multiplicity="*" />
@@ -314,6 +315,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__reservati__stude__02084FDA">
+          <End Type="TutoringAppDBModel.user" Role="user" Multiplicity="1" />
+          <End Type="TutoringAppDBModel.reservation" Role="reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="UFID" />
+            </Principal>
+            <Dependent Role="reservation">
+              <PropertyRef Name="studentUFID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__reservati__tutor__01142BA1">
+          <End Type="TutoringAppDBModel.user" Role="user" Multiplicity="1" />
+          <End Type="TutoringAppDBModel.reservation" Role="reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="UFID" />
+            </Principal>
+            <Dependent Role="reservation">
+              <PropertyRef Name="tutorUFID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__userSchedu__UFID__7F2BE32F">
           <End Type="TutoringAppDBModel.user" Role="user" Multiplicity="1" />
           <End Type="TutoringAppDBModel.userSchedule" Role="userSchedule" Multiplicity="*" />
@@ -322,29 +347,6 @@
               <PropertyRef Name="UFID" />
             </Principal>
             <Dependent Role="userSchedule">
-              <PropertyRef Name="UFID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Cours">
-          <Key>
-            <PropertyRef Name="UFID" />
-            <PropertyRef Name="departmentTitle" />
-            <PropertyRef Name="courseName" />
-          </Key>
-          <Property Name="UFID" Type="Int32" Nullable="false" />
-          <Property Name="departmentTitle" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="courseName" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="user" Relationship="TutoringAppDBModel.FK__Courses__UFID__00200768" FromRole="Cours" ToRole="user" />
-        </EntityType>
-        <Association Name="FK__Courses__UFID__00200768">
-          <End Type="TutoringAppDBModel.user" Role="user" Multiplicity="1" />
-          <End Type="TutoringAppDBModel.Cours" Role="Cours" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="user">
-              <PropertyRef Name="UFID" />
-            </Principal>
-            <Dependent Role="Cours">
               <PropertyRef Name="UFID" />
             </Dependent>
           </ReferentialConstraint>
@@ -364,28 +366,10 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="users">
-            <EntityTypeMapping TypeName="TutoringAppDBModel.user">
-              <MappingFragment StoreEntitySet="users">
-                <ScalarProperty Name="stripeAccountID" ColumnName="stripeAccountID" />
-                <ScalarProperty Name="salt" ColumnName="salt" />
-                <ScalarProperty Name="zoomLink" ColumnName="zoomLink" />
-                <ScalarProperty Name="pictureSource" ColumnName="pictureSource" />
-                <ScalarProperty Name="Biography" ColumnName="Biography" />
-                <ScalarProperty Name="shortBio" ColumnName="shortBio" />
-                <ScalarProperty Name="averageRating" ColumnName="averageRating" />
-                <ScalarProperty Name="isTutor" ColumnName="isTutor" />
-                <ScalarProperty Name="requestedPay" ColumnName="requestedPay" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="fullName" ColumnName="fullName" />
-                <ScalarProperty Name="UFID" ColumnName="UFID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="reservations">
             <EntityTypeMapping TypeName="TutoringAppDBModel.reservation">
               <MappingFragment StoreEntitySet="reservations">
+                <ScalarProperty Name="paymentReceived" ColumnName="paymentReceived" />
                 <ScalarProperty Name="reservationPrice" ColumnName="reservationPrice" />
                 <ScalarProperty Name="isCompleted" ColumnName="isCompleted" />
                 <ScalarProperty Name="tutorRating" ColumnName="tutorRating" />
@@ -424,6 +408,25 @@
               <MappingFragment StoreEntitySet="Courses">
                 <ScalarProperty Name="courseName" ColumnName="courseName" />
                 <ScalarProperty Name="departmentTitle" ColumnName="departmentTitle" />
+                <ScalarProperty Name="UFID" ColumnName="UFID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="TutoringAppDBModel.user">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="stripeAccountID" ColumnName="stripeAccountID" />
+                <ScalarProperty Name="salt" ColumnName="salt" />
+                <ScalarProperty Name="zoomLink" ColumnName="zoomLink" />
+                <ScalarProperty Name="pictureSource" ColumnName="pictureSource" />
+                <ScalarProperty Name="Biography" ColumnName="Biography" />
+                <ScalarProperty Name="shortBio" ColumnName="shortBio" />
+                <ScalarProperty Name="averageRating" ColumnName="averageRating" />
+                <ScalarProperty Name="isTutor" ColumnName="isTutor" />
+                <ScalarProperty Name="requestedPay" ColumnName="requestedPay" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="fullName" ColumnName="fullName" />
                 <ScalarProperty Name="UFID" ColumnName="UFID" />
               </MappingFragment>
             </EntityTypeMapping>
