@@ -4,7 +4,8 @@
                      xmlns:c="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="c"
-             x:Class="TutoringApp.Views.Help">
+             x:Class="TutoringApp.Views.Help"
+              BackgroundColor="{StaticResource DefaultWhite}">
     <ContentPage.Content>
         <StackLayout>
             <Grid>

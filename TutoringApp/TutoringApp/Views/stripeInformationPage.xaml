@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:CustRend="clr-namespace:TutoringApp.Views.CustomRenders;assembly=TutoringApp"
-             x:Class="TutoringApp.Views.stripeInformationPage">
+             x:Class="TutoringApp.Views.stripeInformationPage"
+              BackgroundColor="{StaticResource DefaultWhite}">
     <ContentPage.Content>
         <ScrollView>
         <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand" Margin="25,25,25,25">
@@ -58,7 +59,7 @@
                     <Label Text="Your Phone Number" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="Enter Your Phone Number (only digits)"  Text="{Binding phoneNumber}" MaxLength="10" Keyboard="Numeric" />
+                        <CustRend:CustomEntry FontSize="Subtitle" Placeholder="Enter Your Phone Number (only digits)"  Text="{Binding phoneNumber}" MaxLength="10" Keyboard="Numeric" />
                     </Frame>
                 </StackLayout>
                 
@@ -66,7 +67,7 @@
                     <Label Text="Your Last Four SSN Digits" TextColor="{StaticResource DefaultBlue}" 
                            FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="Start"/>
                     <Frame Style="{StaticResource EntryFrame}">
-                        <CustRend:CustomEntry Placeholder="Enter The Last 4 Digits of Your SSN (only digits)" IsPassword="True" Text="{Binding lastFourSSN}" MaxLength="4" Keyboard="Numeric" />
+                        <CustRend:CustomEntry FontSize="Subtitle" Placeholder="Enter The Last 4 Digits of Your SSN (only digits)" IsPassword="True" Text="{Binding lastFourSSN}" MaxLength="4" Keyboard="Numeric" />
                     </Frame>
                 </StackLayout>
 

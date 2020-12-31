@@ -6,7 +6,8 @@
              xmlns:c="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="c"
-             x:Class="TutoringApp.Views.Payment">
+             x:Class="TutoringApp.Views.Payment"
+                    BackgroundColor="{StaticResource DefaultWhite}">
     <ContentPage.Content>
         <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand" Margin="25,25,25,0">
             <Grid VerticalOptions="FillAndExpand">

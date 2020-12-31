@@ -6,9 +6,10 @@
              xmlns:c="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="c"
-             x:Class="TutoringApp.Views.Confirmation">
+             x:Class="TutoringApp.Views.Confirmation"
+                   BackgroundColor="{StaticResource DefaultWhite}">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand" Margin="25,25,25,25">
+        <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand" Margin="20,25,20,5">
             <Grid x:Name="myGrid" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -165,7 +166,7 @@
 
                 </StackLayout>
 
-                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Grid.Row="6">
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Grid.Row="6" Margin="0,5,0,0">
                     <Button Text="{Binding totalCostString, StringFormat='Confirm Payment: {0:N}'}" VerticalOptions="Center" Style="{StaticResource HomeButtonStyle2}"  Command="{Binding confirmCommand}"/>
                 </StackLayout>
 

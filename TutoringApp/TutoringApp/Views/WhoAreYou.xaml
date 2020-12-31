@@ -5,8 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="TutoringApp.Views.WhoAreYou"
-             Padding="10">
-    <StackLayout>
+             BackgroundColor="{StaticResource DefaultWhite}">
+    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  BackgroundColor="{StaticResource DefaultWhite}">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width=".5*"/>
@@ -16,7 +16,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height=".5*"/>
-                <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Label Text=" You Are a ..."
@@ -33,7 +32,7 @@
 
                 <Button Text="Student" Margin="25,50,25,20"  
                     VerticalOptions="End" Style="{StaticResource HomeButtonStyle2}" Command="{Binding SignupTutorCommand}" CommandParameter="False"/>
-                <Button Text="Tutor"  Margin="25,0,25,0" 
+                <Button Text="Tutor"  Margin="25,0,25,15" 
                     VerticalOptions="Start" Style="{StaticResource HomeButtonStyle2}" Command="{Binding SignupTutorCommand}" CommandParameter="True"/>
 
 

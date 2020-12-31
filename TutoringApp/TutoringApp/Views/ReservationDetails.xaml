@@ -4,7 +4,8 @@
              xmlns:CustRend="clr-namespace:TutoringApp.Views.CustomRenders;assembly=TutoringApp"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:skiarate="clr-namespace:SkiaRate;assembly=TutoringApp" 
-             x:Class="TutoringApp.Views.ReservationDetails">
+             x:Class="TutoringApp.Views.ReservationDetails"
+                   BackgroundColor="{StaticResource DefaultWhite}">
     <ContentPage.Content>
         <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand" Margin="25,25,25,0">
             <Grid VerticalOptions="FillAndExpand">
