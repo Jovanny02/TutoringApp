@@ -7,7 +7,7 @@
              x:Class="TutoringApp.Views.ReservationDetails"
                    BackgroundColor="{StaticResource DefaultWhite}">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand" Margin="25,25,25,0">
+        <StackLayout BackgroundColor="{StaticResource DefaultWhite}" VerticalOptions="FillAndExpand" Margin="25,10,25,0">
             <Grid VerticalOptions="FillAndExpand">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2.6*"/>
@@ -36,7 +36,7 @@
                 <Label Text="{Binding studentName}" 
                        IsVisible="false"
                        x:Name="studentName" 
-                       FontSize="35" 
+                       FontSize="30" 
                        HorizontalOptions="Center"  
                        Grid.Row="1" 
                        TextColor="{StaticResource DefaultBlue}"
@@ -59,7 +59,7 @@
                 <Label Text="{Binding tutorName}" 
                        IsVisible="false"
                        x:Name="tutorName" 
-                       FontSize="35" 
+                       FontSize="30" 
                        HorizontalOptions="Center"  
                        Grid.Row="1" 
                        TextColor="{StaticResource DefaultBlue}"

@@ -18,7 +18,7 @@ namespace TutoringApp.Views
         {
             InitializeComponent();
 
-            double pictureSize = (DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density) * (.15); 
+            double pictureSize = (DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density) * (.18); 
             double radius = pictureSize / 2;
             isStudent = isStudentReservation;
             //if it is a student reservation, show the tutor's information
